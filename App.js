@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, FlatList, SectionList } from 'react-native';
 import styled from 'styled-components/native' //  do not forget adding  /native  only for  react native
 import { LinearGradient } from 'expo-linear-gradient'
 import Group from "./components/Group"
+import { Ionicons } from '@expo/vector-icons'
 
 export default function App() {
 
@@ -47,6 +48,66 @@ export default function App() {
           time: "13:30"
         }
       ]
+    }, {
+      title: "14 september",
+      data: [
+        {
+          id: 2324,
+
+          userName: "user name",
+          purpose: "purpose of meeting",
+          userImg: "https://image.shutterstock.com/image-photo/happy-millennial-content-maker-shooting-600w-1633410118.jpg",
+          time: "12:30"
+        },
+        {
+          id: 2334,
+          userName: "user name",
+          purpose: "purpose of meeting",
+          userImg: "https://image.shutterstock.com/image-photo/happy-millennial-content-maker-shooting-600w-1633410118.jpg",
+          time: "13:30"
+        }
+      ]
+
+    },
+    {
+      title: "15 september",
+      data: [
+        {
+          id: 2324,
+
+          userName: "user name",
+          purpose: "purpose of meeting",
+          userImg: "https://image.shutterstock.com/image-photo/happy-millennial-content-maker-shooting-600w-1633410118.jpg",
+          time: "12:30"
+        },
+        {
+          id: 2334,
+          userName: "user name",
+          purpose: "purpose of meeting",
+          userImg: "https://image.shutterstock.com/image-photo/happy-millennial-content-maker-shooting-600w-1633410118.jpg",
+          time: "13:30"
+        }
+      ]
+    }, {
+      title: "14 september",
+      data: [
+        {
+          id: 2324,
+
+          userName: "user name",
+          purpose: "purpose of meeting",
+          userImg: "https://image.shutterstock.com/image-photo/happy-millennial-content-maker-shooting-600w-1633410118.jpg",
+          time: "12:30"
+        },
+        {
+          id: 2334,
+          userName: "user name",
+          purpose: "purpose of meeting",
+          userImg: "https://image.shutterstock.com/image-photo/happy-millennial-content-maker-shooting-600w-1633410118.jpg",
+          time: "13:30"
+        }
+      ]
+
     }
   ]
 
@@ -70,15 +131,9 @@ export default function App() {
             <GroupTitle>{title} </GroupTitle>
           )}
         />
-
-
-        {/* <FlatList
-        data={state}
-        keyExtractor={item => item.data.id}
-        renderItem={({ item }) => {
-          return <Group title={item.title} item={item.data} />
-        }}
-      /> */}
+        <AddButton>
+          <Ionicons name="ios-add" size={35} color="#fff" />
+        </AddButton>
       </LinearGradient>
     </Container>
   );
@@ -89,6 +144,24 @@ export default function App() {
 
 
 // styles  _________________________________________________________
+const AddButton = styled.TouchableOpacity`
+
+align-items:center
+justify-content: center
+border-radius: 50px
+width: 64px
+height: 64px
+background: #4294ff
+position: absolute
+right: 25px
+bottom: 25px
+shadow-color: #000
+${'' /* shadow-offset: {width: 0, height: 2} */}
+shadow-opacity: 0.5
+shadow-radius: 6.3px
+elevation: 10
+`
+
 const Container = styled.SafeAreaView`
          flex:1
         marginTop: 50px 
@@ -98,4 +171,5 @@ const GroupTitle = styled.Text`
 font-weight: bold
 font-size : 22px
 color : #000000
+ padding: 0 20px
   `

@@ -13,7 +13,7 @@ const Group = ({ userImg, userName, purpose, time }) => {
                 <FullName>{userName}</FullName>
                 <GrayText>{purpose}</GrayText>
             </View>
-            <GroupTime active >{time}</GroupTime>
+            <GroupTime >{time}</GroupTime>
         </GroupItem>
     </GroupContainer>
 }
