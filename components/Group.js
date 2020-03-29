@@ -3,17 +3,17 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 import styled from 'styled-components/native' //  do not forget adding  /native  only for  react native
 
 
-const Group = ({ title, item }) => {
+const Group = ({ userImg, userName, purpose, time }) => {
 
     return <GroupContainer>
-        <GroupTitle>{title} </GroupTitle>
+
         <GroupItem>
-            <UserImg source={item.userImg} />
+            <UserImg source={{ uri: userImg }} />
             <View style={{ flex: 1 }}>
-                <FullName>{item.userName}</FullName>
-                <GrayText>{item.purpose}</GrayText>
+                <FullName>{userName}</FullName>
+                <GrayText>{purpose}</GrayText>
             </View>
-            <GroupTime active >{item.time}</GroupTime>
+            <GroupTime active >{time}</GroupTime>
         </GroupItem>
     </GroupContainer>
 }
@@ -43,11 +43,7 @@ font-size : 16px
 `
 
 
-const GroupTitle = styled.Text`
-font-weight: bold
-font-size : 22px
-color : #000000
-  `
+
 const GroupContainer = styled.View`
    padding: 0 20px
   `
