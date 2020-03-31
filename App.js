@@ -1,16 +1,22 @@
 import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation'; // back and forward navigator
 import { createStackNavigator } from 'react-navigation-stack';
-import { StyleSheet, Text, View, FlatList, SectionList } from 'react-native';
-import styled from 'styled-components/native' //  do not forget adding  /native  only for  react native
 import PatientList from './screens/PatientList'
 
-const switchNavigator = createSwitchNavigator({
-  PatientList: PatientList,
+const stackNavigator = createStackNavigator({
+  PatientList: {
+    screen: PatientList,
+    navigationOptions: {
+      title: "Journal",
+      headerStyle: {
+        backgroundColor: '#9484DE'
+      }
+    }
+  }
+})
 
-});
 
-const App = createAppContainer(switchNavigator);
+const App = createAppContainer(stackNavigator);
 
 export default App
 

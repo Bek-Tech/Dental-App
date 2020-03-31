@@ -5,8 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import Group from "../components/Group"
 import { Ionicons } from '@expo/vector-icons'
 
-export default function PatientList() {
-
+export default function PatientList({ navigation }) {
     const state = [
         {
             title: "14 september",
@@ -112,7 +111,7 @@ export default function PatientList() {
     ]
 
     return (
-        <Container forceInset={{ top: 'always' }}>
+        <Container>
             <LinearGradient colors={['#9484DE', '#49036C']}
                 style={{ flex: 1 }} >
 
@@ -157,7 +156,7 @@ elevation: 10
 
 const Container = styled.SafeAreaView`
          flex:1
-        marginTop: 50px 
+        ${'' /* marginTop: 50px  */}
       `
 
 const GroupTitle = styled.Text`
