@@ -17,18 +17,7 @@ const stackNavigator = createStackNavigator({
       },
     }
   },
-  Details: {
-    screen: DetailsScreen,
-    navigationOptions: {
-      title: "Details",
-      headerStyle: {
-        backgroundColor: '#9484DE'
-      },
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
-    }
-  }
+  Details: DetailsScreen
 
 })
 
