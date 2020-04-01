@@ -110,6 +110,7 @@ export default function PatientList({ navigation }) {
         }
     ]
 
+    const navigate = (screen, data) => { navigation.navigate(screen, data) }
     return (
         <Container>
             <LinearGradient colors={['#9484DE', '#49036C']}
@@ -118,12 +119,12 @@ export default function PatientList({ navigation }) {
                 <SectionList
                     sections={state}
                     keyExtractor={(item, index) => index}
-                    renderItem={({ item }) => <Group {...item} />}
+                    renderItem={({ item }) => <Group navigate={navigate} {...item} />}
                     renderSectionHeader={({ section: { title } }) => (
                         <GroupTitle>{title} </GroupTitle>
                     )}
                 />
-                <AddButton>
+                <AddButton onPress={() => navigation.navigate('Details')}>
                     <Ionicons name="ios-add" size={35} color="#fff" />
                 </AddButton>
             </LinearGradient>
