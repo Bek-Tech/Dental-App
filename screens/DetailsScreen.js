@@ -3,9 +3,10 @@ import { Text } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'
 import styled from 'styled-components/native'
 import Button from '../components/Button'
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons, Foundation } from '@expo/vector-icons'
+// import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
-const DetailsScreen = ({ route, navigation }) => {
+const DetailsScreen = ({ navigation }) => {
 
     const customer = navigation.getParam('customer')
     const { userName, phone } = customer
@@ -25,7 +26,7 @@ const DetailsScreen = ({ route, navigation }) => {
             <Container>
                 <Name>{userName}</Name>
                 <GrayText>{phone}</GrayText>
-                <ButtonDiv>
+                <RowDiv>
                     <Button style={{
                         shadowOpacity: 0.5,
                         shadowRadius: 6.3,
@@ -34,9 +35,22 @@ const DetailsScreen = ({ route, navigation }) => {
                     <CallButton onPress={() => navigation.navigate('Details')}>
                         <Ionicons name="md-call" size={30} color="#fff" />
                     </CallButton>
-                </ButtonDiv>
-
+                </RowDiv>
             </Container>
+            <HistoryDiv>
+                <Text>Purchase History</Text>
+                <RowDiv>
+                    <Foundation name="clipboard-notes" size={24} color="#000" />
+                    <LabelText>Product Name :</LabelText>
+                    <BoldText>Some Product</BoldText>
+                </RowDiv>
+                <RowDiv>
+                    <Ionicons name="ios-calculator" size={24} color="#000" />
+                    <LabelText>Quantity :</LabelText>
+                    <BoldText>7777</BoldText>
+                </RowDiv>
+            </HistoryDiv>
+
         </LinearGradient>
 
     )
@@ -45,6 +59,29 @@ export default DetailsScreen
 
 
 // styles ___________________________________
+
+const HistoryDiv = styled.View`
+align-Items: flex-start
+padding: 25px 
+margin: 5px 20px
+${'' /* flex: 1 */}
+background : #fff
+border-radius : 25px
+shadow-color: #000
+shadow-opacity: 0.5
+shadow-radius: 6.3px
+elevation: 10
+`
+
+const LabelText = styled.Text`
+font-size: 16px
+margin-left: 10px
+`
+const BoldText = styled.Text`
+font-size : 16px
+font-weight: bold,
+margin-left : 3px
+`
 
 const CallButton = styled.TouchableOpacity`
 
@@ -61,7 +98,7 @@ shadow-radius: 6.3px
 elevation: 10
 `
 
-const ButtonDiv = styled.View`
+const RowDiv = styled.View`
 padding: 5px
 flex-direction: row
 justify-content: center
@@ -80,10 +117,14 @@ margin-bottom: 5px
 
 const Container = styled.View`
 padding: 25px 
-margin: 20px
+margin: 5px 20px
 ${'' /* flex: 1 */}
 background : #fff
 border-radius : 25px
+shadow-color: #000
+shadow-opacity: 0.5
+shadow-radius: 6.3px
+elevation: 10
 `
 
 const GrayText = styled.Text`
