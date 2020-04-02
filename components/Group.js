@@ -3,11 +3,11 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 import styled from 'styled-components/native' //  do not forget adding  /native  only for  react native
 
 
-const Group = ({ navigate, userImg, userName, purpose, time }) => {
-
+const Group = (item) => {
+    const { navigate, userImg, userName, purpose, time } = item
     return <GroupContainer>
 
-        <GroupItem onPress={() => navigate('Details')}>
+        <GroupItem onPress={() => navigate('Details', { customer: item })}>
             <UserImg source={{ uri: userImg }} />
             <View style={{ flex: 1 }}>
                 <FullName>{userName}</FullName>

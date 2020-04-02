@@ -5,9 +5,10 @@ import styled from 'styled-components/native'
 import Button from '../components/Button'
 import { Ionicons } from '@expo/vector-icons'
 
-const DetailsScreen = ({ navigation }) => {
+const DetailsScreen = ({ route, navigation }) => {
 
-
+    const customer = navigation.getParam('customer')
+    const { userName, phone } = customer
     DetailsScreen.navigationOptions = {
         title: "Details",
         headerStyle: {
@@ -22,8 +23,8 @@ const DetailsScreen = ({ navigation }) => {
         <LinearGradient colors={['#9484DE', '#49036C']}
             style={{ flex: 1 }} >
             <Container>
-                <Name>Customer Name</Name>
-                <GrayText>+1 *** *** ** **</GrayText>
+                <Name>{userName}</Name>
+                <GrayText>{phone}</GrayText>
                 <ButtonDiv>
                     <Button style={{
                         shadowOpacity: 0.5,

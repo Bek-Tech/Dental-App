@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, FlatList, SectionList } from 'react-native';
+import { SectionList } from 'react-native';
 import styled from 'styled-components/native' //  do not forget adding  /native  only for  react native
 import { LinearGradient } from 'expo-linear-gradient'
 import Group from "../components/Group"
@@ -13,14 +13,16 @@ export default function PatientList({ navigation }) {
                 {
                     id: 2324,
 
-                    userName: "user name",
+                    userName: "user name1",
+                    phone: "+999999999999",
                     purpose: "purpose of meeting",
                     userImg: "https://image.shutterstock.com/image-photo/happy-millennial-content-maker-shooting-600w-1633410118.jpg",
                     time: "12:30"
                 },
                 {
                     id: 2334,
-                    userName: "user name",
+                    userName: "user name2",
+                    phone: "+222222222222",
                     purpose: "purpose of meeting",
                     userImg: "https://image.shutterstock.com/image-photo/happy-millennial-content-maker-shooting-600w-1633410118.jpg",
                     time: "13:30"
@@ -34,14 +36,16 @@ export default function PatientList({ navigation }) {
                 {
                     id: 2324,
 
-                    userName: "user name",
+                    userName: "user name3",
+                    phone: "+999999999999",
                     purpose: "purpose of meeting",
                     userImg: "https://image.shutterstock.com/image-photo/happy-millennial-content-maker-shooting-600w-1633410118.jpg",
                     time: "12:30"
                 },
                 {
                     id: 2334,
-                    userName: "user name",
+                    userName: "user name4",
+                    phone: "+999999999999",
                     purpose: "purpose of meeting",
                     userImg: "https://image.shutterstock.com/image-photo/happy-millennial-content-maker-shooting-600w-1633410118.jpg",
                     time: "13:30"
@@ -53,14 +57,16 @@ export default function PatientList({ navigation }) {
                 {
                     id: 2324,
 
-                    userName: "user name",
+                    userName: "user name5",
+                    phone: "+999999999999",
                     purpose: "purpose of meeting",
                     userImg: "https://image.shutterstock.com/image-photo/happy-millennial-content-maker-shooting-600w-1633410118.jpg",
                     time: "12:30"
                 },
                 {
                     id: 2334,
-                    userName: "user name",
+                    userName: "user name6",
+                    phone: "+999999999999",
                     purpose: "purpose of meeting",
                     userImg: "https://image.shutterstock.com/image-photo/happy-millennial-content-maker-shooting-600w-1633410118.jpg",
                     time: "13:30"
@@ -74,14 +80,15 @@ export default function PatientList({ navigation }) {
                 {
                     id: 2324,
 
-                    userName: "user name",
+                    userName: "user name7",
+                    phone: "+999999999999",
                     purpose: "purpose of meeting",
                     userImg: "https://image.shutterstock.com/image-photo/happy-millennial-content-maker-shooting-600w-1633410118.jpg",
                     time: "12:30"
                 },
                 {
                     id: 2334,
-                    userName: "user name",
+                    userName: "user name8",
                     purpose: "purpose of meeting",
                     userImg: "https://image.shutterstock.com/image-photo/happy-millennial-content-maker-shooting-600w-1633410118.jpg",
                     time: "13:30"
@@ -93,14 +100,14 @@ export default function PatientList({ navigation }) {
                 {
                     id: 2324,
 
-                    userName: "user name",
+                    userName: "user name9",
                     purpose: "purpose of meeting",
                     userImg: "https://image.shutterstock.com/image-photo/happy-millennial-content-maker-shooting-600w-1633410118.jpg",
                     time: "12:30"
                 },
                 {
                     id: 2334,
-                    userName: "user name",
+                    userName: "user name10",
                     purpose: "purpose of meeting",
                     userImg: "https://image.shutterstock.com/image-photo/happy-millennial-content-maker-shooting-600w-1633410118.jpg",
                     time: "13:30"
