@@ -10,15 +10,15 @@ const DetailsScreen = ({ navigation }) => {
 
     const customer = navigation.getParam('customer')
     const { userName, phone } = customer
-    DetailsScreen.navigationOptions = {
-        title: "Details",
-        headerStyle: {
-            backgroundColor: '#9484DE'
-        },
-        headerTitleStyle: {
-            fontWeight: 'bold',
-        },
-    }
+    // DetailsScreen.navigationOptions = {
+    //     title: "Details",
+    //     headerStyle: {
+    //         backgroundColor: '#9484DE'
+    //     },
+    //     headerTitleStyle: {
+    //         fontWeight: 'bold',
+    //     },
+    // }
 
     return (
         <LinearGradient colors={['#9484DE', '#49036C']}
@@ -27,11 +27,14 @@ const DetailsScreen = ({ navigation }) => {
                 <Name>{userName}</Name>
                 <GrayText>{phone}</GrayText>
                 <RowDiv>
-                    <Button style={{
-                        shadowOpacity: 0.5,
-                        shadowRadius: 6.3,
-                        elevation: 10
-                    }} color={"#4294ff"} action={() => navigation.navigate('PatientList')} />
+                    <Button
+                        title={"Button"}
+                        style={{
+                            shadowOpacity: 0.5,
+                            shadowRadius: 6.3,
+                            elevation: 10
+                        }} color={"#4294ff"}
+                        action={() => navigation.navigate('PatientList')} />
                     <CallButton onPress={() => navigation.navigate('Details')}>
                         <Ionicons name="md-call" size={30} color="#fff" />
                     </CallButton>
