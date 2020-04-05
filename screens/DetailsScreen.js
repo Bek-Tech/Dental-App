@@ -8,8 +8,9 @@ import { Ionicons, Foundation } from '@expo/vector-icons'
 
 const DetailsScreen = ({ navigation }) => {
 
-    const customer = navigation.getParam('customer')
-    const { userName, phone } = customer
+    const data = navigation.getParam('customer')
+
+    const { userName, phone } = data.customer
     // DetailsScreen.navigationOptions = {
     //     title: "Details",
     //     headerStyle: {

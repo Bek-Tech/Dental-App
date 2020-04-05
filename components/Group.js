@@ -3,15 +3,19 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 import styled from 'styled-components/native' //  do not forget adding  /native  only for  react native
 
 
-const Group = (item) => {
-    const { navigate, userImg, userName, purpose, time } = item
+const Group = (prop) => {
+    const { customer, time, product, date, quantity } = prop.data
     return <GroupContainer>
 
-        <GroupItem onPress={() => navigate('Details', { customer: item })}>
-            <UserImg source={{ uri: userImg }} />
+        <GroupItem onPress={() => prop.navigate('Details', { customer: prop.data })}>
+            <UserImg source={{ uri: customer.userImg }} />
             <View style={{ flex: 1 }}>
-                <FullName>{userName}</FullName>
-                <GrayText>{purpose}</GrayText>
+                <FullName>{customer.userName}</FullName>
+                <RowDiv>
+                    <GrayText>{product} :</GrayText>
+                    <BoldText>{quantity} kg</BoldText>
+                </RowDiv>
+                <BoldText>{date}</BoldText>
             </View>
             <GroupTime >{time}</GroupTime>
         </GroupItem>
@@ -19,6 +23,19 @@ const Group = (item) => {
 }
 
 //styles ____________________________________________________________
+const BoldText = styled.Text`
+font-size : 16px
+font-weight: bold,
+margin-left : 3px
+`
+
+const RowDiv = styled.View`
+padding: 5px
+flex-direction: row
+justify-content: center
+align-items: center
+
+`
 
 const GroupTime = styled.Text`
  margin-right: 10px
