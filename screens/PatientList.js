@@ -61,7 +61,6 @@ export default function PatientList({ navigation }) {
 
     return (
         <Container>
-            {/* <NavigationEvents onWillFocus={fetchData} /> */}
             <LinearGradient colors={['#9484DE', '#49036C']}
                 style={{ flex: 1 }} >
                 <FlatList
@@ -79,6 +78,7 @@ export default function PatientList({ navigation }) {
                         <GroupTitle>{date} </GroupTitle>
                     )}
                 /> */}
+
                 <AddButton onPress={() => navigation.navigate('Details')}>
                     <Ionicons name="ios-add" size={35} color="#fff" />
                 </AddButton>

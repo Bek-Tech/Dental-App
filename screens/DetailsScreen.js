@@ -11,15 +11,6 @@ const DetailsScreen = ({ navigation }) => {
     const data = navigation.getParam('customer')
 
     const { userName, phone } = data.customer
-    // DetailsScreen.navigationOptions = {
-    //     title: "Details",
-    //     headerStyle: {
-    //         backgroundColor: '#9484DE'
-    //     },
-    //     headerTitleStyle: {
-    //         fontWeight: 'bold',
-    //     },
-    // }
 
     return (
         <LinearGradient colors={['#9484DE', '#49036C']}

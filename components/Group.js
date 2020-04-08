@@ -1,76 +1,112 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
 import styled from 'styled-components/native' //  do not forget adding  /native  only for  react native
 
 
 const Group = (prop) => {
-    const { customer, time, product, date, quantity } = prop.data
+    const { customer, time, product, date } = prop.data
     return <GroupContainer>
 
         <GroupItem onPress={() => prop.navigate('Details', { customer: prop.data })}>
-            <UserImg source={{ uri: customer.userImg }} />
-            <View style={{ flex: 1 }}>
+            <RowDiv>
+                <UserImg source={{ uri: customer.userImg }} />
                 <FullName>{customer.userName}</FullName>
-                <RowDiv>
-                    <GrayText>{product} :</GrayText>
-                    <BoldText>{quantity} kg</BoldText>
-                </RowDiv>
-                <BoldText>{date}</BoldText>
+            </RowDiv>
+
+            <View style={{ flex: 1 }}>
+
+                <FlatList
+                    data={product}
+                    keyExtractor={(index) => index}
+                    renderItem={({ item }) => {
+                        return <RowDiv>
+                            <ProductText>  {item.name}  </ProductText>
+                            <BoldText>{item.amount} kg</BoldText>
+                        </RowDiv>
+
+                    }}
+                />
             </View>
-            <GroupTime >{time}</GroupTime>
+            <DataRowDiv style={{ width: "100%" }}>
+                <GroupTime >{time}</GroupTime>
+                <BoldText>{date}</BoldText>
+            </DataRowDiv>
         </GroupItem>
     </GroupContainer>
 }
 
 //styles ____________________________________________________________
+const DataRowDiv = styled.View`
+padding: 5px
+flex-direction: row
+justify-content: space-between
+align-items: center
+
+`
+
 const BoldText = styled.Text`
 font-size : 16px
 font-weight: bold,
 margin-left : 3px
+margin-right: 15px
 `
 
 const RowDiv = styled.View`
 padding: 5px
 flex-direction: row
-justify-content: center
+justify-content: flex-start
 align-items: center
 
 `
 
 const GroupTime = styled.Text`
  margin-right: 10px
- background:  ${props => (props.active ? "#2a86ff" : "#e9f5ff")}
- color : ${props => (props.active ? "#fff" : "#4294ff")}
- border-radius: 16px
+ background: #2a86ff
+ color :  #fff
+ border-radius: 25px
  font-weight: 600
  font-size : 18px
  width: 70px
  height: 32px
  text-align: center
  line-height : 30px
+ shadow-color: #000
+shadow-opacity: 0.5
+shadow-radius: 6.3px
+elevation: 10
 `
 
-const GrayText = styled.Text`
- color : #8b979f
+const ProductText = styled.Text`
+ background: #49036C
+ color :  #fff
+ border-radius: 25px
+ font-weight: 600
+ font-size : 18px
+ text-align: center
+ line-height : 30px
+ shadow-color: #000
+shadow-opacity: 0.5
+shadow-radius: 6.3px
+elevation: 10
 `
 
 const FullName = styled.Text`
-font-weight: 900
-font-size : 16px
+font-weight: bold
+font-size : 20px
 `
 
 
 
 const GroupContainer = styled.View`
-   padding: 0 20px
+   padding: 3px 20px
   `
 
 const GroupItem = styled.TouchableOpacity`
 background-color: #fff
-border-radius: 10px
+border-radius: 25px
 margin-bottom: 4px
-   flex-direction: row
-   align-items: center
+   ${'' /* flex-direction:row */}
+   align-items: flex-start
    padding: 20px 0
   `
 
