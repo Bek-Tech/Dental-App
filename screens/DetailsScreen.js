@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from "react-redux"
 import { Text } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'
 import styled from 'styled-components/native'
@@ -6,18 +7,19 @@ import Button from '../components/Button'
 import { Ionicons, Foundation } from '@expo/vector-icons'
 // import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
-const DetailsScreen = ({ navigation }) => {
+const DetailsScreen = ({ navigation, purchases, customers }) => {
 
-    const data = navigation.getParam('customer')
+    const CustomerName = navigation.getParam('customer')
 
-    const { userName, phone } = data.customer
+    const data = customers.filter(item => item.userName === CustomerName)
+
 
     return (
         <LinearGradient colors={['#9484DE', '#49036C']}
             style={{ flex: 1 }} >
             <Container>
-                <Name>{userName}</Name>
-                <GrayText>{phone}</GrayText>
+                <Name>{data[0].userName}</Name>
+                <GrayText>{data[0].phone}</GrayText>
                 <RowDiv>
                     <Button
                         title={"Button"}
@@ -50,7 +52,14 @@ const DetailsScreen = ({ navigation }) => {
 
     )
 }
-export default DetailsScreen
+
+const mapCustomersPurchasesToProps = state => {
+    return {
+        purchases: state.purchases,
+        customers: state.customers
+    }
+}
+export default connect(mapCustomersPurchasesToProps)(DetailsScreen)
 
 
 // styles ___________________________________

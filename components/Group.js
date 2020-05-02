@@ -4,20 +4,20 @@ import styled from 'styled-components/native' //  do not forget adding  /native 
 
 
 const Group = (prop) => {
-    const { customer, time, product, date } = prop.data
+    const { customer, userImg, time, product, date } = prop
     return <GroupContainer>
 
-        <GroupItem onPress={() => prop.navigate('Details', { customer: prop.data })}>
+        <GroupItem onPress={() => prop.navigate('Details', { customer: customer })}>
             <RowDiv>
-                <UserImg source={{ uri: customer.userImg }} />
-                <FullName>{customer.userName}</FullName>
+                <UserImg source={{ uri: userImg }} />
+                <FullName>{customer}</FullName>
             </RowDiv>
 
             <View style={{ flex: 1 }}>
 
                 <FlatList
                     data={product}
-                    keyExtractor={(index) => index}
+                    keyExtractor={() => Math.floor(Math.random() * 999)}
                     renderItem={({ item }) => {
                         return <RowDiv>
                             <ProductText>  {item.name}  </ProductText>
@@ -99,6 +99,10 @@ font-size : 20px
 
 const GroupContainer = styled.View`
    padding: 3px 20px
+   shadow-color: #000
+shadow-opacity: 0.5
+shadow-radius: 6.3px
+elevation: 10
   `
 
 const GroupItem = styled.TouchableOpacity`

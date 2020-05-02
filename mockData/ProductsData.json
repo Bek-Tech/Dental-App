@@ -1,0 +1,34 @@
+[
+    {
+        "productName": "black",
+        "stock": 5000
+    },
+    {
+        "productName": "green",
+        "stock": 500
+    },
+    {
+        "productName": "blue",
+        "stock": 300
+    },
+    {
+        "productName": "red",
+        "stock": 330
+    },
+    {
+        "productName": "green",
+        "stock": 500
+    },
+    {
+        "productName": "blue202",
+        "stock": 500
+    },
+    {
+        "productName": "orange",
+        "stock": 500
+    },
+    {
+        "productName": "yellow",
+        "stock": 100
+    }
+]
