@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from "react-redux"
-import { Text } from 'react-native';
+import { Text, View, FlatList } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'
 import styled from 'styled-components/native'
 import Button from '../components/Button'
@@ -8,8 +8,12 @@ import { Ionicons, Foundation } from '@expo/vector-icons'
 // import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
 const DetailsScreen = ({ navigation, purchases, customers }) => {
-
     const CustomerName = navigation.getParam('customer')
+
+    const purchaseData = purchases.filter(item => {
+        return item.customer === CustomerName
+
+    })
 
     const data = customers.filter(item => item.userName === CustomerName)
 
@@ -37,15 +41,42 @@ const DetailsScreen = ({ navigation, purchases, customers }) => {
             <HistoryDiv>
                 <Text>Purchase History</Text>
                 <RowDiv>
-                    <Foundation name="clipboard-notes" size={24} color="#000" />
-                    <LabelText>Product Name :</LabelText>
-                    <BoldText>Some Product</BoldText>
+                    <RowLeftView>
+                        <Foundation name="clipboard-notes" size={24} color="#000" />
+                        <LabelText>Product Name </LabelText>
+                    </RowLeftView>
+                    <RowRightView>
+                        <Ionicons name="ios-calculator" size={24} color="#000" />
+                        <LabelText>Quantity </LabelText>
+                    </RowRightView>
                 </RowDiv>
-                <RowDiv>
-                    <Ionicons name="ios-calculator" size={24} color="#000" />
-                    <LabelText>Quantity :</LabelText>
-                    <BoldText>7777</BoldText>
-                </RowDiv>
+
+                <FlatList
+                    data={purchaseData}
+                    keyExtractor={item => item._id}
+                    renderItem={({ item }) => {
+                        return <DateView>
+                            <Text>{item.date}</Text>
+                            {item.product.map(item => {
+                                return <RowDiv>
+                                    <RowLeftView>
+                                        <BoldText>{item.name}</BoldText>
+                                    </RowLeftView>
+                                    <RowRightView>
+                                        <BoldText>{item.amount}</BoldText>
+                                    </RowRightView>
+                                </RowDiv>
+
+                            })}
+
+
+                        </DateView>
+
+
+                    }}
+                />
+
+
             </HistoryDiv>
 
         </LinearGradient>
@@ -63,12 +94,17 @@ export default connect(mapCustomersPurchasesToProps)(DetailsScreen)
 
 
 // styles ___________________________________
+const DateView = styled.View`
+    justify-content: center
+     align-items: center
+    width: 300px
+`
 
 const HistoryDiv = styled.View`
+flex: 1
 align-Items: flex-start
 padding: 25px 
 margin: 5px 20px
-${'' /* flex: 1 */}
 background : #fff
 border-radius : 25px
 shadow-color: #000
@@ -101,11 +137,30 @@ shadow-opacity: 0.5
 shadow-radius: 6.3px
 elevation: 10
 `
+const RowLeftView = styled.View`
 
-const RowDiv = styled.View`
+${'' /* border-left-width:2px */}
+border-color: gray
+width: 150px
 padding: 5px
 flex-direction: row
-justify-content: center
+justify-content: flex-start
+align-items: center
+`
+const RowRightView = styled.View`
+${'' /* border-right-width:2px */}
+border-left-width:2px
+border-color: gray
+width: 150px
+padding: 5px
+flex-direction: row
+justify-content: flex-start
+align-items: center
+`
+const RowDiv = styled.View`
+${'' /* padding: 5px */}
+flex-direction: row
+justify-content: space-evenly
 align-items: center
 
 `
@@ -122,7 +177,6 @@ margin-bottom: 5px
 const Container = styled.View`
 padding: 25px 
 margin: 5px 20px
-${'' /* flex: 1 */}
 background : #fff
 border-radius : 25px
 shadow-color: #000

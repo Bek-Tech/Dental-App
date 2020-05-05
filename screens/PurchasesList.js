@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Component } from 'react'
-import { SectionList, Text } from 'react-native';
+import { Text } from 'react-native';
 import styled from 'styled-components/native' //  do not forget adding  /native  only for  react native
 import { LinearGradient } from 'expo-linear-gradient'
 import Group from "../components/Group"
