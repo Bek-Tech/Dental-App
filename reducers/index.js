@@ -1,11 +1,11 @@
 import { combineReducers, createStore } from "redux"
-import PurchasesReducer from "./PurchasesReducer"
+import SalesReducer from "./SalesReducer"
 import CustomersReducer from "./CustomersReducer"
 import ProductsReducer from "./ProductsReducer"
 
 
 const rootReducer = combineReducers({
-    purchases: PurchasesReducer,
+    salesHistory: SalesReducer,
     customers: CustomersReducer,
     products: ProductsReducer
 })

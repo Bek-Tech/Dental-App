@@ -7,23 +7,20 @@ import Button from '../components/Button'
 import { Ionicons, Foundation } from '@expo/vector-icons'
 // import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
-const DetailsScreen = ({ navigation, purchases, customers }) => {
+const DetailsScreen = ({ navigation, salesHistory, customers }) => {
     const CustomerName = navigation.getParam('customer')
 
-    const purchaseData = purchases.filter(item => {
-        return item.customer === CustomerName
+    const purchaseData = salesHistory.filter(item => item.customer === CustomerName)
 
-    })
-
-    const data = customers.filter(item => item.userName === CustomerName)
+    const customer = customers.filter(item => item.userName === CustomerName)
 
 
     return (
         <LinearGradient colors={['#9484DE', '#49036C']}
             style={{ flex: 1 }} >
             <Container>
-                <Name>{data[0].userName}</Name>
-                <GrayText>{data[0].phone}</GrayText>
+                <Name>{customer[0].userName}</Name>
+                <GrayText>{customer[0].phone}</GrayText>
                 <RowDiv>
                     <Button
                         title={"Button"}
@@ -84,13 +81,13 @@ const DetailsScreen = ({ navigation, purchases, customers }) => {
     )
 }
 
-const mapCustomersPurchasesToProps = state => {
+const mapCustomersSalesHistoryToProps = state => {
     return {
-        purchases: state.purchases,
+        salesHistory: state.salesHistory,
         customers: state.customers
     }
 }
-export default connect(mapCustomersPurchasesToProps)(DetailsScreen)
+export default connect(mapCustomersSalesHistoryToProps)(DetailsScreen)
 
 
 // styles ___________________________________

@@ -1,17 +1,16 @@
 import React, { useState, useEffect, Component } from 'react'
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import styled from 'styled-components/native' //  do not forget adding  /native  only for  react native
 import { LinearGradient } from 'expo-linear-gradient'
 import Group from "../components/Group"
-import { Ionicons } from '@expo/vector-icons'
+import AddButton from '../components/AddButton'
 import { connect } from "react-redux"
 import { FlatList } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context'
+
+const SalesListScreen = ({ salesHistory, navigation }) => {
 
 
-const PurchasesList = ({ purchases, navigation }) => {
-
-
-    const data = purchases
     // const fetchData = async () => {
     //     await fetch('https://my-json-server.typicode.com/Bek-Tech/fakeJson/data').then((res) => res.json()).then((data) => {
     //         const result = data.purchases.map(item => ({
@@ -61,60 +60,38 @@ const PurchasesList = ({ purchases, navigation }) => {
     const navigate = (screen, info) => { navigation.navigate(screen, info) }
     // const [data, setData] = useState([])
     return (
-
-        <Container>
+        <SafeAreaView style={{ flex: 1 }} >
             <LinearGradient colors={['#9484DE', '#49036C']}
                 style={{ flex: 1 }} >
+                <Text></Text>
                 <FlatList
-                    data={data}
+                    data={salesHistory}
                     keyExtractor={item => item._id}
                     renderItem={({ item }) => {
                         return <Group navigate={navigate} {...item} />
+
                     }}
                 />
-
-                <AddButton onPress={() => navigation.navigate('Add')}>
-                    <Ionicons name="ios-add" size={35} color="#fff" />
-                </AddButton>
+                <View style={{ height: 40 }}></View>
+                <AddButton />
             </LinearGradient>
-        </Container>
+
+        </SafeAreaView>
     );
 
 }
-const mapPurchasesToProps = state => {
-    return { purchases: state.purchases }
+const mapSalesHistoryToProps = state => {
+    return { salesHistory: state.salesHistory }
 }
 
-export default connect(mapPurchasesToProps)(PurchasesList)
+export default connect(mapSalesHistoryToProps)(SalesListScreen)
 
 // styles___________________________________________
 
-const AddButton = styled.TouchableOpacity`
-
-align-items:center
-justify-content: center
-border-radius: 50px
-width: 64px
-height: 64px
-background: #4294ff
-position: absolute
-right: 25px
-bottom: 25px
-shadow-color: #000
-${'' /* shadow-offset: {width: 0, height: 2} */}
-shadow-opacity: 0.5
-shadow-radius: 6.3px
-elevation: 10
-`
-
-const Container = styled.SafeAreaView`
-         flex:1
-        ${'' /* marginTop: 50px  */}
-      `
 
 const GroupTitle = styled.Text`
-font-weight: bold
-font-size : 22px
-color : #000000
- padding: 0 20px
+            font-weight: bold
+            font-size : 22px
+            color : #000000
+             padding: 0 20px
   `

@@ -1,17 +1,29 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient'
 import styled from 'styled-components/native' //  do not forget adding  /native  only for  react native
 
 
 const Group = (prop) => {
     const { customer, userImg, time, product, date } = prop
     return <GroupContainer>
-
         <GroupItem onPress={() => prop.navigate('Details', { customer: customer })}>
-            <RowDiv>
-                <UserImg source={{ uri: userImg }} />
-                <FullName>{customer}</FullName>
-            </RowDiv>
+            {/* <LinearGradient
+                colors={['#9484DE', '#49036C']}
+                start={{ x: -1, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={{
+                    flex: 1,
+
+                }}  > */}
+            <DataRowDiv style={{ width: "100%" }}>
+                <RowDiv>
+                    <UserImg source={{ uri: userImg }} />
+                    <FullName>{customer}</FullName>
+                </RowDiv>
+                <BoldText>{date}</BoldText>
+            </DataRowDiv>
+
 
             <View style={{ flex: 1 }}>
 
@@ -20,22 +32,45 @@ const Group = (prop) => {
                     keyExtractor={() => Math.floor(Math.random() * 999)}
                     renderItem={({ item }) => {
                         return <RowDiv>
-                            <ProductText>  {item.name}  </ProductText>
-                            <BoldText>{item.amount} kg</BoldText>
+                            <RowLeftView>
+                                <BoldText>{item.name}</BoldText>
+                            </RowLeftView>
+                            <RowRightView>
+                                <BoldText>{item.amount}</BoldText>
+                            </RowRightView>
                         </RowDiv>
 
                     }}
                 />
             </View>
-            <DataRowDiv style={{ width: "100%" }}>
-                <GroupTime >{time}</GroupTime>
-                <BoldText>{date}</BoldText>
-            </DataRowDiv>
+
+            {/* </LinearGradient> */}
         </GroupItem>
     </GroupContainer>
 }
 
 //styles ____________________________________________________________
+const RowLeftView = styled.View`
+
+${'' /* border-left-width:2px */}
+border-color: gray
+width: 150px
+padding: 5px
+flex-direction: row
+justify-content: flex-start
+align-items: center
+`
+const RowRightView = styled.View`
+${'' /* border-right-width:2px */}
+border-left-width:2px
+border-color: gray
+width: 150px
+padding: 5px
+flex-direction: row
+justify-content: flex-start
+align-items: center
+`
+
 const DataRowDiv = styled.View`
 padding: 5px
 flex-direction: row
@@ -63,7 +98,7 @@ const GroupTime = styled.Text`
  margin-right: 10px
  background: #2a86ff
  color :  #fff
- border-radius: 25px
+ border-radius: 24px
  font-weight: 600
  font-size : 18px
  width: 70px
@@ -106,8 +141,8 @@ elevation: 10
   `
 
 const GroupItem = styled.TouchableOpacity`
-background-color: #fff
 border-radius: 25px
+background-color: #fff
 margin-bottom: 4px
    ${'' /* flex-direction:row */}
    align-items: flex-start
