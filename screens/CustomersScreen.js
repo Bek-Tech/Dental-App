@@ -1,14 +1,15 @@
 import React from 'react'
-import { Text, } from 'react-native';
+import { Text, View } from 'react-native';
 import styled from 'styled-components/native' //  do not forget adding  /native  only for  react native
 import { LinearGradient } from 'expo-linear-gradient'
-import { Ionicons } from '@expo/vector-icons'
 import { connect } from "react-redux"
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context'
+import AddButton from '../components/AddButton'
+import CustomerInfo from "../components/CustomerInfo"
 
 const CustomersScreen = ({ navigation, customers }) => {
-    console.log(customers)
+    const navigateToAddCustomer = () => navigation.navigate('AddCustomer')
     return (
         <SafeAreaView style={{ flex: 1 }} >
             <LinearGradient colors={['#9484DE', '#49036C']}
@@ -18,15 +19,13 @@ const CustomersScreen = ({ navigation, customers }) => {
                     data={customers}
                     key={item => item.user_id}
                     renderItem={({ item }) => {
-                        return <Text>{item.userName}</Text>
-
+                        return <CustomerInfo navigation={navigation}  {...item} />
 
 
                     }}
                 />
-                <AddButton onPress={() => navigation.navigate('AddCustomer')}>
-                    <Ionicons name="ios-add" size={35} color="#fff" />
-                </AddButton>
+                <View style={{ height: 45 }}></View>
+                <AddButton navigation={navigation} route={"AddCustomer"} />
             </LinearGradient>
         </SafeAreaView>
     )
@@ -40,22 +39,3 @@ const mapCustomersToProps = state => {
 }
 
 export default connect(mapCustomersToProps)(CustomersScreen)
-
-
-const AddButton = styled.TouchableOpacity`
-
-align-items:center
-justify-content: center
-border-radius: 50px
-width: 64px
-height: 64px
-background: #4294ff
-position: absolute
-right: 25px
-bottom: 25px
-shadow-color: #000
-${'' /* shadow-offset: {width: 0, height: 2} */}
-shadow-opacity: 0.5
-shadow-radius: 6.3px
-elevation: 10
-`

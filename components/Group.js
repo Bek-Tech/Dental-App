@@ -6,9 +6,8 @@ import styled from 'styled-components/native' //  do not forget adding  /native 
 
 const Group = (prop) => {
     const { customer, userImg, time, product, date } = prop
-    return <GroupContainer>
-        <GroupItem onPress={() => prop.navigate('Details', { customer: customer })}>
-            {/* <LinearGradient
+    return <GroupItem onPress={() => prop.navigate('Details', { customer: customer })}>
+        {/* <LinearGradient
                 colors={['#9484DE', '#49036C']}
                 start={{ x: -1, y: 0 }}
                 end={{ x: 1, y: 0 }}
@@ -16,37 +15,37 @@ const Group = (prop) => {
                     flex: 1,
 
                 }}  > */}
-            <DataRowDiv style={{ width: "100%" }}>
-                <RowDiv>
-                    <UserImg source={{ uri: userImg }} />
-                    <FullName>{customer}</FullName>
-                </RowDiv>
-                <BoldText>{date}</BoldText>
-            </DataRowDiv>
+        <DataRowDiv style={{ width: "100%" }}>
+            <RowDiv>
+                <UserImg source={{ uri: userImg }} />
+                <FullName>{customer}</FullName>
+            </RowDiv>
+            <BoldText>{date}</BoldText>
+        </DataRowDiv>
 
 
-            <View style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
 
-                <FlatList
-                    data={product}
-                    keyExtractor={() => Math.floor(Math.random() * 999)}
-                    renderItem={({ item }) => {
-                        return <RowDiv>
-                            <RowLeftView>
-                                <BoldText>{item.name}</BoldText>
-                            </RowLeftView>
-                            <RowRightView>
-                                <BoldText>{item.amount}</BoldText>
-                            </RowRightView>
-                        </RowDiv>
+            <FlatList
+                data={product}
+                keyExtractor={() => Math.floor(Math.random() * 999)}
+                renderItem={({ item }) => {
+                    return <RowDiv>
+                        <RowLeftView>
+                            <BoldText>{item.name}</BoldText>
+                        </RowLeftView>
+                        <RowRightView>
+                            <BoldText>{item.amount}</BoldText>
+                        </RowRightView>
+                    </RowDiv>
 
-                    }}
-                />
-            </View>
+                }}
+            />
+        </View>
 
-            {/* </LinearGradient> */}
-        </GroupItem>
-    </GroupContainer>
+        {/* </LinearGradient> */}
+    </GroupItem>
+
 }
 
 //styles ____________________________________________________________
@@ -131,22 +130,16 @@ font-size : 20px
 `
 
 
-
-const GroupContainer = styled.View`
-   padding: 3px 20px
-   shadow-color: #000
-shadow-opacity: 0.5
-shadow-radius: 6.3px
-elevation: 10
-  `
-
 const GroupItem = styled.TouchableOpacity`
+margin: 5px 20px
+ padding: 3px 20px
 border-radius: 25px
-background-color: #fff
 margin-bottom: 4px
    ${'' /* flex-direction:row */}
    align-items: flex-start
-   padding: 20px 0
+  ${'' /* background : rgba(0,0,0,0) */}
+border-width: 2px
+border-color: black
   `
 
 const UserImg = styled.Image`

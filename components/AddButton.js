@@ -4,8 +4,8 @@ import { Ionicons } from '@expo/vector-icons'
 
 
 
-const AddButton = () => {
-    return <AddButtonDiv onPress={() => navigation.navigate('Add')}>
+const AddButton = ({ navigation, route }) => {
+    return <AddButtonDiv onPress={() => navigation.navigate(route)}>
         <Ionicons name="ios-add" size={35} color="#fff" />
     </AddButtonDiv>
 }

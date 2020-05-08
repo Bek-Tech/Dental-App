@@ -60,21 +60,21 @@ const SalesListScreen = ({ salesHistory, navigation }) => {
     const navigate = (screen, info) => { navigation.navigate(screen, info) }
     // const [data, setData] = useState([])
     return (
-        <SafeAreaView style={{ flex: 1 }} >
-            <LinearGradient colors={['#9484DE', '#49036C']}
-                style={{ flex: 1 }} >
-                <Text></Text>
-                <FlatList
-                    data={salesHistory}
-                    keyExtractor={item => item._id}
-                    renderItem={({ item }) => {
-                        return <Group navigate={navigate} {...item} />
+        <SafeAreaView style={{ flex: 1, }} >
+            {/* <LinearGradient colors={['#9484DE', '#49036C']}
+                style={{ flex: 1 }} > */}
+            <Text></Text>
+            <FlatList
+                data={salesHistory}
+                keyExtractor={item => item._id}
+                renderItem={({ item }) => {
+                    return <Group navigate={navigate} {...item} />
 
-                    }}
-                />
-                <View style={{ height: 40 }}></View>
-                <AddButton />
-            </LinearGradient>
+                }}
+            />
+            <View style={{ height: 40 }}></View>
+            <AddButton navigation={navigation} route={"Add"} />
+            {/* </LinearGradient> */}
 
         </SafeAreaView>
     );
