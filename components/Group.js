@@ -20,7 +20,7 @@ const Group = (prop) => {
                 <UserImg source={{ uri: userImg }} />
                 <FullName>{customer}</FullName>
             </RowDiv>
-            <BoldText>{date}</BoldText>
+            <DateText>{date}</DateText>
         </DataRowDiv>
 
 
@@ -93,14 +93,14 @@ align-items: center
 
 `
 
-const GroupTime = styled.Text`
+const DateText = styled.Text`
  margin-right: 10px
- background: #2a86ff
- color :  #fff
+ background: black
+ color : #fff
  border-radius: 24px
  font-weight: 600
  font-size : 18px
- width: 70px
+ padding: 0px 8px
  height: 32px
  text-align: center
  line-height : 30px
@@ -137,9 +137,11 @@ border-radius: 25px
 margin-bottom: 4px
    ${'' /* flex-direction:row */}
    align-items: flex-start
-  ${'' /* background : rgba(0,0,0,0) */}
-border-width: 2px
-border-color: black
+  background : white
+  shadow-color: #000
+shadow-opacity: 0.2
+shadow-radius: 6.3px
+elevation: 10
   `
 
 const UserImg = styled.Image`

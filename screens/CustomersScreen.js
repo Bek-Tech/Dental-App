@@ -1,33 +1,62 @@
 import React from 'react'
-import { Text, View } from 'react-native';
-import styled from 'styled-components/native' //  do not forget adding  /native  only for  react native
+import { Text, View, ScrollView, Animated } from 'react-native';
+import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { connect } from "react-redux"
 import { FlatList } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context'
 import AddButton from '../components/AddButton'
 import CustomerInfo from "../components/CustomerInfo"
 
+
 const CustomersScreen = ({ navigation, customers }) => {
     const navigateToAddCustomer = () => navigation.navigate('AddCustomer')
+
+    let TEXT_MAX_SIZE = 60
+    const AnimationY = new Animated.Value(0)
+
+    const scrollTextSize = AnimationY.interpolate({
+        inputRange: [0, TEXT_MAX_SIZE],
+        outputRange: [TEXT_MAX_SIZE, 0]
+    })
+    const scrollButtonSize = AnimationY.interpolate({
+        inputRange: [0, 60],
+        outputRange: [60, 0]
+    })
     return (
-        <SafeAreaView style={{ flex: 1 }} >
-            <LinearGradient colors={['#9484DE', '#49036C']}
-                style={{ flex: 1 }} >
-                <Text>Customers</Text>
-                <FlatList
-                    data={customers}
-                    key={item => item.user_id}
-                    renderItem={({ item }) => {
-                        return <CustomerInfo navigation={navigation}  {...item} />
+        <BodyContainer>
+
+            <ScrollView
+                scrollEventThrottle={5}
+                onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { y: AnimationY } } }]
+                )}
+            >
+
+                <HeaderView>
+                    <Animated.Text style={{
+                        fontSize: scrollTextSize,
+                        color: "white",
+                        margin: 15,
+                    }}>Customers</Animated.Text>
+                </HeaderView>
 
 
-                    }}
-                />
-                <View style={{ height: 45 }}></View>
-                <AddButton navigation={navigation} route={"AddCustomer"} />
-            </LinearGradient>
-        </SafeAreaView>
+                <ListContainer>
+                    <FlatList
+                        data={customers}
+                        key={item => item.user_id}
+                        renderItem={({ item }) => {
+                            return <CustomerInfo navigation={navigation}  {...item} />
+
+
+                        }}
+                    />
+
+                </ListContainer>
+                <View style={{ height: 60 }}></View>
+
+            </ScrollView>
+        </BodyContainer>
     )
 }
 
@@ -39,3 +68,24 @@ const mapCustomersToProps = state => {
 }
 
 export default connect(mapCustomersToProps)(CustomersScreen)
+
+//styles ___________________
+
+const ListContainer = styled.View`
+     flex: 1
+     backgroundColor: white
+     borderRadius: 35px            
+     margin: 0px               
+     padding: 15px   0px        
+`
+
+const BodyContainer = styled.View`
+flex: 1
+backgroundColor: black
+`
+
+const HeaderView = styled.View`
+height: 300px
+flex: 1
+justifyContent: center
+`

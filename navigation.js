@@ -41,7 +41,7 @@ const RootNavigation = createBottomTabNavigator({
         Customers: {
             screen: CustomersScreen,
             navigationOptions: {
-                header: null
+                headerShown: false
             }
         },
         AddCustomer: {
@@ -53,7 +53,7 @@ const RootNavigation = createBottomTabNavigator({
         Products: {
             screen: ProductsScreen,
             navigationOptions: {
-                header: null
+                headerShown: false
             }
         },
         AddProduct: {
@@ -92,19 +92,23 @@ const RootNavigation = createBottomTabNavigator({
 
         tabBarOptions: {
             activeTintColor: '#49036C',
-            inactiveTintColor: '#F8F8F8',
+            inactiveTintColor: 'black',
             style: {
                 margin: 5,
                 fontWeight: "bold",
-                borderTopLeftRadius: 25,
-                borderTopRightRadius: 25,
-                backgroundColor: '#4294ff',
+                // borderTopLeftRadius: 25,
+                // borderTopRightRadius: 25,
+                backgroundColor: "white",
                 borderRadius: 25,
                 position: 'absolute',
+                borderTopWidth: 1.5,
+                borderWidth: 1,
+                borderColor: "grey"
 
             },
             labelStyle: {
                 fontSize: 14,
+                color: 'black',
                 textAlign: 'center',
             },
             indicatorStyle: {

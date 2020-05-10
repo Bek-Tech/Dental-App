@@ -24,12 +24,8 @@ const AddButtonDiv = styled.TouchableOpacity`
         align-items:center
         justify-content: center
         border-radius: 50px
-        width: 64px
-        height: 64px
+      flex: 1
         background: #4294ff
-        position: absolute
-        right: 25px
-        bottom: 65px
         shadow-color: #000
 ${'' /* shadow-offset: {width: 0, height: 2} */}
             shadow-opacity: 0.5

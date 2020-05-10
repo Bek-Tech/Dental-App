@@ -1,82 +1,75 @@
 import React, { useState, useEffect, Component } from 'react'
-import { Text, View } from 'react-native';
+import { Text, View, Animated, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native' //  do not forget adding  /native  only for  react native
 import { LinearGradient } from 'expo-linear-gradient'
 import Group from "../components/Group"
 import AddButton from '../components/AddButton'
 import { connect } from "react-redux"
-import { FlatList } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
 
 const SalesListScreen = ({ salesHistory, navigation }) => {
 
+    let TEXT_MAX_SIZE = 60
 
-    // const fetchData = async () => {
-    //     await fetch('https://my-json-server.typicode.com/Bek-Tech/fakeJson/data').then((res) => res.json()).then((data) => {
-    //         const result = data.purchases.map(item => ({
-    //             data: {
-    //                 ...item,
-    //                 customer: data.customers.filter(user => user.user_id === item._id)[0]
-    //             }
-    //         }))
-    //         const sortedResult = result.slice().sort((a, b) => {
-    //             a = new Date(a.date);
-    //             b = new Date(b.date);
-    //             return a > b ? -1 : a < b ? 1 : 0;
-    //         })
-    //         setData(sortedResult)
-    //     })
-
-    // }
-    // useEffect(() => {
-    //     fetch('https://my-json-server.typicode.com/Bek-Tech/fakeJson/data').then((res) => res.json()).then((data) => {
-    //         const result = data.purchases.map(item => ({
-    //             data: {
-    //                 ...item,
-    //                 customer: data.customers.filter(user => user.user_id === item._id)[0]
-    //             }
-    //         }))
-    //         // const titledData = result.map(item => {
-    //         //     const final =[]
-    //         //     const arr = data.purchases.map(t => t.date)
-    //         //     const dataTitle = [...new Set(arr)]
-    //         //     dataTitle.forEach(title => {
-    //         //          title === item.data.date? [...final, title: {title}]
-
-
-
-
-    //         //     })
-    //         // })
-    //         // console.log(2, titledData)
-    //         const sortedResult = result.slice().sort((a, b) => {
-    //             a = new Date(a.date);
-    //             b = new Date(b.date);
-    //             return a > b ? -1 : a < b ? 1 : 0;
-    //         })
-    //         setData(sortedResult)
-    //     })
-    // }, [])
     const navigate = (screen, info) => { navigation.navigate(screen, info) }
-    // const [data, setData] = useState([])
+    const AnimationY = new Animated.Value(0)
+
+    const scrollTextSize = AnimationY.interpolate({
+        inputRange: [0, TEXT_MAX_SIZE],
+        outputRange: [TEXT_MAX_SIZE, 0]
+    })
+    const scrollButtonSize = AnimationY.interpolate({
+        inputRange: [0, 60],
+        outputRange: [60, 0]
+    })
     return (
-        <SafeAreaView style={{ flex: 1, }} >
-            {/* <LinearGradient colors={['#9484DE', '#49036C']}
-                style={{ flex: 1 }} > */}
-            <Text></Text>
-            <FlatList
-                data={salesHistory}
-                keyExtractor={item => item._id}
-                renderItem={({ item }) => {
-                    return <Group navigate={navigate} {...item} />
+        // <SafeAreaView style={{ flex: 1, }} >
 
-                }}
-            />
-            <View style={{ height: 40 }}></View>
-            <AddButton navigation={navigation} route={"Add"} />
-            {/* </LinearGradient> */}
+        <BodyContainer>
 
-        </SafeAreaView>
+            <ScrollView
+                scrollEventThrottle={5}
+                onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { y: AnimationY } } }]
+                )}
+            >
+
+                <HeaderView>
+                    <Animated.Text style={{
+                        fontSize: scrollTextSize,
+                        color: "white",
+                        margin: 15,
+                    }}>Journal</Animated.Text>
+                </HeaderView>
+                <ListContainer>
+                    <FlatList
+                        data={salesHistory}
+                        keyExtractor={item => item._id}
+                        renderItem={({ item }) => {
+                            return <Group navigate={navigate} {...item} />
+
+                        }}
+                    />
+
+                </ListContainer>
+                <View style={{ height: 60 }}></View>
+            </ScrollView>
+            <Animated.View style={{
+                position: "absolute",
+                bottom: 65,
+                right: 25,
+                width: scrollButtonSize,
+                height: scrollButtonSize,
+                borderRadius: 25
+            }}>
+                <AddButton navigation={navigation} route="Add" />
+            </Animated.View>
+
+        </BodyContainer>
+
+
+
+        // </SafeAreaView>
     );
 
 }
@@ -87,6 +80,24 @@ const mapSalesHistoryToProps = state => {
 export default connect(mapSalesHistoryToProps)(SalesListScreen)
 
 // styles___________________________________________
+const ListContainer = styled.View`
+     flex: 1
+     backgroundColor: white
+     borderRadius: 35px            
+     margin: 0px               
+     padding: 15px   0px        
+`
+
+const BodyContainer = styled.View`
+flex: 1
+backgroundColor: black
+`
+
+const HeaderView = styled.View`
+height: 300px
+   flex: 1
+                    justifyContent: center
+`
 
 
 const GroupTitle = styled.Text`
