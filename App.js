@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation'; // back and forward navigator
-
 import { Provider } from 'react-redux'
 import store from "./reducers/index"
 import RootNavigation from './navigation'
+import { init } from './DataBase/db';
 
+init()
+  .then(() => {
+    console.log('Initialized database');
+  })
+  .catch(err => {
+    console.log('Initializing db failed.');
+    console.log(err);
+  });
 
 // const stackNavigator = createStackNavigator({
 //   PurchasesList: {

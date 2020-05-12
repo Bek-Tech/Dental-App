@@ -1,14 +1,54 @@
 import React, { useState, useEffect, Component } from 'react'
-import { Text, View, Animated, TouchableOpacity } from 'react-native';
+import { Text, View, Animated, TouchableOpacity, Dimensions } from 'react-native';
 import styled from 'styled-components/native' //  do not forget adding  /native  only for  react native
 import { LinearGradient } from 'expo-linear-gradient'
 import Group from "../components/Group"
 import AddButton from '../components/AddButton'
 import { connect } from "react-redux"
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { insertSales, deleteSale, fetchSales } from "../DataBase/db"   // insertSales( date, userImg, customer , products)
+
 
 const SalesListScreen = ({ salesHistory, navigation }) => {
+    const windowHeight = Dimensions.get('window').height;
+    //_________________________________________________
+    const [state, setState] = useState([])
+    // const date = JSON.stringify(new Date())
+    // const userImg = "https://source.unsplash.com/random/100x100?face"
+    // const customer = "delete me"
+    // const product = JSON.stringify([{ name: "apple", quantity: 55 }])
 
+    // insertSales(date, userImg, customer, product)
+    //     .then(() => {
+    //         console.log('data inserted');
+    //     })
+    //     .catch(err => {
+    //         console.log(' insertion failed.');
+    //         console.log(err);
+    //     });
+
+    //  deleteSale()
+    //     .then(() => {
+    //         console.log('data inserted');
+    //     })
+    //     .catch(err => {
+    //         console.log(' insertion failed.');
+    //         console.log(err);
+    //     });
+    useEffect(() => {
+        fetchSales()
+            .then((result) => {
+                setState(result.rows._array)
+                console.log('data fetched');
+            })
+            .catch(err => {
+                console.log('fetching failed.');
+                console.log(err);
+            });
+    }, [])
+
+
+    //______________________________________________
     let TEXT_MAX_SIZE = 60
 
     const navigate = (screen, info) => { navigation.navigate(screen, info) }
@@ -34,14 +74,37 @@ const SalesListScreen = ({ salesHistory, navigation }) => {
                 )}
             >
 
-                <HeaderView>
+                <View style={{
+                    height: windowHeight / 3,
+                    flex: 1,
+                    justifyContent: "center"
+                }} >
                     <Animated.Text style={{
-                        fontSize: scrollTextSize,
-                        color: "white",
-                        margin: 15,
+                        color: 'white',
+                        fontSize: scrollTextSize
                     }}>Journal</Animated.Text>
-                </HeaderView>
+                </View>
                 <ListContainer>
+                    {/* ____________________________________________ */}
+                    {state.map(item => {
+                        const parsed = JSON.parse(item.products)
+                        return <View>
+                            <Text>{item.customer}</Text>
+                            <Text>{item.date}</Text>
+                            {parsed.map(product => {
+                                return <View>
+                                    <Text>{product.name}</Text>
+                                    <Text>{product.quantity}</Text>
+                                </View>
+                            })}
+
+
+                        </View>
+
+                    }
+
+                    )}
+                    {/* ____________________________________________ */}
                     <FlatList
                         data={salesHistory}
                         keyExtractor={item => item._id}
@@ -93,11 +156,11 @@ flex: 1
 backgroundColor: black
 `
 
-const HeaderView = styled.View`
-height: 300px
-   flex: 1
-                    justifyContent: center
-`
+// const HeaderView = styled.View`
+// height: ${windowHeight / 3}
+//    flex: 1
+//                     justifyContent: center
+// `
 
 
 const GroupTitle = styled.Text`

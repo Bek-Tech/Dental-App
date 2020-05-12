@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, ScrollView, Animated } from 'react-native';
+import { Text, View, ScrollView, Animated, Dimensions } from 'react-native';
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { connect } from "react-redux"
@@ -11,7 +11,10 @@ import CustomerInfo from "../components/CustomerInfo"
 const CustomersScreen = ({ navigation, customers }) => {
     const navigateToAddCustomer = () => navigation.navigate('AddCustomer')
 
+    const windowHeight = Dimensions.get('window').height;
+
     let TEXT_MAX_SIZE = 60
+
     const AnimationY = new Animated.Value(0)
 
     const scrollTextSize = AnimationY.interpolate({
@@ -26,19 +29,23 @@ const CustomersScreen = ({ navigation, customers }) => {
         <BodyContainer>
 
             <ScrollView
-                scrollEventThrottle={5}
+                scrollEventThrottle={3}
                 onScroll={Animated.event(
                     [{ nativeEvent: { contentOffset: { y: AnimationY } } }]
                 )}
             >
 
-                <HeaderView>
+                <View style={{
+                    height: windowHeight / 3,
+                    flex: 1,
+                    justifyContent: "center"
+                }} >
                     <Animated.Text style={{
                         fontSize: scrollTextSize,
                         color: "white",
                         margin: 15,
                     }}>Customers</Animated.Text>
-                </HeaderView>
+                </View>
 
 
                 <ListContainer>
@@ -82,10 +89,4 @@ const ListContainer = styled.View`
 const BodyContainer = styled.View`
 flex: 1
 backgroundColor: black
-`
-
-const HeaderView = styled.View`
-height: 300px
-flex: 1
-justifyContent: center
 `

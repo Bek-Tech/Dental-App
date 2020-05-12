@@ -20,7 +20,8 @@ const CustomerInfo = (props) => {
 
 
 
-    return <Container>
+    return <Container
+        onPress={() => navigation.navigate('Details')}>
         <Modal
             animationType="fade"
             transparent={true}
@@ -139,15 +140,18 @@ const EditInput = styled.TextInput`
 
 
 
-const Container = styled.View`
-padding: 15px 
+const Container = styled.TouchableOpacity`
 margin: 5px 20px
-background : rgba(157,240,227,0.2)
-border-radius : 25px
-${'' /* shadow-color: #000
-shadow-opacity: 0.5
+ padding: 3px 20px
+border-radius: 25px
+margin-bottom: 4px
+   ${'' /* flex-direction:row */}
+   align-items: flex-start
+  background : white
+  shadow-color: #000
+shadow-opacity: 0.2
 shadow-radius: 6.3px
-elevation: 10 */}
+elevation: 10
 `
 
 const GrayText = styled.Text`
