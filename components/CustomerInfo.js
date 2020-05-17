@@ -6,14 +6,14 @@ import { Ionicons } from '@expo/vector-icons'
 
 const CustomerInfo = (props) => {
     const [modalVisible, setModalVisible] = useState(false)
-    const { navigation, userName, phone, user_id } = props
-    const [name, setName] = useState(userName)
+    const { navigation, name, phone, id } = props
+    // const [name, setName] = useState(userName)
     const [phoneNumber, setPhoneNumber] = useState(phone)
 
 
     const userState = {
-        user_id,
-        userName,
+        user_id: id,
+        userName: name,
         phone
     }
     const [state, setState] = useState(userState)

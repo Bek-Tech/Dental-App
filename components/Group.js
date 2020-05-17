@@ -5,7 +5,7 @@ import styled from 'styled-components/native' //  do not forget adding  /native 
 
 
 const Group = (prop) => {
-    const { customer, userImg, time, product, date } = prop
+    const { customer, products, date } = prop
     return <GroupItem onPress={() => prop.navigate('Details', { customer: customer })}>
         {/* <LinearGradient
                 colors={['#9484DE', '#49036C']}
@@ -17,7 +17,7 @@ const Group = (prop) => {
                 }}  > */}
         <DataRowDiv style={{ width: "100%" }}>
             <RowDiv>
-                <UserImg source={{ uri: userImg }} />
+                {/* <UserImg source={{ uri: userImg }} /> */}
                 <FullName>{customer}</FullName>
             </RowDiv>
             <DateText>{date}</DateText>
@@ -27,7 +27,7 @@ const Group = (prop) => {
         <View style={{ flex: 1 }}>
 
             <FlatList
-                data={product}
+                data={products}
                 keyExtractor={() => Math.floor(Math.random() * 999)}
                 renderItem={({ item }) => {
                     return <RowDiv>
@@ -35,7 +35,7 @@ const Group = (prop) => {
                             <BoldText>{item.name}</BoldText>
                         </RowLeftView>
                         <RowRightView>
-                            <BoldText>{item.amount}</BoldText>
+                            <BoldText>{item.quantity}</BoldText>
                         </RowRightView>
                     </RowDiv>
 
@@ -54,7 +54,7 @@ const RowLeftView = styled.View`
 ${'' /* border-left-width:2px */}
 border-color: gray
 width: 150px
-padding: 5px
+padding: 0px 5px
 flex-direction: row
 justify-content: flex-start
 align-items: center
@@ -64,7 +64,7 @@ ${'' /* border-right-width:2px */}
 border-left-width:2px
 border-color: gray
 width: 150px
-padding: 5px
+padding: 0px 5px
 flex-direction: row
 justify-content: flex-start
 align-items: center
@@ -131,17 +131,18 @@ font-size : 20px
 
 
 const GroupItem = styled.TouchableOpacity`
-margin: 5px 20px
- padding: 3px 20px
+margin: 5px 10px
+ padding: 3px 10px
 border-radius: 25px
 margin-bottom: 4px
+border-bottom-width: 2px
+border-color: black
    ${'' /* flex-direction:row */}
    align-items: flex-start
-  background : white
-  shadow-color: #000
+  ${'' /* shadow-color: #000
 shadow-opacity: 0.2
 shadow-radius: 6.3px
-elevation: 10
+elevation: 10 */}
   `
 
 const UserImg = styled.Image`

@@ -1,69 +1,43 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Text, View, ScrollView, Animated, Dimensions } from 'react-native';
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { connect } from "react-redux"
+import { connect, useDispatch } from "react-redux"
 import { FlatList } from 'react-native-gesture-handler';
+import RootContainer from "../components/RootContainer"
 import AddButton from '../components/AddButton'
 import CustomerInfo from "../components/CustomerInfo"
+import { fetchCustomers } from "../DataBase/customersDB"
+import { addCustomers } from '../actions/customersActions'
 
 
 const CustomersScreen = ({ navigation, customers }) => {
     const navigateToAddCustomer = () => navigation.navigate('AddCustomer')
+    const dispatch = useDispatch()
 
-    const windowHeight = Dimensions.get('window').height;
+    useEffect(() => {
+        fetchCustomers()
+            .then((result) => {
+                dispatch(addCustomers(result.rows._array))
+            })
+            .catch(err => {
+                console.log('fetching failed.');
+                console.log(err);
+            });
+    }, [])
 
-    let TEXT_MAX_SIZE = 60
-
-    const AnimationY = new Animated.Value(0)
-
-    const scrollTextSize = AnimationY.interpolate({
-        inputRange: [0, TEXT_MAX_SIZE],
-        outputRange: [TEXT_MAX_SIZE, 0]
-    })
-    const scrollButtonSize = AnimationY.interpolate({
-        inputRange: [0, 60],
-        outputRange: [60, 0]
-    })
     return (
-        <BodyContainer>
-
-            <ScrollView
-                scrollEventThrottle={3}
-                onScroll={Animated.event(
-                    [{ nativeEvent: { contentOffset: { y: AnimationY } } }]
-                )}
+        <>
+            <RootContainer
+                title="Customers"
             >
-
-                <View style={{
-                    height: windowHeight / 3,
-                    flex: 1,
-                    justifyContent: "center"
-                }} >
-                    <Animated.Text style={{
-                        fontSize: scrollTextSize,
-                        color: "white",
-                        margin: 15,
-                    }}>Customers</Animated.Text>
-                </View>
+                {customers.map(item => <CustomerInfo navigation={navigation}  {...item} />)}
 
 
-                <ListContainer>
-                    <FlatList
-                        data={customers}
-                        key={item => item.user_id}
-                        renderItem={({ item }) => {
-                            return <CustomerInfo navigation={navigation}  {...item} />
+            </RootContainer>
 
-
-                        }}
-                    />
-
-                </ListContainer>
-                <View style={{ height: 60 }}></View>
-
-            </ScrollView>
-        </BodyContainer>
+            <AddButton navigation={navigation} route="AddCustomer" />
+        </>
     )
 }
 
@@ -78,15 +52,4 @@ export default connect(mapCustomersToProps)(CustomersScreen)
 
 //styles ___________________
 
-const ListContainer = styled.View`
-     flex: 1
-     backgroundColor: white
-     borderRadius: 35px            
-     margin: 0px               
-     padding: 15px   0px        
-`
 
-const BodyContainer = styled.View`
-flex: 1
-backgroundColor: black
-`

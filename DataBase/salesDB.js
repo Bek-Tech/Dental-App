@@ -2,11 +2,11 @@ import * as SQLite from 'expo-sqlite'
 
 const db = SQLite.openDatabase('sales.db');
 
-export const init = () => {
+export const initSales = () => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                'CREATE TABLE IF NOT EXISTS sales (id INTEGER PRIMARY KEY NOT NULL, date TEXT NOT NULL, userImg TEXT NOT NULL, customer TEXT NOT NULL, products TEXT NOT NULL);',
+                'CREATE TABLE IF NOT EXISTS sales (id INTEGER PRIMARY KEY NOT NULL, day REAL NOT NULL,month REAL NOT NULL,year REAL NOT NULL, customerId REAL NOT NULL, customerName TEXT NOT NULL, productsArr TEXT NOT NULL);',
                 [],
                 () => {
                     resolve();
@@ -20,12 +20,33 @@ export const init = () => {
     return promise;
 };
 
-export const insertSales = (date, userImg, customer, products) => {
+export const sortSales = () => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                `INSERT INTO sales (date, userImg, customer , products) VALUES (?, ?, ?, ?);`,
-                [date, userImg, customer, products],
+                `SELECT id, day,month,year FROM sales
+                 ORDER BY  month DESC, day DESC  `,
+                [],
+                () => {
+                    resolve();
+                },
+                (_, err) => {
+                    reject(err);
+                }
+            );
+        });
+    });
+    return promise;
+};
+
+
+
+export const insertSale = (day, month, year, customerId, customerName, productsArr) => {
+    const promise = new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                `INSERT INTO sales (day,month,year , customerId, customerName, productsArr ) VALUES (?, ?, ?, ?, ?, ?);`,
+                [day, month, year, customerId, customerName, productsArr],
                 (_, result) => {
                     resolve(result);
                 },

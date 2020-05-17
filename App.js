@@ -1,58 +1,44 @@
-import React, { Component } from 'react';
-import { createAppContainer, createSwitchNavigator } from 'react-navigation'; // back and forward navigator
-import { Provider } from 'react-redux'
+import React, { Component, } from 'react';
+import { createAppContainer } from 'react-navigation'; // back and forward navigator
+import { Provider, useDispatch } from 'react-redux'
 import store from "./reducers/index"
 import RootNavigation from './navigation'
-import { init } from './DataBase/db';
+import { initSales } from './DataBase/salesDB'
+import { initCustomers, fetchCustomers } from './DataBase/customersDB'
+import { initProducts } from './DataBase/productsDB'
+import { addCustomers } from "./actions/customersActions"
 
-init()
+
+initSales()
   .then(() => {
-    console.log('Initialized database');
+    console.log('Initialized salesDB');
   })
   .catch(err => {
-    console.log('Initializing db failed.');
+    console.log('Initializing salesDB failed.');
     console.log(err);
-  });
+  })
 
-// const stackNavigator = createStackNavigator({
-//   PurchasesList: {
-//     screen: PurchasesList,
-//     navigationOptions: {
-//       title: "Journal",
-//       headerStyle: {
-//         backgroundColor: '#9484DE'
-//       },
-//       headerTitleStyle: {
-//         fontWeight: 'bold',
-//       },
-//     }
-//   },
-//   Details: {
-//     screen: DetailsScreen,
-//     navigationOptions: {
-//       title: "Details",
-//       headerStyle: {
-//         backgroundColor: '#9484DE'
-//       },
-//       headerTitleStyle: {
-//         fontWeight: 'bold',
-//       },
-//     }
-//   },
-//   Add: {
-//     screen: AddScreen,
-//     navigationOptions: {
-//       title: "Add New Purchase",
-//       headerStyle: {
-//         backgroundColor: '#9484DE'
-//       },
-//       headerTitleStyle: {
-//         fontWeight: 'bold',
-//       },
-//     }
-//   }
+initCustomers()
+  .then((result) => {
+    console.log('Initialized CustomersDB');
 
-// })
+  })
+  .catch(err => {
+    console.log('Initializing CustomersDB failed.');
+    console.log(err);
+  })
+
+initProducts()
+  .then(() => {
+    console.log('Initialized  productsDB');
+  })
+  .catch(err => {
+    console.log('Initializing productsDB failed.');
+    console.log(err);
+  })
+
+
+
 
 
 const Screens = createAppContainer(RootNavigation);

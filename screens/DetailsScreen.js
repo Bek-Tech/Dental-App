@@ -40,13 +40,13 @@ const DetailsScreen = ({ navigation, salesHistory, customers }) => {
                         return <DataView>
                             <Text>{item.date}</Text>
 
-                            {item.product.map(item => {
+                            {item.products.map(item => {
                                 return <RowDiv>
                                     <RowLeftView>
                                         <BoldText>{item.name}</BoldText>
                                     </RowLeftView>
                                     <RowRightView>
-                                        <BoldText>{item.amount}</BoldText>
+                                        <BoldText>{item.quantity}</BoldText>
                                     </RowRightView>
                                 </RowDiv>
 
