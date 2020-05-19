@@ -4,23 +4,13 @@ import RootContainer from "../components/RootContainer"
 import { connect, useDispatch } from "react-redux"
 import styled from 'styled-components/native'
 import AddButton from "../components/AddButton"
-import { fetchProducts } from "../DataBase/productsDB"
 import { addProducts } from "../actions/productsActions"
 
 const ProductsScreen = ({ products, navigation }) => {
 
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        fetchProducts()
-            .then((result) => {
-                dispatch(addProducts(result.rows._array))
-            })
-            .catch(err => {
-                console.log('fetching failed.');
-                console.log(err);
-            });
-    }, [])
+
     return (
         <>
             <RootContainer
@@ -36,7 +26,7 @@ const ProductsScreen = ({ products, navigation }) => {
                 }
 
             </RootContainer>
-            <AddButton navigation={navigation} route="AddProduct" />
+            <AddButton onPress={() => navigation.navigate("AddProduct")} />
         </>
     )
 }

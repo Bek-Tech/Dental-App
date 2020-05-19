@@ -13,18 +13,9 @@ import { addCustomers } from '../actions/customersActions'
 
 const CustomersScreen = ({ navigation, customers }) => {
     const navigateToAddCustomer = () => navigation.navigate('AddCustomer')
-    const dispatch = useDispatch()
 
-    useEffect(() => {
-        fetchCustomers()
-            .then((result) => {
-                dispatch(addCustomers(result.rows._array))
-            })
-            .catch(err => {
-                console.log('fetching failed.');
-                console.log(err);
-            });
-    }, [])
+
+
 
     return (
         <>
@@ -36,7 +27,7 @@ const CustomersScreen = ({ navigation, customers }) => {
 
             </RootContainer>
 
-            <AddButton navigation={navigation} route="AddCustomer" />
+            <AddButton onPress={() => navigation.navigate("AddCustomer")} />
         </>
     )
 }

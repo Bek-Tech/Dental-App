@@ -24,7 +24,7 @@ const headerStyle = {
 
 const RootNavigation = createSwitchNavigator({
     Loading: LoadingScreen,
-    mainFlow: createBottomTabNavigator({
+    MainFlow: createBottomTabNavigator({
         Sales: createStackNavigator({
             SalesList: {
                 screen: SalesListScreen,
@@ -39,7 +39,7 @@ const RootNavigation = createSwitchNavigator({
             Add: {
                 screen: AddScreen,
                 navigationOptions: {
-                    headerShown: false
+
                 }
             }
         }),

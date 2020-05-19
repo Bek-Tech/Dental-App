@@ -7,8 +7,7 @@ import Group from "../components/Group"
 import AddButton from '../components/AddButton'
 import { connect, useDispatch } from "react-redux"
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
-import { fetchSales, insertSales } from "../DataBase/salesDB"
-import { addSales } from "../actions/salesActions"
+
 
 
 const SalesListScreen = ({ salesHistory, navigation }) => {
@@ -16,24 +15,8 @@ const SalesListScreen = ({ salesHistory, navigation }) => {
     const dispatch = useDispatch()
     const navigate = (screen, info) => { navigation.navigate(screen, info) }
 
-    useEffect(() => {
-        fetchSales()
-            .then((result) => {
-                const data = result.rows._array.map(item => {
-
-                    const parsedProducts = JSON.parse(item.products)
-                    return { ...item, products: parsedProducts }
-                })
-
-                dispatch(addSales(data))
-            })
-            .catch(err => {
-                console.log('fetching failed.');
-                console.log(err);
-            });
-    }, [])
-
-
+    console.log("sales screen")
+    console.log(salesHistory)
 
     return (<View style={{ flex: 1 }}>
         <RootContainer
@@ -51,7 +34,7 @@ const SalesListScreen = ({ salesHistory, navigation }) => {
 
         </RootContainer>
 
-        <AddButton navigation={navigation} route="Add" />
+        <AddButton onPress={() => navigation.navigate("Add")} />
 
     </View>
 

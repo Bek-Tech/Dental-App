@@ -6,7 +6,6 @@ import { LineChart } from "react-native-chart-kit";
 
 const RootContainer = ({ children, title, headerComponent }) => {
 
-    //______________________________________________
 
     const [chart, setChart] = useState(true)
 

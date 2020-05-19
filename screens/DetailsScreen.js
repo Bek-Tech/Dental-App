@@ -1,4 +1,4 @@
-import React from 'react'
+import React,useState from 'react'
 import { connect } from "react-redux"
 import { Text, View, FlatList } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'
@@ -9,11 +9,12 @@ import CustomerInfo from "../components/CustomerInfo"
 // import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
 const DetailsScreen = ({ navigation, salesHistory, customers }) => {
-    const CustomerName = navigation.getParam('customer')
+    const CustomerId = navigation.getParam('customerId')
+    console.log('purchaseData')
+    console.log(salesHistory)
+    const purchaseData = salesHistory.filter(item => item.CustomerId === CustomerId)
 
-    const purchaseData = salesHistory.filter(item => item.customer === CustomerName)
-
-    const customer = customers.filter(item => item.userName === CustomerName)
+    const customer = customers.filter(item => item.id === CustomerId)
 
 
     return (
@@ -35,10 +36,10 @@ const DetailsScreen = ({ navigation, salesHistory, customers }) => {
 
                 <FlatList
                     data={purchaseData}
-                    keyExtractor={item => item._id}
+                    keyExtractor={item => `${item.id}`}
                     renderItem={({ item }) => {
                         return <DataView>
-                            <Text>{item.date}</Text>
+                            <Text>{item.day}/{item.month}</Text>
 
                             {item.products.map(item => {
                                 return <RowDiv>

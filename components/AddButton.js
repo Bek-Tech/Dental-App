@@ -4,8 +4,8 @@ import { Ionicons } from '@expo/vector-icons'
 
 
 
-const AddButton = ({ navigation, route }) => {
-  return <AddButtonDiv onPress={() => navigation.navigate(route)}>
+const AddButton = ({ onPress }) => {
+  return <AddButtonDiv onPress={onPress}>
     <Ionicons name="ios-add" size={35} color="#fff" />
   </AddButtonDiv>
 }
@@ -29,7 +29,7 @@ const AddButtonDiv = styled.TouchableOpacity`
         justify-content: center
         border-radius: 50px
       flex: 1
-        background: #4294ff
+        background:black
         shadow-color: #000
 ${'' /* shadow-offset: {width: 0, height: 2} */}
             shadow-opacity: 0.5

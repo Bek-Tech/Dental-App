@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { View, Text, Button, Modal, TouchableOpacity } from 'react-native'
+import { View, Text, Modal, TouchableOpacity, Dimensions } from 'react-native'
 import styled from 'styled-components/native'
+import { ScrollView } from 'react-native-gesture-handler'
 
 
 
@@ -8,7 +9,9 @@ const ModalPicker = ({ show, showTrigger, data, pickedValue }) => {
     // show = boolean
     // data = array
     //pickedValue = {(pickedValue)=>  set"someState"(pickedValue)}
-
+    //showTrigger ={()=> set"visibility"(boolean)}
+    const windowHeight = Dimensions.get('window').height;
+    const windowWidth = Dimensions.get('window').width;
 
     return <Modal
         animationType="fade"
@@ -17,15 +20,36 @@ const ModalPicker = ({ show, showTrigger, data, pickedValue }) => {
     >
         <ModalContainer>
             <ModalView>
-                {data.map(item => {
-                    return <TouchableOpacity
-                        onPress={() => {
-                            pickedValue(item)
-                            showTrigger();
-                        }}>
-                        <Text >{item.name}</Text>
-                    </TouchableOpacity>
-                })}
+                <ScrollView
+                    style={{
+                        // alignItems: "center",
+                        // justifyContent: "center",
+                        // borderColor: "black",
+                        // borderWidth: 2,
+                        width: Dimensions.get('window').width / 1.8,
+                        height: Dimensions.get('window').height / 3.2
+
+                    }}
+                >
+                    {data.length === 0 ?
+                        <Text>your list is empty</Text> :
+                        data.map(item => {
+                            return <TouchableOpacity
+                                style={{
+                                    flex: 1,
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    borderColor: "black",
+                                    borderBottomWidth: 2,
+                                }}
+                                onPress={() => {
+                                    pickedValue(item)
+                                    showTrigger();
+                                }}>
+                                <Text >{item.name}</Text>
+                            </TouchableOpacity>
+                        })}
+                </ScrollView>
                 <RowDiv>
                     <ModuleButton
                         onPress={() => {
@@ -66,7 +90,7 @@ margin: 10px 5px
 width: 90px
 height: 30px
 border-radius : 25px
-background-color: #4294ff
+background-color: black
 justify-content: center
 align-items: center
 `
@@ -74,10 +98,11 @@ align-items: center
 const ModalView = styled.View`
 borderWidth: 2px
 borderColor: gray
-    margin: 20px
+width:${ Dimensions.get('window').width / 1.5}px
+height: ${ Dimensions.get('window').height / 3}px 
     background-color: white
     border-radius: 20px
-    padding: 20px
+    padding: 10px
     align-items: center
     shadow-color: #000
 shadow-opacity: 0.5

@@ -5,8 +5,9 @@ import styled from 'styled-components/native' //  do not forget adding  /native 
 
 
 const Group = (prop) => {
-    const { customer, products, date } = prop
-    return <GroupItem onPress={() => prop.navigate('Details', { customer: customer })}>
+
+    const { customerId, customerName, productsArr, year } = prop
+    return <GroupItem onPress={() => prop.navigate('Details', { customerId })}>
         {/* <LinearGradient
                 colors={['#9484DE', '#49036C']}
                 start={{ x: -1, y: 0 }}
@@ -18,17 +19,17 @@ const Group = (prop) => {
         <DataRowDiv style={{ width: "100%" }}>
             <RowDiv>
                 {/* <UserImg source={{ uri: userImg }} /> */}
-                <FullName>{customer}</FullName>
+                <FullName>{customerName}</FullName>
             </RowDiv>
-            <DateText>{date}</DateText>
+            <DateText>{year}</DateText>
         </DataRowDiv>
 
 
         <View style={{ flex: 1 }}>
 
             <FlatList
-                data={products}
-                keyExtractor={() => Math.floor(Math.random() * 999)}
+                data={productsArr}
+                keyExtractor={(item, index) => `${index}`}
                 renderItem={({ item }) => {
                     return <RowDiv>
                         <RowLeftView>
