@@ -25,7 +25,7 @@ export const sortSales = () => {
         db.transaction(tx => {
             tx.executeSql(
                 `SELECT id, day,month,year FROM sales
-                 ORDER BY  month DESC, day DESC  `,
+                 ORDER BY  id DESC`,
                 [],
                 () => {
                     resolve();
@@ -63,7 +63,7 @@ export const fetchSales = () => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                'SELECT * FROM sales',
+                'SELECT id,day, month, year, customerId, customerName, productsArr FROM sales ORDER BY id DESC',
                 [],
                 (_, result) => {
                     resolve(result);
@@ -91,6 +91,30 @@ export const deleteSale = (id) => {
                 }
             );
         });
+    });
+    return promise;
+};
+
+
+export const updateSale = (id, day, month, year, customerId, customerName, productsArr) => {
+    const promise = new Promise((resolve, reject) => {
+        // update  query   did not  work so  use deletion and insert instead
+        deleteSale(id).then(() => {
+            db.transaction(tx => {
+                tx.executeSql(
+                    `INSERT INTO sales (id,day, month, year, customerId, customerName, productsArr) VALUES (?,?, ?, ?,?, ?, ?)`,
+                    [id, day, month, year, customerId, customerName, productsArr],
+                    (_, result) => {
+                        resolve(result);
+                    },
+                    (_, err) => {
+                        reject(err);
+                    }
+                );
+            });
+
+        })
+
     });
     return promise;
 };

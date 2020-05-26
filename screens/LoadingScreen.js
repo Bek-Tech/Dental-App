@@ -1,12 +1,13 @@
 import React, { useState, useEffect, Component } from 'react'
 import { View, Text, ActivityIndicator, ImageBackground } from 'react-native';
-import { initSales, fetchSales } from '../DataBase/salesDB'
+import { initSales, fetchSales, sortSales } from '../DataBase/salesDB'
 import { initCustomers, fetchCustomers } from '../DataBase/customersDB'
 import { initProducts, fetchProducts } from '../DataBase/productsDB'
 import { useDispatch } from 'react-redux'
 import { addSales } from "../actions/salesActions"
 import { addCustomers } from '../actions/customersActions'
 import { addProducts } from "../actions/productsActions"
+import { addSoldProducts } from "../actions/soldProductsActions"
 
 const LoadingScreen = ({ navigation }) => {
 
@@ -15,32 +16,13 @@ const LoadingScreen = ({ navigation }) => {
 
     const dispatch = useDispatch()
 
-
-
-
     useEffect(() => {
         initSales()
             .then(() => {
-
-                fetchSales()
-                    .then((result) => {
-                        dispatch(addSales(result.rows._array))
-                        console.log('sales received...')
-                    })
-                // .then((result) => {
-                //     // console.log(result)
-                //     dispatch(addSales(result.rows._array))
-                //     // const data = result.rows._array.map(item => {
-                //     //     const parsedProducts = JSON.parse(item.productsArr)
-                //     //     return { ...item, productsArr: parsedProducts }
-                //     // })
-                //     console.log('Sales received...' + result.rows._array[0].productsArr)
-                //     // .then(data => {
+                dispatch(addSales())
+                console.log('sales received...')
 
 
-                //     // })
-
-                // })
             })
             .catch(err => {
                 console.log('Initializing salesDB failed.');
@@ -49,11 +31,8 @@ const LoadingScreen = ({ navigation }) => {
 
         initCustomers()
             .then(() => {
-                fetchCustomers()
-                    .then((result) => {
-                        dispatch(addCustomers(result.rows._array))
-                        console.log('customers received...')
-                    })
+                dispatch(addCustomers())
+                console.log('customers received...')
             })
             .catch(err => {
                 console.log('Initializing CustomersDB failed.');
@@ -62,12 +41,9 @@ const LoadingScreen = ({ navigation }) => {
 
         initProducts()
             .then(() => {
-                fetchProducts()
-                    .then((result) => {
-                        dispatch(addProducts(result.rows._array))
-                        console.log('products received...')
-                        navigation.navigate("MainFlow")
-                    })
+                dispatch(addProducts())
+                dispatch(addSoldProducts())
+                console.log('products and sold received...')
 
             })
             .catch(err => {
@@ -76,12 +52,9 @@ const LoadingScreen = ({ navigation }) => {
             })
 
 
+        navigation.navigate("MainFlow")
+
     })
-
-
-
-
-
 
 
     return <View style={{

@@ -1,12 +1,20 @@
-import React from 'react';
-import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, TouchableOpacity, Text, View, FlatList, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'
+import ModalOptions from "../components/ModalOptions"
 import styled from 'styled-components/native' //  do not forget adding  /native  only for  react native
+import { SimpleLineIcons } from '@expo/vector-icons'
+import { deleteSaleAction } from "../actions/salesActions"
+import { useDispatch } from "react-redux"
 
 
 const Group = (prop) => {
 
-    const { customerId, customerName, productsArr, year } = prop
+    const dispatch = useDispatch()
+    const { id, customerId, customerName, productsArr, year, day, month } = prop
+
+    const [modalVisible, setModalVisible] = useState(false)
+
     return <GroupItem onPress={() => prop.navigate('Details', { customerId })}>
         {/* <LinearGradient
                 colors={['#9484DE', '#49036C']}
@@ -16,12 +24,28 @@ const Group = (prop) => {
                     flex: 1,
 
                 }}  > */}
+        <ModalOptions
+            visible={modalVisible}
+            visibilityToggler={() => setModalVisible(!modalVisible)}
+            onPressEdit={() => { }}
+            onPressDelete={() => {
+                dispatch(deleteSaleAction(id))
+                setModalVisible(!modalVisible)
+            }}
+            onPressCall={false}
+            onPressMessage={false}
+        />
         <DataRowDiv style={{ width: "100%" }}>
+
+            {/* <UserImg source={{ uri: userImg }} /> */}
+            <FullName>{customerName}</FullName>
             <RowDiv>
-                {/* <UserImg source={{ uri: userImg }} /> */}
-                <FullName>{customerName}</FullName>
+                <DateText>{day}.{month}.{year}</DateText>
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                    <SimpleLineIcons name="options-vertical" size={20} color="black" />
+                </TouchableOpacity>
             </RowDiv>
-            <DateText>{year}</DateText>
+
         </DataRowDiv>
 
 
@@ -63,7 +87,7 @@ align-items: center
 const RowRightView = styled.View`
 ${'' /* border-right-width:2px */}
 border-left-width:2px
-border-color: gray
+border-color: black
 width: 150px
 padding: 0px 5px
 flex-direction: row

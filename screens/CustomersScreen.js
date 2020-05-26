@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, View, ScrollView, Animated, Dimensions } from 'react-native';
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -12,17 +12,23 @@ import { addCustomers } from '../actions/customersActions'
 
 
 const CustomersScreen = ({ navigation, customers }) => {
-    const navigateToAddCustomer = () => navigation.navigate('AddCustomer')
 
-
-
-
+    const [empty, setEmpty] = useState(false)
     return (
         <>
             <RootContainer
                 title="Customers"
             >
-                {customers.map(item => <CustomerInfo navigation={navigation}  {...item} />)}
+                {customers.length > 0 ?
+                    <FlatList
+                        data={customers}
+                        keyExtractor={(item => `${item.id}`)}
+                        renderItem={({ item }) => {
+                            return <CustomerInfo navigation={navigation}  {...item} />
+                        }}
+                    /> :
+                    null
+                }
 
 
             </RootContainer>
@@ -34,7 +40,8 @@ const CustomersScreen = ({ navigation, customers }) => {
 
 const mapCustomersToProps = state => {
     return {
-        customers: state.customers
+        customers: state.customers,
+        salesHistory: state.salesHistory
     }
 
 }

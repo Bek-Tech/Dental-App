@@ -8,13 +8,14 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@expo/vector-icons": "^10.0.0",
     "@react-native-community/datetimepicker": "2.1.0",
     "@react-native-community/masked-view": "^0.1.5",
     "@react-navigation/native": "^5.1.4",
     "axios": "^0.19.2",
     "expo": "~36.0.0",
     "expo-linear-gradient": "~8.0.0",
-    "expo-sqlite": "~8.0.0",
+    "expo-sqlite": "^8.0.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
@@ -32,6 +33,7 @@
     "react-navigation-tabs": "^2.8.13",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
     "styled-components": "^5.0.1"
   },
   "devDependencies": {

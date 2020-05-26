@@ -1,86 +1,46 @@
 import React, { useState } from 'react'
-import { Text, Linking, View, Modal } from 'react-native';
+import { Text, Linking, View, Modal, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native'
-import Button from './Button'
-import { Ionicons } from '@expo/vector-icons'
+import { useDispatch } from "react-redux"
+import { SimpleLineIcons } from '@expo/vector-icons'
+import ModalOptions from "../components/ModalOptions"
+import { deleteCustomerAction } from "../actions/customersActions"
+
 
 const CustomerInfo = (props) => {
+
     const [modalVisible, setModalVisible] = useState(false)
     const { navigation, name, phone, id } = props
-    // const [name, setName] = useState(userName)
-    const [phoneNumber, setPhoneNumber] = useState(phone)
+    const dispatch = useDispatch()
 
 
-    const userState = {
-        user_id: id,
-        userName: name,
-        phone
-    }
-    const [state, setState] = useState(userState)
 
 
 
     return <Container
         onPress={() => navigation.navigate('Details')}>
-        <Modal
-            animationType="fade"
-            transparent={true}
+        <ModalOptions
             visible={modalVisible}
-        >
-            <ModalContainer>
-                <ModalView>
-                    <View>
-                        <EditInput
-                            onChangeText={text => setName(text)}
-                            value={name} />
-                        <EditInput
-                            onChangeText={text => setPhoneNumber(text)}
-                            value={phoneNumber} />
-                    </View>
-                    <RowDiv>
-                        <ModuleButton
-                            onPress={() => setState({ ...state, userName: name, phone: phoneNumber })}                        >
-                            <ModuleButtonText>save</ModuleButtonText>
-                        </ModuleButton>
-                        <ModuleButton
-                            onPress={() => {
-                                setModalVisible(!modalVisible);
-                            }}>
-                            <ModuleButtonText>cancel</ModuleButtonText>
-                        </ModuleButton>
-                    </RowDiv>
-                </ModalView>
-
-
-            </ModalContainer>
-
-
-        </Modal>
-        <Name>{state.userName}</Name>
-        <GrayText>{state.phone}</GrayText>
-        {/* {edit ? <View>
-            <EditInput
-                onChangeText={text => setName(text)}
-                value={name} />
-            <EditInput
-                onChangeText={text => setPhoneNumber(text)}
-                value={phoneNumber} />
-        </View>
-            : null} */}
+            visibilityToggler={() => setModalVisible(!modalVisible)}
+            onPressEdit
+            onPressDelete={() => {
+                dispatch(deleteCustomerAction(id))
+                navigation.goBack()
+            }}
+            onPressCall={() => Linking.openURL(`tel://${phone}`)}
+            onPressMessage={() => Linking.openURL(`sms://${phone}`)}
+        />
         <RowDiv>
-            <Button
-                title={"save"}
-                style={{
-                    shadowOpacity: 0.5,
-                    shadowRadius: 6.3,
-                    elevation: 10
-                }} color={"#4294ff"}
-                action={() => {
-                    setModalVisible(true);
-                }} />
-            <CallButton onPress={() => Linking.openURL(`tel: ${phone}`)} >
-                <Ionicons name="md-call" size={30} color="#fff" />
-            </CallButton>
+            <View>
+                <Name>{name ? name : "deleted"}</Name>
+                <NumberText>phone : {phone ? phone : "deleted"}</NumberText>
+            </View>
+            <TouchableOpacity onPress={name ? () => setModalVisible(true) : () => alert("customer was deleted")}>
+                <SimpleLineIcons name="options-vertical" size={20} color="black" />
+            </TouchableOpacity>
+        </RowDiv>
+        <RowDiv>
+
         </RowDiv>
     </Container>
 }
@@ -89,6 +49,8 @@ const CustomerInfo = (props) => {
 
 
 export default CustomerInfo
+
+
 
 
 const ModuleButtonText = styled.Text`
@@ -106,25 +68,9 @@ justify-content: center
 align-items: center
 `
 
-const ModalView = styled.View`
-borderWidth: 2px
-borderColor: gray
-    margin: 20px
-    background-color: white
-    border-radius: 20px
-    padding: 20px
-    align-items: center
-    shadow-color: #000
-shadow-opacity: 0.5
-shadow-radius: 6.3px
-elevation: 10
-`
 
-const ModalContainer = styled.View`
-flex: 1
-    justify-Content: center
-    alignItems: center
-`
+
+
 
 
 const EditInput = styled.TextInput`
@@ -142,30 +88,34 @@ const EditInput = styled.TextInput`
 
 const Container = styled.TouchableOpacity`
 margin: 5px 20px
- padding: 3px 20px
-border-radius: 25px
+ borderColor: black
+   borderBottomWidth: 2px
+ padding: 3px 10px
 margin-bottom: 4px
    ${'' /* flex-direction:row */}
    align-items: flex-start
-  background : white
-  shadow-color: #000
+  ${'' /* shadow-color: #000
 shadow-opacity: 0.2
 shadow-radius: 6.3px
-elevation: 10
+elevation: 10 */}
 `
 
-const GrayText = styled.Text`
- color : #8b979f
+const NumberText = styled.Text`
+ color : white
  margin-bottom: 5px
 `
 
 const RowDiv = styled.View`
+ ${'' /* borderColor: black
+   borderWidth: 2px */}
+width: 100%
 ${'' /* padding: 5px */}
 flex-direction: row
-justify-content: space-evenly
-align-items: center
+justify-content: space-between
+${'' /* align-items: center */}
 
 `
+
 
 
 const Name = styled.Text`
@@ -176,14 +126,17 @@ margin-bottom: 5px
 
 `
 
-const CallButton = styled.TouchableOpacity`
+
+
+const DeleteButton = styled.TouchableOpacity`
 
 align-items:center
 justify-content: center
 border-radius: 50px
 width: 45px
 height: 45px
-background: #4CBE2E
+background: #FA1200
+
 shadow-color: #000
 ${'' /* shadow-offset: {width: 0, height: 2} */}
 shadow-opacity: 0.5

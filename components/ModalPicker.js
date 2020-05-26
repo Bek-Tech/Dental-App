@@ -39,14 +39,14 @@ const ModalPicker = ({ show, showTrigger, data, pickedValue }) => {
                                     flex: 1,
                                     justifyContent: "center",
                                     alignItems: "center",
-                                    borderColor: "black",
-                                    borderBottomWidth: 2,
+                                    // borderColor: "black",
+                                    // borderBottomWidth: 2,
                                 }}
                                 onPress={() => {
                                     pickedValue(item)
                                     showTrigger();
                                 }}>
-                                <Text >{item.name}</Text>
+                                <ListText >{item.name}</ListText>
                             </TouchableOpacity>
                         })}
                 </ScrollView>
@@ -70,6 +70,13 @@ const ModalPicker = ({ show, showTrigger, data, pickedValue }) => {
 
 
 export default ModalPicker
+
+
+const ListText = styled.Text`
+color: #277FC4
+font-size: 20px
+marginTop: 5px
+`
 
 const RowDiv = styled.View`
 padding: 5px
@@ -114,4 +121,5 @@ const ModalContainer = styled.View`
 flex: 1
     justify-Content: center
     alignItems: center
+    marginBottom: 60px
 `

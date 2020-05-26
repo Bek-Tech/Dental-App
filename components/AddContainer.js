@@ -3,7 +3,7 @@ import { Text, View, TouchableOpacity, KeyboardAvoidingView, Dimensions, ImageBa
 import styled from 'styled-components/native'
 
 
-const RootContainer = ({ children, title }) => {
+const RootContainer = ({ children, title, head }) => {
 
     const [state, setState] = useState(Dimensions.get('window').height / 1.3)
 
@@ -24,6 +24,7 @@ const RootContainer = ({ children, title }) => {
                     style={{ flex: 1 }}
                 >
                     <ScrollView>
+                        {head}
                         <ItemsContainer
 
                         >

@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
 import { View, Text, Button, TextInput, StyleSheet } from 'react-native'
+import { connect, useDispatch } from "react-redux"
 import CustomerInfo from "../components/CustomerInfo"
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { insertCustomer } from "../DataBase/customersDB"
-import RootContainer from "../components/RootContainer"
+import AddContainer from "../components/AddContainer"
+import { addNewCustomer } from "../actions/customersActions"
 //insertCustomer (date, name, phone)
 
 
 
 const AddCustomerScreen = ({ navigation }) => {
 
-
+    const dispatch = useDispatch()
 
     const [name, setName] = useState('')
     const [phone, setPhone] = useState(null)
@@ -46,18 +47,11 @@ const AddCustomerScreen = ({ navigation }) => {
     };
 
 
-    const HeaderComponent = () => {
-        return <View style={{ flex: 1, justifyContent: "center" }}>
-            <Text>{name}</Text>
-            <Text>{phone}</Text>
 
-        </View>
-
-    }
 
     return (
-        <RootContainer
-            headerComponent={<HeaderComponent />}
+        <AddContainer
+
         >
 
             <RowDiv>
@@ -87,12 +81,9 @@ const AddCustomerScreen = ({ navigation }) => {
                 <ButtonStyled
                     onPress={() => {
                         name.length === 0 ? setError(true)
-                            : insertCustomer(dateString, name, phone).then(() => {
+                            : dispatch(addNewCustomer(dateString, name, phone)).then(() => {
                                 navigation.navigate('Customers')
                             })
-
-
-
                     }}  >
                     <ButtonText>Save</ButtonText>
                 </ButtonStyled>
@@ -100,7 +91,7 @@ const AddCustomerScreen = ({ navigation }) => {
                     <ButtonText>Cancel</ButtonText>
                 </ButtonStyled>
             </RowDiv>
-        </RootContainer>
+        </AddContainer>
     );
 }
 

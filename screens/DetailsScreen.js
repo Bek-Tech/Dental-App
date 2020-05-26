@@ -1,4 +1,4 @@
-import React,useState from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from "react-redux"
 import { Text, View, FlatList } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'
@@ -6,21 +6,23 @@ import styled from 'styled-components/native'
 import Button from '../components/Button'
 import { Ionicons, Foundation } from '@expo/vector-icons'
 import CustomerInfo from "../components/CustomerInfo"
+import AddContainer from "../components/AddContainer"
 // import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
 const DetailsScreen = ({ navigation, salesHistory, customers }) => {
-    const CustomerId = navigation.getParam('customerId')
-    console.log('purchaseData')
-    console.log(salesHistory)
-    const purchaseData = salesHistory.filter(item => item.CustomerId === CustomerId)
 
+
+    const CustomerId = navigation.getParam('customerId')
+    const purchaseData = salesHistory.filter(item => item.customerId === CustomerId)
     const customer = customers.filter(item => item.id === CustomerId)
 
 
     return (
-        <LinearGradient colors={['#9484DE', '#49036C']}
-            style={{ flex: 1 }} >
-            <CustomerInfo navigation={navigation} {...customer[0]} />
+
+        <AddContainer
+            head={<CustomerInfo navigation={navigation} {...customer[0]} />}
+        >
+
             <HistoryDiv>
                 <Text>Purchase History</Text>
                 <RowDiv>
@@ -39,27 +41,29 @@ const DetailsScreen = ({ navigation, salesHistory, customers }) => {
                     keyExtractor={item => `${item.id}`}
                     renderItem={({ item }) => {
                         return <DataView>
-                            <Text>{item.day}/{item.month}</Text>
+                            <Text>{item.day}.{item.month}.{item.year}</Text>
 
-                            {item.products.map(item => {
-                                return <RowDiv>
-                                    <RowLeftView>
-                                        <BoldText>{item.name}</BoldText>
-                                    </RowLeftView>
-                                    <RowRightView>
-                                        <BoldText>{item.quantity}</BoldText>
-                                    </RowRightView>
-                                </RowDiv>
+                            {item.productsArr.length === 0 ?
+                                <Text>no purchases</Text> :
+                                item.productsArr.map(item => {
+                                    return <RowDiv key={item.name}>
+                                        <RowLeftView>
+                                            <BoldText>{item.name}</BoldText>
+                                        </RowLeftView>
+                                        <RowRightView>
+                                            <BoldText>{item.quantity}</BoldText>
+                                        </RowRightView>
+                                    </RowDiv>
 
-                            })}
+                                })}
                         </DataView>
                     }}
                 />
 
 
             </HistoryDiv>
-            <View style={{ height: 45 }}></View>
-        </LinearGradient>
+            <View style={{ height: 60 }}></View>
+        </AddContainer>
 
     )
 }
@@ -85,8 +89,8 @@ const HistoryDiv = styled.View`
 flex: 1
 align-Items: flex-start
 padding: 25px 
-margin: 5px 20px
-background : #fff
+margin: 5px 0px
+background : grey
 border-radius : 25px
 shadow-color: #000
 shadow-opacity: 0.5

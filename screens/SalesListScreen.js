@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Text, View, Animated, TouchableOpacity, Dimensions } from 'react-native';
+import { Text, View, Animated, TouchableOpacity, Dimensions, Modal, Button } from 'react-native';
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import RootContainer from "../components/RootContainer"
@@ -10,19 +10,31 @@ import { FlatList, ScrollView } from 'react-native-gesture-handler';
 
 
 
-const SalesListScreen = ({ salesHistory, navigation }) => {
+const SalesListScreen = ({ salesHistory, navigation, soldProducts }) => {
 
     const dispatch = useDispatch()
     const navigate = (screen, info) => { navigation.navigate(screen, info) }
-
-    console.log("sales screen")
-    console.log(salesHistory)
+    const [visible, setVisible] = useState(false)
+    console.log(soldProducts)
 
     return (<View style={{ flex: 1 }}>
         <RootContainer
             title='Journal'
         // headerComponent={<HeaderComponent />}
         >
+            {/* 
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+            >
+                <View style={{ flex: 1, marginTop: 50, backgroundColor: "white" }}>
+                    <Button title="hide" onPress={() => setVisible(false)} />
+
+                </View>
+
+            </Modal>
+            <Button title="open" onPress={() => setVisible(true)} /> */}
             <FlatList
                 data={salesHistory}
                 keyExtractor={item => `${item.id}`}
@@ -42,7 +54,10 @@ const SalesListScreen = ({ salesHistory, navigation }) => {
 
 }
 const mapSalesHistoryToProps = state => {
-    return { salesHistory: state.salesHistory }
+    return {
+        salesHistory: state.salesHistory,
+        soldProducts: state.soldProducts
+    }
 }
 
 export default connect(mapSalesHistoryToProps)(SalesListScreen)

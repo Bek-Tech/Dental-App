@@ -3,23 +3,26 @@ import styled from 'styled-components/native'
 import { View, Text, Button, TextInput, StyleSheet } from 'react-native'
 import CustomerInfo from "../components/CustomerInfo"
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { insertProduct } from "../DataBase/productsDB"
+import { connect, useDispatch } from "react-redux"
+import { insertProduct, updateProduct } from "../DataBase/productsDB"
 import RootContainer from "../components/RootContainer"
+import { addNewProduct, editProduct } from "../actions/productsActions"
 //insertProduct(date, name, stock) 
 
 
 
-const AddProductScreen = ({ navigation }) => {
+const AddProductScreen = ({ navigation, products }) => {
 
-
-
-    const [name, setName] = useState('')
-    const [stock, setStock] = useState(null)
+    const id = navigation.getParam('id')
+    const product = products.filter(item => item.id === id)
+    const dispatch = useDispatch()
+    const [name, setName] = useState(id ? product[0].name : "")
+    const [stock, setStock] = useState(id ? product[0].stock : "")
     const [error, setError] = useState(false)
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
-    const dateString = date.toDateString()
+    const [dateString, setDateString] = useState(id ? product[0].date : date.toDateString())
 
     // const headerProps = { name, phone }
 
@@ -32,7 +35,7 @@ const AddProductScreen = ({ navigation }) => {
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
-        setDate(currentDate);
+        setDateString(currentDate.toDateString());
     };
 
     const showMode = currentMode => {
@@ -44,15 +47,6 @@ const AddProductScreen = ({ navigation }) => {
         showMode('date');
     };
 
-
-    const HeaderComponent = () => {
-        return <View style={{ flex: 1, justifyContent: "center" }}>
-            <Text>{name}</Text>
-            <Text>{stock}</Text>
-
-        </View>
-
-    }
 
     return (
         <RootContainer
@@ -78,30 +72,53 @@ const AddProductScreen = ({ navigation }) => {
                 />
             )}
 
-            <Input placeholder="enter product name" onChangeText={text => setName(text)} />
+            <Input
+                value={name}
+                placeholder="enter product name"
+                onChangeText={text => setName(text)} />
             {error ? <ErrorText>enter product name </ErrorText> : null}
-            <Input keyboardType="number-pad" placeholder="enter amount" onChangeText={num => setStock(num)} />
-            <RowDiv>
+            <Input
+                value={`${stock}`}
+                keyboardType="number-pad"
+                placeholder="enter amount"
+                onChangeText={num => setStock(num)} />
+            <ButtonRowDiv>
 
                 <ButtonStyled
                     onPress={() => {
-                        name.length === 0 ? setError(true)
-                            : insertProduct(dateString, name, stock).then(() => {
-                                console.log("new product added")
-                                navigation.navigate('Products')
-                            })
+                        if (id) {
+                            name.length === 0 || stock.length === 0 ? setError(true) :
+                                dispatch(editProduct(id, dateString, name, stock))
+                                    .then(() => {
+                                        console.log("product edited")
+                                        navigation.navigate('Products')
+                                    })
+                        } else {
+                            name.length === 0 || stock.length === 0 ? setError(true)
+                                : dispatch(addNewProduct(dateString, name, stock))
+                                    .then(() => {
+                                        console.log("new product added")
+                                        navigation.navigate('Products')
+                                    })
+                        }
                     }}  >
                     <ButtonText>Save</ButtonText>
                 </ButtonStyled>
-                <ButtonStyled onPress={() => navigation.navigate('Customers')}   >
+                <ButtonStyled onPress={() => navigation.navigate('Products')}   >
                     <ButtonText>Cancel</ButtonText>
                 </ButtonStyled>
-            </RowDiv>
+            </ButtonRowDiv>
         </RootContainer>
     );
 }
 
-export default AddProductScreen
+const mapStateToProps = state => {
+    return {
+        products: state.products
+    }
+}
+
+export default connect(mapStateToProps)(AddProductScreen)
 
 // styles ________________________________________________
 
@@ -131,6 +148,14 @@ margin : 5px 10px
 `
 
 const RowDiv = styled.View`
+padding: 5px 15px
+flex-direction: row
+justify-content: space-between
+align-items: center
+
+`
+
+const ButtonRowDiv = styled.View`
 padding: 5px
 flex-direction: row
 justify-content: space-around

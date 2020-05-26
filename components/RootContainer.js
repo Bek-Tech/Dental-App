@@ -134,9 +134,7 @@ export default RootContainer
 
 
 const ListContainer = styled.View`
-     flex: 1
-    
-     backgroundColor: rgba(255,255,255,0.4)
+     flex: 1  backgroundColor: rgba(255,255,255,0.4)
      borderRadius: 35px            
      margin: 5px  
      margin-bottom: 60px             

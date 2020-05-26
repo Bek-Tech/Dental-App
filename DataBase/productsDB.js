@@ -20,12 +20,12 @@ export const initProducts = () => {
     return promise;
 };
 
-export const insertProduct = (date, name, stock, history) => {
+export const insertProduct = (date, name, stock) => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                `INSERT INTO products (date, name, stock,history) VALUES ( ?, ?, ?,?);`,
-                [date, name, stock, history],
+                `INSERT INTO products (date, name, stock) VALUES ( ?, ?, ?);`,
+                [date, name, stock],
                 (_, result) => {
                     resolve(result);
                 },
@@ -42,7 +42,7 @@ export const fetchProducts = () => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                'SELECT * FROM products',
+                'SELECT id, date, name, stock,history FROM products ORDER BY id DESC',
                 [],
                 (_, result) => {
                     resolve(result);
@@ -70,6 +70,29 @@ export const deleteProduct = (id) => {
                 }
             );
         });
+    });
+    return promise;
+};
+
+export const updateProduct = (id, date, name, stock) => {
+    const promise = new Promise((resolve, reject) => {
+        // update  query   did not  work so  use deletion and insert instead
+        deleteProduct(id).then(() => {
+            db.transaction(tx => {
+                tx.executeSql(
+                    `INSERT INTO products (id,date, name, stock) VALUES ( ?,?, ?, ?)`,
+                    [id, date, name, stock],
+                    (_, result) => {
+                        resolve(result);
+                    },
+                    (_, err) => {
+                        reject(err);
+                    }
+                );
+            });
+
+        })
+
     });
     return promise;
 };

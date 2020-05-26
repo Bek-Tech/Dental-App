@@ -53,7 +53,7 @@ const RootNavigation = createSwitchNavigator({
             AddCustomer: {
                 screen: AddCustomerScreen,
                 navigationOptions: {
-                    headerShown: false
+
                 }
             },
             CustomerInfo: DetailsScreen
@@ -102,16 +102,17 @@ const RootNavigation = createSwitchNavigator({
             animationEnabled: true,
 
             tabBarOptions: {
-                activeTintColor: '#49036C',
-                inactiveTintColor: 'black',
+                activeTintColor: 'white',
+                inactiveTintColor: 'gray',
                 style: {
                     margin: 5,
                     fontWeight: "bold",
-                    // borderTopLeftRadius: 25,
-                    // borderTopRightRadius: 25,
-                    backgroundColor: "white",
-                    borderRadius: 25,
+                    borderTopLeftRadius: 25,
+                    borderTopRightRadius: 25,
+                    backgroundColor: "rgba(0,0,0,0.4)",
+                    // borderRadius: 25,
                     position: 'absolute',
+                    bottom: 0,
                     borderTopWidth: 1.5,
                     borderWidth: 1,
                     borderColor: "grey"
@@ -119,7 +120,6 @@ const RootNavigation = createSwitchNavigator({
                 },
                 labelStyle: {
                     fontSize: 14,
-                    color: 'black',
                     textAlign: 'center',
                 },
                 indicatorStyle: {

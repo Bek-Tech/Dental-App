@@ -41,7 +41,7 @@ export const fetchCustomers = () => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                'SELECT * FROM customers',
+                'SELECT id,date, name, phone FROM customers ORDER BY id DESC',
                 [],
                 (_, result) => {
                     resolve(result);
@@ -69,6 +69,30 @@ export const deleteCustomer = (id) => {
                 }
             );
         });
+    });
+    return promise;
+};
+
+
+export const updateCustomer = (id, date, name, phone) => {
+    const promise = new Promise((resolve, reject) => {
+        // update  query   did not  work so  use deletion and insert instead
+        deleteCustomer(id).then(() => {
+            db.transaction(tx => {
+                tx.executeSql(
+                    `INSERT INTO customers (id,date, name, phone) VALUES ( ?,?, ?, ?)`,
+                    [id, date, name, phone],
+                    (_, result) => {
+                        resolve(result);
+                    },
+                    (_, err) => {
+                        reject(err);
+                    }
+                );
+            });
+
+        })
+
     });
     return promise;
 };
