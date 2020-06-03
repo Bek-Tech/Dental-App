@@ -1,5 +1,5 @@
-import { insertSale, deleteSale, fetchSales } from '../DataBase/salesDB'
-
+import { insertSale, deleteSale, fetchSales, updateSale } from '../DataBase/salesDB'
+import { reFetchSales } from "./index"
 
 export const ADD_SALES = 'ADD_SALES'
 export const ADD_NEW_SALE = 'ADD_NEW_SALE'
@@ -40,7 +40,8 @@ export const addNewSale = (day, month, year, customerId, customerName, productsA
             await insertSale(day, month, year, customerId, customerName, stringArr)
             // console.log(" inserted")
             // const saleObj = { day, month, year, customerId, customerName, productsArr }
-            dispatch(addSales())
+            dispatch(reFetchSales())
+
         } catch (err) {
             throw err
         }
@@ -51,7 +52,22 @@ export const deleteSaleAction = (id) => {
     return async dispatch => {
         try {
             await deleteSale(id)
-            dispatch({ type: DELETE_SALE, id })
+            dispatch(reFetchSales())
+        } catch (err) {
+            throw err
+        }
+
+    }
+}
+
+
+export const editSale = (id, day, month, year, customerId, customerName, productsArr) => {
+    return async dispatch => {
+        try {
+            const stringArr = JSON.stringify(productsArr)
+            await updateSale(id, day, month, year, customerId, customerName, stringArr)
+            console.log("action")
+            dispatch(reFetchSales())
         } catch (err) {
             throw err
         }

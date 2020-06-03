@@ -22,7 +22,10 @@ const CustomerInfo = (props) => {
         <ModalOptions
             visible={modalVisible}
             visibilityToggler={() => setModalVisible(!modalVisible)}
-            onPressEdit
+            onPressEdit={() => {
+                setModalVisible(!modalVisible)
+                navigation.navigate('AddCustomer', { id })
+            }}
             onPressDelete={() => {
                 dispatch(deleteCustomerAction(id))
                 navigation.goBack()

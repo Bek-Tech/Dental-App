@@ -41,7 +41,7 @@ const DetailsScreen = ({ navigation, salesHistory, customers }) => {
                     keyExtractor={item => `${item.id}`}
                     renderItem={({ item }) => {
                         return <DataView>
-                            <Text>{item.day}.{item.month}.{item.year}</Text>
+                            <Text>{new Date(item.year, item.month, item.day).toDateString()}</Text>
 
                             {item.productsArr.length === 0 ?
                                 <Text>no purchases</Text> :

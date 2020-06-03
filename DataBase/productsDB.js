@@ -6,12 +6,13 @@ export const initProducts = () => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                'CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY NOT NULL, date TEXT NOT NULL, name TEXT NOT NULL,  stock REAL NOT NULL, history TEXT );',
+                'CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY NOT NULL, date TEXT NOT NULL, name TEXT NOT NULL UNIQUE,  stock REAL NOT NULL, history BLOB );',
                 [],
                 () => {
                     resolve();
                 },
                 (_, err) => {
+                    alert("error has occurred")
                     reject(err);
                 }
             );
@@ -20,16 +21,17 @@ export const initProducts = () => {
     return promise;
 };
 
-export const insertProduct = (date, name, stock) => {
+export const insertProduct = (date, name, stock, history) => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                `INSERT INTO products (date, name, stock) VALUES ( ?, ?, ?);`,
-                [date, name, stock],
+                `INSERT INTO products (date, name, stock, history) VALUES ( ?, ?, ?,?);`,
+                [date, name, stock, history],
                 (_, result) => {
                     resolve(result);
                 },
                 (_, err) => {
+                    alert("error has occured , product names must be unique !")
                     reject(err);
                 }
             );
@@ -48,6 +50,7 @@ export const fetchProducts = () => {
                     resolve(result);
                 },
                 (_, err) => {
+                    alert("error has occurred")
                     reject(err);
                 }
             );
@@ -66,6 +69,7 @@ export const deleteProduct = (id) => {
                     resolve();
                 },
                 (_, err) => {
+                    alert("error has occurred")
                     reject(err);
                 }
             );
@@ -74,18 +78,19 @@ export const deleteProduct = (id) => {
     return promise;
 };
 
-export const updateProduct = (id, date, name, stock) => {
+export const updateProduct = (id, date, name, stock, history) => {
     const promise = new Promise((resolve, reject) => {
         // update  query   did not  work so  use deletion and insert instead
         deleteProduct(id).then(() => {
             db.transaction(tx => {
                 tx.executeSql(
-                    `INSERT INTO products (id,date, name, stock) VALUES ( ?,?, ?, ?)`,
-                    [id, date, name, stock],
+                    `INSERT INTO products (id,date, name, stock, history) VALUES ( ?,?, ?, ?,?)`,
+                    [id, date, name, stock, history],
                     (_, result) => {
                         resolve(result);
                     },
                     (_, err) => {
+                        alert("error has occurred")
                         reject(err);
                     }
                 );

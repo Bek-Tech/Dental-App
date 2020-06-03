@@ -3,7 +3,7 @@ import { Text, View, Animated, TouchableOpacity, Dimensions, Modal, Button } fro
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import RootContainer from "../components/RootContainer"
-import Group from "../components/Group"
+import SaleBox from "../components/SaleBox"
 import AddButton from '../components/AddButton'
 import { connect, useDispatch } from "react-redux"
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
@@ -13,9 +13,8 @@ import { FlatList, ScrollView } from 'react-native-gesture-handler';
 const SalesListScreen = ({ salesHistory, navigation, soldProducts }) => {
 
     const dispatch = useDispatch()
-    const navigate = (screen, info) => { navigation.navigate(screen, info) }
     const [visible, setVisible] = useState(false)
-    console.log(soldProducts)
+    // console.log(soldProducts)
 
     return (<View style={{ flex: 1 }}>
         <RootContainer
@@ -39,7 +38,7 @@ const SalesListScreen = ({ salesHistory, navigation, soldProducts }) => {
                 data={salesHistory}
                 keyExtractor={item => `${item.id}`}
                 renderItem={({ item }) => {
-                    return <Group navigate={navigate} {...item} />
+                    return <SaleBox navigation={navigation} {...item} />
 
                 }}
             />

@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import { Modal, Text } from 'react-native';
 import styled from 'styled-components/native'
-import { Ionicons, Entypo, FontAwesome5, MaterialIcons } from '@expo/vector-icons'
+import { Ionicons, Entypo, FontAwesome5, MaterialIcons, AntDesign } from '@expo/vector-icons'
 
 
 
-const ModalOptions = ({ visible, visibilityToggler, onPressEdit, onPressDelete, onPressCall, onPressMessage }) => {
+const ModalOptions = ({ visible, visibilityToggler, onPressEdit, onPressDelete, onPressCall, onPressMessage, onPressIncome }) => {
 
     const [deleteModal, setDeleteModal] = useState(false)
+    const [incomeModal, setIncomeModal] = useState(false)
+    const [amount, setAmount] = useState(0)
+
 
     return <Modal
         animationType="fade"
@@ -25,13 +28,46 @@ const ModalOptions = ({ visible, visibilityToggler, onPressEdit, onPressDelete, 
                 <ModalView>
                     <Text>Are You Sure?</Text>
                     <ModalRowDiv>
-                        <ModalDeleteButton onPress={onPressDelete}  >
+                        <ModalDeleteButton onPress={() => {
+                            onPressDelete()
+                            setDeleteModal(false)
+                        }}  >
                             <ModalButtonText>
                                 delete
                            </ModalButtonText>
                         </ModalDeleteButton>
                         <ModalCancelButton  >
                             <ModalButtonText onPress={() => setDeleteModal(false)}>
+                                cancel
+                           </ModalButtonText>
+                        </ModalCancelButton>
+                    </ModalRowDiv>
+                </ModalView>
+            </ModalContainer>
+
+        </Modal>
+
+
+        <Modal
+            animationType="fade"
+            transparent={true}
+            visible={incomeModal}
+        >
+            <ModalContainer onPress={() => {
+                setDeleteModal(false)
+            }}>
+                <ModalView>
+                    <Text>woohoo new  delivery</Text>
+                    <AmountInput keyboardType="numeric" autoFocus={true} placeHolder="enter amount" />
+                    <DescriptionInput multiline={true} />
+                    <ModalRowDiv>
+                        <ModalDeleteButton onPress={() => onPressIncome()}  >
+                            <ModalButtonText>
+                                save
+                           </ModalButtonText>
+                        </ModalDeleteButton>
+                        <ModalCancelButton  >
+                            <ModalButtonText onPress={() => setIncomeModal(false)}>
                                 cancel
                            </ModalButtonText>
                         </ModalCancelButton>
@@ -50,16 +86,19 @@ const ModalOptions = ({ visible, visibilityToggler, onPressEdit, onPressDelete, 
             <ModalView>
 
                 <ModalRowDiv>
-                    {onPressEdit !== false ? <CircleButton onPress={onPressEdit} >
-                        <FontAwesome5 name="pen" size={24} color="#fff" />
+                    {onPressIncome ? <CircleButton onPress={() => setIncomeModal(true)}  >
+                        <Entypo name="arrow-down" size={32} color="green" />
                     </CircleButton> : null}
-                    {onPressDelete !== false ? <CircleButton onPress={() => setDeleteModal(true)} >
+                    {onPressEdit ? <CircleButton onPress={onPressEdit} >
+                        <FontAwesome5 name="pen" size={22} color="#fff" />
+                    </CircleButton> : null}
+                    {onPressDelete ? <CircleButton onPress={() => setDeleteModal(true)} >
                         <MaterialIcons name="delete" size={24} color="#FA1200" />
                     </CircleButton> : null}
-                    {onPressMessage !== false ? <CircleButton onPress={onPressMessage} >
+                    {onPressMessage ? <CircleButton onPress={onPressMessage} >
                         <Entypo name="message" size={24} color="#0F6CC0" />
                     </CircleButton> : null}
-                    {onPressCall !== false ? <CircleButton onPress={onPressCall} >
+                    {onPressCall ? <CircleButton onPress={onPressCall} >
                         <Ionicons name="md-call" size={24} color="#4CBE2E" />
                     </CircleButton> : null}
                 </ModalRowDiv>
@@ -75,6 +114,17 @@ const ModalOptions = ({ visible, visibilityToggler, onPressEdit, onPressDelete, 
 
 
 export default ModalOptions
+
+const AmountInput = styled.TextInput`
+width : 200px
+background: grey
+`
+const DescriptionInput = styled.TextInput`
+marginTop: 5px
+width : 200px
+height: 100px
+background: grey
+`
 
 
 const ModalView = styled.View`
@@ -149,6 +199,16 @@ width: 90px
 height: 30px
 border-radius : 25px
 background-color:#FA1200
+justify-content: center
+align-items: center
+`
+
+const ModalSaveButton = styled.TouchableOpacity`
+margin: 10px 5px
+width: 90px
+height: 30px
+border-radius : 25px
+background-color: green
 justify-content: center
 align-items: center
 `

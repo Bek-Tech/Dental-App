@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import { connect, useDispatch } from "react-redux"
 import styled from 'styled-components/native'
-import { deleteProductAction } from "../actions/productsActions"
+import { deleteProductAction, editProduct } from "../actions/productsActions"
+//editProduct(id, date, name, stock, history)
 import { SimpleLineIcons } from '@expo/vector-icons'
 import ModalOptions from './ModalOptions'
 
@@ -14,23 +15,12 @@ import ModalOptions from './ModalOptions'
 
 
 
-const ProductBox = ({ date, id, name, stock, navigation, sold }) => {
+const ProductBox = ({ date, id, name, stock, totalReceived, navigation, sold }) => {
 
+    const totalSold = sold === null ? 0 : sold.totalSold
+    // console.log("box")
 
-    const [totalSold, setTotalSold] = useState(0)
-
-    useEffect(() => {
-
-
-        sold[id].forEach(item => {
-            return setTotalSold(totalSold + JSON.parse(item.quantity))
-        })
-        console.log("effect")
-    }, [])
-
-
-
-
+    // console.log(sold)
 
     const dispatch = useDispatch()
     const [modalVisible, setModalVisible] = useState(false)
@@ -39,6 +29,7 @@ const ProductBox = ({ date, id, name, stock, navigation, sold }) => {
         <ModalOptions
             visible={modalVisible}
             visibilityToggler={() => setModalVisible(!modalVisible)}
+            onPressIncome={(amount) => console.log(amount)}
             onPressEdit={() => {
                 navigation.navigate("AddProduct", { id: id })
                 setModalVisible(false)
@@ -51,18 +42,32 @@ const ProductBox = ({ date, id, name, stock, navigation, sold }) => {
             onPressMessage={false}
         />
         <RowDiv>
-            <View>
-                <NameText>{name}</NameText>
 
-                <NameText>stock : {stock}</NameText>
-                <NameText>sold : {totalSold}</NameText>
-                {/* <NameText>inStock  : {stock - totalSold}</NameText> */}
-
-            </View>
+            <NameText>{name}</NameText>
             <TouchableOpacity onPress={() => setModalVisible(true)}>
                 <SimpleLineIcons name="options-vertical" size={20} color="black" />
             </TouchableOpacity>
+
         </RowDiv>
+        <BlockRowDiv>
+            <View>
+                <SmallText>received</SmallText>
+                <ReceivedNumText>{totalReceived}</ReceivedNumText>
+            </View>
+            <View>
+                <SmallText>sold</SmallText>
+                <SoldNumText>{totalSold}</SoldNumText>
+            </View>
+            <View>
+                <SmallText>stock</SmallText>
+                <StockNumText>{totalReceived - totalSold}</StockNumText>
+            </View>
+
+            {/* <NameText>inStock  : {stock - totalSold}</NameText> */}
+        </BlockRowDiv>
+
+
+
     </ProductsContainer>
 
 }
@@ -94,10 +99,47 @@ color: black
 const RowDiv = styled.View`
 width: 100%
  ${'' /* borderColor: black
-   borderWidth: 2px */}
-${'' /* padding: 5px */}
+   borderWidth: 2px  */}
+padding: 3px 5px
 flex-direction: row
 justify-content: space-between
 align-items: center
 
+`
+const BlockRowDiv = styled.View`
+width: 100%
+padding: 0px 5px
+flex-direction: row
+justify-content: space-between
+align-items: center
+
+`
+
+const ReceivedNumText = styled.Text`
+font-size : 18px
+font-weight: bold
+${'' /* line-height : 30px */}
+
+color: blue
+`
+const SoldNumText = styled.Text`
+font-size : 18px
+font-weight: bold
+${'' /* line-height : 30px */}
+
+color: green
+`
+const StockNumText = styled.Text`
+font-size : 18px
+font-weight: bold
+${'' /* line-height : 30px */}
+
+color: black
+`
+
+const SmallText = styled.Text`
+font-size : 16px
+line-height : 30px
+
+color: black
 `

@@ -19,6 +19,7 @@ const RootContainer = ({ children, title, head }) => {
                     resizeMode: "cover",
                     justifyContent: "center"
                 }}>
+                <Text style={{ fontSize: 22, marginTop: 30 }}>{title}</Text>
                 <KeyboardAvoidingView
                     // behavior={Platform.OS == "ios" ? "padding" : "height"}
                     style={{ flex: 1 }}

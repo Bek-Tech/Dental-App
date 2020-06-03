@@ -5,23 +5,25 @@ import { connect, useDispatch } from "react-redux"
 import CustomerInfo from "../components/CustomerInfo"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AddContainer from "../components/AddContainer"
-import { addNewCustomer } from "../actions/customersActions"
+import { addNewCustomer, editCustomer } from "../actions/customersActions"
 //insertCustomer (date, name, phone)
 
 
 
-const AddCustomerScreen = ({ navigation }) => {
+const AddCustomerScreen = ({ customers, navigation }) => {
 
+    const id = navigation.getParam('id')
+    const customer = customers.filter(item => item.id === id)
     const dispatch = useDispatch()
 
-    const [name, setName] = useState('')
-    const [phone, setPhone] = useState(null)
+    const [name, setName] = useState(id ? customer[0].name : "")
+    const [phone, setPhone] = useState(id ? customer[0].phone : '')
 
     const [error, setError] = useState(false)
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
-    const dateString = date.toDateString()
+    const [dateString, setDateString] = useState(id ? customer[0].date : date.toDateString())
 
     // const headerProps = { name, phone }
 
@@ -34,7 +36,7 @@ const AddCustomerScreen = ({ navigation }) => {
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
-        setDate(currentDate);
+        setDateString(currentDate.toDateString());
     };
 
     const showMode = currentMode => {
@@ -73,21 +75,32 @@ const AddCustomerScreen = ({ navigation }) => {
                 />
             )}
 
-            <Input placeholder="enter name" onChangeText={text => setName(text)} />
+            <Input placeholder="enter name" value={name} onChangeText={text => setName(text)} />
             {error ? <ErrorText>enter customer name </ErrorText> : null}
-            <Input keyboardType="number-pad" placeholder="phone number" onChangeText={num => setPhone(num)} />
+            <Input keyboardType="number-pad" value={`${phone}`} placeholder="phone number" onChangeText={num => setPhone(num)} />
             <RowDiv>
 
                 <ButtonStyled
                     onPress={() => {
-                        name.length === 0 ? setError(true)
-                            : dispatch(addNewCustomer(dateString, name, phone)).then(() => {
-                                navigation.navigate('Customers')
-                            })
+                        if (id) {
+                            name.length === 0 || phone.length === 0 ? setError(true) :
+                                dispatch(editCustomer(id, dateString, name, phone))
+                                    .then(() => {
+                                        console.log("product edited")
+                                        navigation.goBack()
+                                    })
+                        } else {
+                            name.length === 0 ? setError(true)
+                                : dispatch(addNewCustomer(dateString, name, phone))
+                            navigation.goBack()
+
+                        }
+
+
                     }}  >
                     <ButtonText>Save</ButtonText>
                 </ButtonStyled>
-                <ButtonStyled onPress={() => navigation.navigate('Customers')}   >
+                <ButtonStyled onPress={() => navigation.goBack()}   >
                     <ButtonText>Cancel</ButtonText>
                 </ButtonStyled>
             </RowDiv>
@@ -95,7 +108,14 @@ const AddCustomerScreen = ({ navigation }) => {
     );
 }
 
-export default AddCustomerScreen
+const mapStateToProp = state => {
+    return {
+        customers: state.customers
+    }
+
+}
+
+export default connect(mapStateToProp)(AddCustomerScreen)
 
 // styles ________________________________________________
 

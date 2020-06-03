@@ -8,26 +8,10 @@ import { deleteProductAction } from "../actions/productsActions"
 import { SimpleLineIcons } from '@expo/vector-icons'
 import ProductBox from '../components/ProductBox'
 
-const ProductsScreen = ({ products, salesHistory, navigation }) => {
-    // console.log(salesHistory)
-    const idObj = {}
-
-    useEffect(() => {
-
-        for (let i = 0; i < products.length; i++) {
-            const id = products[i].id
-            idObj[id] = []
-        }
-        for (let j = 0; j < salesHistory.length; j++) {
-            for (let k = 0; k < salesHistory[j].productsArr.length; k++) {
-                const id = salesHistory[j].productsArr[k].id
-                idObj[id] ? idObj[id].push(salesHistory[j].productsArr[k]) : null
-            }
-        }
-    }, [])
-
-
-
+const ProductsScreen = ({ products, salesHistory, navigation, soldProducts }) => {
+    console.log("products screen")
+    console.log(products)
+    // console.log(soldProducts)
 
     return (
         <>
@@ -37,7 +21,7 @@ const ProductsScreen = ({ products, salesHistory, navigation }) => {
 
 
                 {products.map(item => {
-                    return <ProductBox sold={idObj} navigation={navigation} {...item} />
+                    return <ProductBox sold={soldProducts[item.name] ? soldProducts[item.name] : null} navigation={navigation} {...item} />
                 })
                 }
 
@@ -50,7 +34,8 @@ const ProductsScreen = ({ products, salesHistory, navigation }) => {
 const mapProductsToProp = state => {
     return {
         products: state.products,
-        salesHistory: state.salesHistory
+        salesHistory: state.salesHistory,
+        soldProducts: state.soldProducts
     }
 
 }

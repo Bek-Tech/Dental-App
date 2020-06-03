@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, Text, View, FlatList, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'
-import ModalOptions from "../components/ModalOptions"
+import ModalOptions from "./ModalOptions"
 import styled from 'styled-components/native' //  do not forget adding  /native  only for  react native
 import { SimpleLineIcons } from '@expo/vector-icons'
 import { deleteSaleAction } from "../actions/salesActions"
 import { useDispatch } from "react-redux"
 
 
-const Group = (prop) => {
+const SaleBox = (prop) => {
 
     const dispatch = useDispatch()
-    const { id, customerId, customerName, productsArr, year, day, month } = prop
+    const { id, customerId, customerName, productsArr, year, day, month, navigation } = prop
 
     const [modalVisible, setModalVisible] = useState(false)
 
-    return <GroupItem onPress={() => prop.navigate('Details', { customerId })}>
+    return <GroupItem onPress={() => navigation.navigate('Details', { customerId })}>
         {/* <LinearGradient
                 colors={['#9484DE', '#49036C']}
                 start={{ x: -1, y: 0 }}
@@ -27,7 +27,10 @@ const Group = (prop) => {
         <ModalOptions
             visible={modalVisible}
             visibilityToggler={() => setModalVisible(!modalVisible)}
-            onPressEdit={() => { }}
+            onPressEdit={() => {
+                navigation.navigate("Add", { id: id })
+                setModalVisible(false)
+            }}
             onPressDelete={() => {
                 dispatch(deleteSaleAction(id))
                 setModalVisible(!modalVisible)
@@ -72,6 +75,8 @@ const Group = (prop) => {
     </GroupItem>
 
 }
+
+export default SaleBox
 
 //styles ____________________________________________________________
 const RowLeftView = styled.View`
@@ -178,4 +183,3 @@ margin-left: 10px
   width: 40px
  `
 
-export default Group

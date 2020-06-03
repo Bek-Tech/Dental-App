@@ -5,7 +5,7 @@ import CustomerInfo from "../components/CustomerInfo"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { connect, useDispatch } from "react-redux"
 import { insertProduct, updateProduct } from "../DataBase/productsDB"
-import RootContainer from "../components/RootContainer"
+import AddContainer from "../components/AddContainer"
 import { addNewProduct, editProduct } from "../actions/productsActions"
 //insertProduct(date, name, stock) 
 
@@ -18,11 +18,14 @@ const AddProductScreen = ({ navigation, products }) => {
     const dispatch = useDispatch()
     const [name, setName] = useState(id ? product[0].name : "")
     const [stock, setStock] = useState(id ? product[0].stock : "")
+    const [history, setHistory] = useState(id ? product[0].history : [])
+    const historyString = JSON.stringify(history)
     const [error, setError] = useState(false)
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const [dateString, setDateString] = useState(id ? product[0].date : date.toDateString())
+    const mockHistory = JSON.stringify([{ quantity: 500 }, { quantity: 33 }])
 
     // const headerProps = { name, phone }
 
@@ -49,8 +52,8 @@ const AddProductScreen = ({ navigation, products }) => {
 
 
     return (
-        <RootContainer
-            title="Add Product"
+        <AddContainer
+            title={id ? "Edit Product" : "Add New Product"}
         >
 
             <RowDiv>
@@ -87,19 +90,23 @@ const AddProductScreen = ({ navigation, products }) => {
                 <ButtonStyled
                     onPress={() => {
                         if (id) {
-                            name.length === 0 || stock.length === 0 ? setError(true) :
-                                dispatch(editProduct(id, dateString, name, stock))
-                                    .then(() => {
-                                        console.log("product edited")
-                                        navigation.navigate('Products')
-                                    })
+                            name.length === 0 || stock.length === 0 ? setError(true) : dispatch(editProduct(id, dateString, name, stock, mockHistory))
+                            console.log("product edited")
+                            navigation.navigate('Products')
+
                         } else {
-                            name.length === 0 || stock.length === 0 ? setError(true)
-                                : dispatch(addNewProduct(dateString, name, stock))
-                                    .then(() => {
-                                        console.log("new product added")
-                                        navigation.navigate('Products')
-                                    })
+
+                            try {
+                                name.length === 0 || stock.length === 0 ? setError(true)
+                                    : dispatch(addNewProduct(dateString, name, stock, historyString))
+                                        .then(() => {
+                                            console.log("new product added")
+                                            navigation.navigate('Products')
+                                        })
+                            } catch (err) {
+                                alert("error")
+                            }
+
                         }
                     }}  >
                     <ButtonText>Save</ButtonText>
@@ -108,7 +115,7 @@ const AddProductScreen = ({ navigation, products }) => {
                     <ButtonText>Cancel</ButtonText>
                 </ButtonStyled>
             </ButtonRowDiv>
-        </RootContainer>
+        </AddContainer>
     );
 }
 

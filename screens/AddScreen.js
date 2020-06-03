@@ -8,35 +8,47 @@ import { insertSale } from "../DataBase/salesDB"
 import AddContainer from "../components/AddContainer"
 import ModalPicker from "../components/ModalPicker"
 import { Entypo, AntDesign } from '@expo/vector-icons';
-import { addNewSale } from "../actions/salesActions"
+import { addNewSale, editSale } from "../actions/salesActions"
+// editSale(id, day, month, year, customerId, customerName, productsArr) 
 //addNewSale(day, month, year, customerId, customerName, productsArr )
-const AddScreen = ({ navigation, products, customers }) => {
+import { addSoldProducts } from "../actions/soldProductsActions"
+
+
+
+const AddScreen = ({ navigation, products, customers, salesHistory }) => {
+
+    const id = navigation.getParam("id")
+    const saleData = salesHistory.filter(item => item.id === id)
+
     const dispatch = useDispatch()
     const [showCustomerPicker, setShowCustomerPicker] = useState(false);
     const [showProductPicker, setShowProductPicker] = useState(false);
     const [error, setError] = useState(false)
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(id ? new Date(saleData[0].year, saleData[0].month - 1, saleData[0].day) : new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const dateString = date.toDateString()
     const day = date.getDate()
     const month = date.getMonth() + 1
     const year = date.getFullYear()
-    const [productsArr, setProductsArr] = useState([])
-    const [pickedCustomer, setPickedCustomer] = useState({ id: null, name: "choose customer" })
+    const [productsArr, setProductsArr] = useState(id ? saleData[0].productsArr : [])
+    const [pickedCustomer, setPickedCustomer] = useState(id ? { id: id, name: saleData[0].customerName } : { id: null, name: "choose product" })
     const [pickedProduct, setPickedProduct] = useState({ id: null, name: "choose product" })
     const [productAmount, setProductAmount] = useState('')
+    // console.log(dateString)
 
+    const saveNewSale = () => {
+        dispatch(addNewSale(day, month, year, pickedCustomer.id, pickedCustomer.name, productsArr))
+        console.log("added")
+    }
 
-
-    const saveNewSale = async () => {
-
-        await dispatch(addNewSale(day, month, year, pickedCustomer.id, pickedCustomer.name, productsArr))
-
+    const saveChanges = async () => {
+        await dispatch(editSale(id, day, month, year, pickedCustomer.id, pickedCustomer.name, productsArr))
+        console.log("edited")
     }
 
     const addProduct = () => {
-        const obj = { id: pickedProduct.id, name: pickedProduct.name, quantity: productAmount, }
+        const obj = { id: pickedProduct.id, name: pickedProduct.name, quantity: JSON.parse(productAmount) }
         setProductsArr([...productsArr, obj])
     }
 
@@ -75,17 +87,6 @@ const AddScreen = ({ navigation, products, customers }) => {
     const showDatepicker = () => {
         showMode('date');
     };
-
-
-    const HeaderComponent = () => {
-        return <View style={{ flex: 1, justifyContent: "center" }}>
-            <Text>{name}</Text>
-            <Text>{stock}</Text>
-
-        </View>
-
-    }
-
 
 
     return (
@@ -133,7 +134,7 @@ const AddScreen = ({ navigation, products, customers }) => {
                     <Text>{pickedCustomer.name}</Text>
                     <Entypo name="arrow-with-circle-down" size={24} color="black" />
                 </Picker>
-                <ButtonStyled onPress={showDatepicker}   >
+                <ButtonStyled onPress={() => navigation.navigate("AddCustomer")}   >
                     <ButtonText>New Customer</ButtonText>
                 </ButtonStyled>
             </RowDiv>
@@ -171,7 +172,10 @@ const AddScreen = ({ navigation, products, customers }) => {
                         <Text>empty</Text>
                     </EmptyDiv> :
                     productsArr.map(item => {
-                        return <Text>{item.name}</Text>
+                        return <View>
+                            <Text>name :{item.name}</Text>
+                            <Text>amount: {item.quantity}</Text>
+                        </View>
                     })
                 }
 
@@ -184,9 +188,17 @@ const AddScreen = ({ navigation, products, customers }) => {
             <ButtonsRowDiv>
                 <ButtonStyled
                     onPress={() => {
-                        pickedCustomer.id === null || productsArr.length === 0 ? setError(true)
-                            : saveNewSale()
-                        navigation.navigate("SalesList")
+                        if (id) {
+                            saveChanges()
+                            navigation.navigate("SalesList")
+                        } else {
+                            pickedCustomer.id === null || productsArr.length === 0 ? setError(true)
+                                : saveNewSale()
+                            navigation.navigate("SalesList")
+                        }
+
+
+
                     }}  >
                     <ButtonText>Save</ButtonText>
                 </ButtonStyled>
@@ -201,7 +213,8 @@ const AddScreen = ({ navigation, products, customers }) => {
 const mapStateToProps = (state) => {
     return {
         products: state.products,
-        customers: state.customers
+        customers: state.customers,
+        salesHistory: state.salesHistory
     }
 }
 

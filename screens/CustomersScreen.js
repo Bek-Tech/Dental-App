@@ -19,7 +19,7 @@ const CustomersScreen = ({ navigation, customers }) => {
             <RootContainer
                 title="Customers"
             >
-                {customers.length > 0 ?
+                {customers.length >  0 ?
                     <FlatList
                         data={customers}
                         keyExtractor={(item => `${item.id}`)}

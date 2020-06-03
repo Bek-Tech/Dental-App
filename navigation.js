@@ -34,12 +34,12 @@ const RootNavigation = createSwitchNavigator({
             },
             Details: {
                 screen: DetailsScreen,
-                navigationOptions: headerStyle
+                // navigationOptions: headerStyle
             },
             Add: {
                 screen: AddScreen,
                 navigationOptions: {
-
+                    headerShown: false
                 }
             }
         }),
