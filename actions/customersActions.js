@@ -1,6 +1,6 @@
 import { fetchCustomers, deleteCustomer, insertCustomer, updateCustomer } from '../DataBase/customersDB'
 //insertCustomer (date, name, phone)
-import { reFetchCustomers } from "./index"
+
 export const ADD_CUSTOMERS = 'ADD_CUSTOMERS'
 export const ADD_NEW_CUSTOMER = 'ADD_NEW_CUSTOMER'
 export const DELETE_CUSTOMER = "DELETE_CUSTOMER"

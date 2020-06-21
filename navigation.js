@@ -11,6 +11,7 @@ import AddProductScreen from './screens/AddProductScreen'
 import CustomersScreen from './screens/CustomersScreen'
 import ProductDetailsScreen from './screens/ProductDetailsScreen'
 import ProductsScreen from './screens/ProductsScreen'
+import AddDeliveryScreen from './screens/AddDeliveryScreen'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const headerStyle = {
@@ -34,7 +35,9 @@ const RootNavigation = createSwitchNavigator({
             },
             Details: {
                 screen: DetailsScreen,
-                // navigationOptions: headerStyle
+                navigationOptions: {
+                    headerShown: false
+                }
             },
             Add: {
                 screen: AddScreen,
@@ -74,6 +77,12 @@ const RootNavigation = createSwitchNavigator({
             ProductDetails: {
                 screen: ProductDetailsScreen,
                 navigationOptions: { ...headerStyle, title: "Product Info" }
+            },
+            AddDelivery: {
+                screen: AddDeliveryScreen,
+                navigationOptions: {
+                    headerShown: false
+                }
             }
         })
     },

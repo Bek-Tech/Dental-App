@@ -1,7 +1,7 @@
 import { addCustomers } from './customersActions'
 import { addProducts } from './productsActions'
 import { addSales } from './salesActions'
-import { addSoldProducts } from './soldProductsActions'
+
 
 
 
@@ -31,7 +31,7 @@ export const reFetchProducts = () => {
     return async dispatch => {
         try {
             await dispatch(addProducts())
-            dispatch(addSoldProducts())
+            dispatch(addSales())
         } catch (err) {
             throw err
         }

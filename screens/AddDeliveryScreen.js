@@ -1,75 +1,82 @@
-import React, { useState } from 'react'
-import { View, Text, Button, Modal, TouchableOpacity, Dimensions, Keyboard } from 'react-native'
+import React, { useState, useEffect, useCallback } from 'react'
+import { View, Text, Button, Modal, TouchableOpacity, Dimensions, Keyboard, RefreshControl } from 'react-native'
 import { connect, useDispatch } from "react-redux"
 import styled from 'styled-components/native'
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { insertSale } from "../DataBase/salesDB"
-//insertSale(day, month, year, customerId, customerName, productsArr )
 import AddContainer from "../components/AddContainer"
 import ModalPicker from "../components/ModalPicker"
-import { Entypo, AntDesign } from '@expo/vector-icons';
-import { addNewSale, editSale } from "../actions/salesActions"
-// editSale(id, day, month, year, customerId, customerName, productsArr) 
-//addNewSale(day, month, year, customerId, customerName, productsArr )
+import { Entypo, AntDesign, FontAwesome } from '@expo/vector-icons';
+import { editProduct } from "../actions/productsActions"
+// editProduct(id, date, name, stock, history)
+import AddedProduct from '../components/AddedProduct';
 
 
 
 
-const AddScreen = ({ navigation, products, customers, salesHistory }) => {
 
-    const id = navigation.getParam("id")
-    const saleData = salesHistory.filter(item => item.id === id)
+const AddDeliveryScreen = ({ navigation, products, customers, salesHistory }) => {
+
 
     const dispatch = useDispatch()
-    const [showCustomerPicker, setShowCustomerPicker] = useState(false);
     const [showProductPicker, setShowProductPicker] = useState(false);
     const [error, setError] = useState(false)
-    const [date, setDate] = useState(id ? new Date(saleData[0].year, saleData[0].month - 1, saleData[0].day) : new Date());
+    const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const dateString = date.toDateString()
-    const day = date.getDate()
-    const month = date.getMonth() + 1
-    const year = date.getFullYear()
-    const [productsArr, setProductsArr] = useState(id ? saleData[0].productsArr : [])
-    const [pickedCustomer, setPickedCustomer] = useState(id ? { id: id, name: saleData[0].customerName } : { id: null, name: "choose product" })
+    const [productsArr, setProductsArr] = useState([])
     const [pickedProduct, setPickedProduct] = useState({ id: null, name: "choose product" })
     const [productAmount, setProductAmount] = useState('')
-    // console.log(dateString)
+    const [pickedItemId, setPickedItemId] = useState({})
 
-    const saveNewSale = () => {
-        dispatch(addNewSale(day, month, year, pickedCustomer.id, pickedCustomer.name, productsArr))
-        console.log("added")
+
+
+    const modalPickerData = products.filter(item => {
+        return pickedItemId[item.id] !== item.id
+    })
+    // console.log("products")
+    // console.log(productsArr)
+
+
+
+    const saveNewDelivery = () => {
+        productsArr.forEach(item => {
+            const historyArr = [...item.history, item.deliveryObj]
+            const stringHistoryArr = JSON.stringify(historyArr)
+            dispatch(editProduct(item.id, item.date, item.name, item.stock, stringHistoryArr))
+        })
+
     }
 
-    const saveChanges = async () => {
-        await dispatch(editSale(id, day, month, year, pickedCustomer.id, pickedCustomer.name, productsArr))
-        console.log("edited")
-    }
 
     const addProduct = () => {
-        const obj = { customerId: pickedCustomer.id, id: pickedProduct.id, name: pickedProduct.name, quantity: JSON.parse(productAmount) }
+        const obj = {
+            ...pickedProduct,
+            deliveryObj: {
+                id: pickedProduct.id,
+                data: dateString,
+                quantity: JSON.parse(productAmount),
+            }
+        }
         setProductsArr([...productsArr, obj])
     }
 
+    const deleteProduct = (id, index) => {
+        const result = productsArr.filter((item, i) => { return i !== index })
+        setPickedItemId({ ...pickedItemId, [id]: false })
+        setProductsArr(result)
+    }
 
-
-
-    const saleObj = {
-        day,
-        month,
-        year,
-        customerId: pickedCustomer.id,
-        customerName: pickedCustomer.name,
-        productsArr
+    const changeAmountAddedProduct = (value, index) => {
+        const result = productsArr
+        result[index].deliveryObj.quantity = value
+        setProductsArr(result)
     }
 
 
-    // const headerProps = { name, phone }
 
-    // const day = date.getDay()
-    // const month = date.getMonth() + 1
-    // const year = date.getFullYear()
+
+
 
 
 
@@ -89,24 +96,19 @@ const AddScreen = ({ navigation, products, customers, salesHistory }) => {
     };
 
 
-    return (
-        <AddContainer
-            title="Add Sale"
-            BackButton={() => navigation.goBack()}
-        >
-            {/* //________________________________________________________ */}
 
-            <ModalPicker
-                dataName="customers"
-                pickedValue={(value) => {
-                    setPickedCustomer(value)
-                    setError(false)
-                }}
-                showTrigger={() => setShowCustomerPicker(!showCustomerPicker)}
-                show={showCustomerPicker}
-            />
+
+    return (
+
+        <AddContainer
+            BackButton={() => navigation.goBack()}
+            title=" New Delivery"
+        >
+
+            {/* __________________________________________________________________ */}
             <ModalPicker
                 dataName="products"
+                data={modalPickerData}
                 pickedValue={(value) => setPickedProduct(value)}
                 showTrigger={() => setShowProductPicker(!showProductPicker)}
                 show={showProductPicker}
@@ -131,18 +133,7 @@ const AddScreen = ({ navigation, products, customers, salesHistory }) => {
                 />
             )}
 
-            <RowDiv>
-                <Picker
-                    onPress={() => setShowCustomerPicker(!showCustomerPicker)}
-                >
-                    <Text>{pickedCustomer.name}</Text>
-                    <Entypo name="arrow-with-circle-down" size={24} color="black" />
-                </Picker>
-                <ButtonStyled onPress={() => navigation.navigate("AddCustomer")}   >
-                    <ButtonText>New Customer</ButtonText>
-                </ButtonStyled>
-            </RowDiv>
-            {error ? <ErrorText>Choose Customer </ErrorText> : null}
+
             <RowDiv>
                 <Picker
                     onPress={() => setShowProductPicker(!showProductPicker)}
@@ -159,9 +150,10 @@ const AddScreen = ({ navigation, products, customers, salesHistory }) => {
             <AddButtonDiv>
                 <AddButton
                     onPress={() => {
-                        pickedProduct.id === null || productAmount === 0 || pickedCustomer.id === null ?
+                        pickedProduct.id === null ?
                             setError(true) + console.log("error") :
-                            addProduct()
+                            setPickedItemId({ ...pickedItemId, [pickedProduct.id]: pickedProduct.id })
+                        addProduct()
                         Keyboard.dismiss()
                         setPickedProduct({ id: null, name: "choose product" })
                         setProductAmount(0)
@@ -169,24 +161,29 @@ const AddScreen = ({ navigation, products, customers, salesHistory }) => {
                     <AntDesign name="plus" size={24} color="#fff" />
                 </AddButton>
             </AddButtonDiv>
+            {/* _________________aded products list_____________________________________ */}
+            {/*  I had problem with re rendering list items after delete one of them  , so decided reusing map function when value of refreshing state changes*/}
             <ProductsDiv>
                 <Text>Products</Text>
                 {productsArr.length === 0 ?
                     <EmptyDiv>
                         <Text>empty</Text>
                     </EmptyDiv> :
+
                     productsArr.map((item, index) => {
-                        return <RowDiv key={index}>
-                            <RowLeftView>
-                                <Text>name: </Text>
-                                <BoldText>{item.name}</BoldText>
-                            </RowLeftView>
-                            <RowRightView>
-                                <Text>quantity: </Text>
-                                <BoldText>{item.quantity}</BoldText>
-                            </RowRightView>
-                        </RowDiv>
+                        return <AddedProduct
+                            key={item.id}
+                            index={index}
+                            onDelete={(id, index) => deleteProduct(id, index)}
+                            onChangeAmount={(value, index) => changeAmountAddedProduct(value, index)}
+                            {...item}
+                        />
                     })
+
+
+
+
+
                 }
 
             </ProductsDiv>
@@ -198,25 +195,19 @@ const AddScreen = ({ navigation, products, customers, salesHistory }) => {
             <ButtonsRowDiv>
                 <ButtonStyled
                     onPress={() => {
-                        if (id) {
-                            saveChanges()
-                            navigation.navigate("SalesList")
-                        } else {
-                            pickedCustomer.id === null || productsArr.length === 0 ? setError(true)
-                                : saveNewSale()
-                            navigation.navigate("SalesList")
-                        }
-
-
+                        productsArr.length === 0 ? setError(true)
+                            : saveNewDelivery()
+                        navigation.navigate("Products")
 
                     }}  >
                     <ButtonText>Save</ButtonText>
                 </ButtonStyled>
-                <ButtonStyled onPress={() => navigation.navigate('SalesList')}   >
+                <ButtonStyled onPress={() => navigation.goBack()}   >
                     <ButtonText>Cancel</ButtonText>
                 </ButtonStyled>
             </ButtonsRowDiv>
         </AddContainer>
+
     );
 }
 
@@ -228,10 +219,18 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(AddScreen)
+export default connect(mapStateToProps)(AddDeliveryScreen)
 
 
 //styles_________________________________________________________
+
+const DeleteButtonDiv = styled.TouchableOpacity`
+borderWidth: 0px
+paddingTop:7px
+width: 20px
+align-items: center
+justify-content: flex-end
+`
 
 const RowLeftView = styled.View`
 height: 20px
@@ -291,10 +290,10 @@ ${'' /* shadow-offset: {width: 0, height: 2} */}
             `
 
 
-const ProductsDiv = styled.View`
+const ProductsDiv = styled.ScrollView`
 margin-top: 5px
 width: 100%
-height: ${Dimensions.get('window').height / 2.8}px
+height: ${Dimensions.get('window').height / 2}px
 border-top-width: 2px
 border-bottom-width: 2px
 border-color: black
@@ -342,6 +341,24 @@ border-radius: 2px
 padding: 0px 10px
 
 `
+const AddedAmountInput = styled.TextInput`
+width: 100px
+align-items: center
+justify-content: center
+height: 33px
+border-width: 2px
+border-color: black 
+border-radius: 2px
+padding: 0px 6px
+
+`
+
+const ListRowDiv = styled.View`
+flex:1
+flex-direction: row
+align-items: center
+margin: 5px 0px
+`
 
 const RowDiv = styled.View`
 padding: 3px 0px 
@@ -384,4 +401,27 @@ background : #261460
 border-color : black
 border-width : 2px
 
+`
+
+const ModalView = styled.View`
+borderWidth: 2px
+borderColor: gray
+width:200px
+height: 100px 
+    background-color: white
+    border-radius: 20px
+    padding: 10px
+    align-items: center
+    justify-content: center
+    shadow-color: #000
+shadow-opacity: 0.5
+shadow-radius: 6.3px
+elevation: 10
+`
+
+const ModalContainer = styled.TouchableOpacity`
+flex: 1
+    justify-Content: center
+    alignItems: center
+    marginBottom: 60px
 `

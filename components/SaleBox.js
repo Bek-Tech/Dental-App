@@ -15,7 +15,7 @@ const SaleBox = (prop) => {
 
     const [modalVisible, setModalVisible] = useState(false)
 
-    return <GroupItem onPress={() => navigation.navigate('Details', { customerId })}>
+    return <GroupItem onPress={() => navigation.navigate('Details', { customerName })}>
         {/* <LinearGradient
                 colors={['#9484DE', '#49036C']}
                 start={{ x: -1, y: 0 }}

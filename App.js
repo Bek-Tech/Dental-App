@@ -3,7 +3,7 @@ import { createAppContainer } from 'react-navigation'; // back and forward navig
 import { Provider, useDispatch } from 'react-redux'
 import store from "./reducers/index"
 import RootNavigation from './navigation'
-
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 
 
@@ -13,8 +13,11 @@ const Screens = createAppContainer(RootNavigation);
 export default class App extends Component {
   render() {
     return (
+
       <Provider store={store}>
-        <Screens />
+        <SafeAreaProvider>
+          <Screens />
+        </SafeAreaProvider>
       </Provider>
     );
   }

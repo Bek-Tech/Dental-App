@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import { addSales } from "../actions/salesActions"
 import { addCustomers } from '../actions/customersActions'
 import { addProducts } from "../actions/productsActions"
-import { addSoldProducts } from "../actions/soldProductsActions"
+
 
 const LoadingScreen = ({ navigation }) => {
 
@@ -42,7 +42,7 @@ const LoadingScreen = ({ navigation }) => {
         initProducts()
             .then(() => {
                 dispatch(addProducts())
-                dispatch(addSoldProducts())
+                // dispatch(addSoldProducts())
                 console.log('products and sold received...')
 
             })

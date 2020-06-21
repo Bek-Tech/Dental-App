@@ -148,7 +148,16 @@ background: rgba(0,0,0,0.8)
     alignItems: center
    
 `
+const RowDiv = styled.View`
+width: 100%
+ ${'' /* borderColor: black
+   borderWidth: 2px */}
+${'' /* padding: 5px */}
+flex-direction: row
+justify-content: space-evenly
+align-items: center
 
+`
 
 const CircleButton = styled.TouchableOpacity`
 

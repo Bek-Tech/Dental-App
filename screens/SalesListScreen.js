@@ -12,12 +12,14 @@ import { FlatList, ScrollView } from 'react-native-gesture-handler';
 
 const SalesListScreen = ({ salesHistory, navigation, soldProducts }) => {
 
+
     const dispatch = useDispatch()
     const [visible, setVisible] = useState(false)
     // console.log(soldProducts)
 
     return (<View style={{ flex: 1 }}>
         <RootContainer
+            addButton={() => navigation.navigate("Add")}
             title='Journal'
         // headerComponent={<HeaderComponent />}
         >
@@ -45,8 +47,6 @@ const SalesListScreen = ({ salesHistory, navigation, soldProducts }) => {
 
         </RootContainer>
 
-        <AddButton onPress={() => navigation.navigate("Add")} />
-
     </View>
 
     );
@@ -54,8 +54,9 @@ const SalesListScreen = ({ salesHistory, navigation, soldProducts }) => {
 }
 const mapSalesHistoryToProps = state => {
     return {
-        salesHistory: state.salesHistory,
-        soldProducts: state.soldProducts
+
+        salesHistory: state.salesHistory.sales,
+        soldProducts: state.salesHistory.productsSale
     }
 }
 

@@ -10,10 +10,8 @@ export const addProducts = () => {
     return async dispatch => {
         try {
             const productsResult = await fetchProducts()
-            // const salesResult = await fetchSales()
             const products = productsResult.rows._array
-            // const sales = salesResult.rows._array
-            // const dataObj = {}
+
 
             if (products.length > 0) {
                 const result = products.map(item => {
@@ -21,8 +19,7 @@ export const addProducts = () => {
                     const totalReceived = parsedHistory.length > 0 ? item.stock + parsedHistory.reduce((acc, item) => {
                         return item.quantity + acc
                     }, 0) : item.stock
-                    console.log("productaction")
-                    console.log(totalReceived)
+
                     return { ...item, history: parsedHistory, totalReceived: totalReceived }
                 })
 

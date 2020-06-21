@@ -1,22 +1,24 @@
 
-import { ADD_SALES, ADD_NEW_SALE, DELETE_SALE } from "../actions/salesActions"
+import { ADD_SALES, ADD_NEW_SALE, DELETE_SALE, ADD_SOLD_PRODUCTS } from "../actions/salesActions"
 
 
 
-const initialState = []
+const initialState = {
+    sales: [],
+    productsSale: {}
+}
 
 export default (state = initialState, action) => {
 
     switch (action.type) {
         case ADD_SALES:
-            state = action.payload
+            state = { ...state, sales: action.payload }
             return state
         case ADD_NEW_SALE:
             return [...state, action.payload]
-        case DELETE_SALE:
-            return state.filter(item => {
-                return item.id !== action.id
-            })
+        case ADD_SOLD_PRODUCTS:
+            state = { ...state, productsSale: action.payload }
+            return state
 
         default:
             return state

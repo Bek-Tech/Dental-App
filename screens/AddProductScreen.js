@@ -25,7 +25,9 @@ const AddProductScreen = ({ navigation, products }) => {
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const [dateString, setDateString] = useState(id ? product[0].date : date.toDateString())
-    const mockHistory = JSON.stringify([{ quantity: 500 }, { quantity: 33 }])
+
+
+
 
     // const headerProps = { name, phone }
 
@@ -53,6 +55,7 @@ const AddProductScreen = ({ navigation, products }) => {
 
     return (
         <AddContainer
+            BackButton={() => navigation.goBack()}
             title={id ? "Edit Product" : "Add New Product"}
         >
 
@@ -90,7 +93,7 @@ const AddProductScreen = ({ navigation, products }) => {
                 <ButtonStyled
                     onPress={() => {
                         if (id) {
-                            name.length === 0 || stock.length === 0 ? setError(true) : dispatch(editProduct(id, dateString, name, stock, mockHistory))
+                            name.length === 0 || stock.length === 0 ? setError(true) : dispatch(editProduct(id, dateString, name, stock, historyString))
                             console.log("product edited")
                             navigation.navigate('Products')
 

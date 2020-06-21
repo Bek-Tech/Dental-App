@@ -18,8 +18,9 @@ const CustomersScreen = ({ navigation, customers }) => {
         <>
             <RootContainer
                 title="Customers"
+                addButton={() => navigation.navigate("AddCustomer")}
             >
-                {customers.length >  0 ?
+                {customers.length > 0 ?
                     <FlatList
                         data={customers}
                         keyExtractor={(item => `${item.id}`)}
@@ -33,7 +34,7 @@ const CustomersScreen = ({ navigation, customers }) => {
 
             </RootContainer>
 
-            <AddButton onPress={() => navigation.navigate("AddCustomer")} />
+
         </>
     )
 }
@@ -41,7 +42,7 @@ const CustomersScreen = ({ navigation, customers }) => {
 const mapCustomersToProps = state => {
     return {
         customers: state.customers,
-        salesHistory: state.salesHistory
+        salesHistory: state.salesHistory.sales
     }
 
 }

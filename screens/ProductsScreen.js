@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, Button } from 'react-native'
 import RootContainer from "../components/RootContainer"
 import { connect, useDispatch } from "react-redux"
 import styled from 'styled-components/native'
@@ -8,15 +8,18 @@ import { deleteProductAction } from "../actions/productsActions"
 import { SimpleLineIcons } from '@expo/vector-icons'
 import ProductBox from '../components/ProductBox'
 
-const ProductsScreen = ({ products, salesHistory, navigation, soldProducts }) => {
-    console.log("products screen")
-    console.log(products)
-    // console.log(soldProducts)
 
+const ProductsScreen = ({ products, salesHistory, navigation, soldProducts }) => {
+    // console.log("products screen")
+    // console.log(products)
+    // console.log(soldProducts)
+    const dispatch = useDispatch()
     return (
         <>
             <RootContainer
                 title='Products'
+                addButton={() => navigation.navigate("AddProduct", { id: null })}
+                newDeliveryButton={() => (navigation.navigate("AddDelivery"))}
             >
 
 
@@ -26,7 +29,7 @@ const ProductsScreen = ({ products, salesHistory, navigation, soldProducts }) =>
                 }
 
             </RootContainer>
-            <AddButton onPress={() => navigation.navigate("AddProduct", { id: null })} />
+
         </>
     )
 }
@@ -34,8 +37,8 @@ const ProductsScreen = ({ products, salesHistory, navigation, soldProducts }) =>
 const mapProductsToProp = state => {
     return {
         products: state.products,
-        salesHistory: state.salesHistory,
-        soldProducts: state.soldProducts
+        salesHistory: state.salesHistory.sales,
+        soldProducts: state.salesHistory.productsSale
     }
 
 }

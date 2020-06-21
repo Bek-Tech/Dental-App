@@ -2,16 +2,13 @@ import React, { useState } from 'react'
 import { View, Text, Modal, TouchableOpacity, Dimensions } from 'react-native'
 import styled from 'styled-components/native'
 import { ScrollView } from 'react-native-gesture-handler'
+import { connect, useDispatch } from "react-redux"
+
+
+const ModalPicker = ({ show, showTrigger, dataName, pickedValue, data, soldProducts }) => {
 
 
 
-const ModalPicker = ({ show, showTrigger, data, pickedValue }) => {
-    // show = boolean
-    // data = array
-    //pickedValue = {(pickedValue)=>  set"someState"(pickedValue)}
-    //showTrigger ={()=> set"visibility"(boolean)}
-    const windowHeight = Dimensions.get('window').height;
-    const windowWidth = Dimensions.get('window').width;
 
     return <Modal
         animationType="fade"
@@ -31,24 +28,56 @@ const ModalPicker = ({ show, showTrigger, data, pickedValue }) => {
 
                     }}
                 >
-                    {data.length === 0 ?
-                        <Text>your list is empty</Text> :
-                        data.map(item => {
-                            return <TouchableOpacity
-                                style={{
-                                    flex: 1,
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    // borderColor: "black",
-                                    // borderBottomWidth: 2,
-                                }}
-                                onPress={() => {
-                                    pickedValue(item)
-                                    showTrigger();
-                                }}>
-                                <ListText >{item.name}</ListText>
-                            </TouchableOpacity>
-                        })}
+                    {dataName === "customers" ?
+                        data.length === 0 || !data ?
+                            <Text>your list is empty</Text> :
+                            data.map(item => {
+                                return <TouchableOpacity
+                                    style={{
+                                        flex: 1,
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        // borderColor: "black",
+                                        // borderBottomWidth: 2,
+                                    }}
+                                    onPress={() => {
+                                        pickedValue(item)
+                                        showTrigger();
+                                    }}>
+                                    <ListText >{item.name}</ListText>
+                                </TouchableOpacity>
+                            }) :
+                        data.length === 0 || !data ?
+                            <Text>your list is empty</Text> :
+                            data.map(item => {
+                                const inStock = item.totalReceived - soldProducts[item.name].totalSold
+                                if (inStock < 0) {
+                                    return <RowDiv>
+                                        <GrayText>{item.name}</GrayText>
+                                        <RedText>{inStock}</RedText>
+                                    </RowDiv>
+                                } else {
+                                    return <TouchableOpacity
+                                        style={{
+                                            // borderColor: "black",
+                                            // borderWidth: 2,
+                                        }}
+                                        onPress={() => {
+                                            pickedValue(item)
+                                            showTrigger();
+                                        }}>
+                                        <RowDiv>
+                                            <ListText >{item.name}</ListText>
+                                            <ListText>{inStock}</ListText>
+                                        </RowDiv>
+                                    </TouchableOpacity>
+                                }
+
+                            })
+                    }
+
+
+
                 </ScrollView>
                 <RowDiv>
                     <ModuleButton
@@ -68,8 +97,14 @@ const ModalPicker = ({ show, showTrigger, data, pickedValue }) => {
 }
 
 
+const mapStateToProps = state => {
+    return {
+        soldProducts: state.salesHistory.productsSale
+    }
+}
 
-export default ModalPicker
+
+export default connect(mapStateToProps)(ModalPicker)
 
 
 const ListText = styled.Text`
@@ -77,11 +112,23 @@ color: #277FC4
 font-size: 20px
 marginTop: 5px
 `
+const GrayText = styled.Text`
+color: gray
+font-size: 20px
+marginTop: 5px
+`
+const RedText = styled.Text`
+color: red
+font-size: 20px
+marginTop: 5px
+`
 
 const RowDiv = styled.View`
+    ${'' /* borderColor: black
+   borderWidth: 2px */}
 padding: 5px
 flex-direction: row
-justify-content: space-around
+justify-content: space-between
 align-items: center
 
 `

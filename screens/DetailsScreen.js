@@ -12,17 +12,18 @@ import AddContainer from "../components/AddContainer"
 const DetailsScreen = ({ navigation, salesHistory, customers }) => {
 
 
-    const CustomerId = navigation.getParam('customerId')
-    const purchaseData = salesHistory.filter(item => item.customerId === CustomerId)
-    const customer = customers.filter(item => item.id === CustomerId)
+    const CustomerName = navigation.getParam('customerName')
+    const purchaseData = salesHistory.filter(item => item.customerName === CustomerName)
+    const customer = customers.filter(item => item.name === CustomerName)
 
 
     return (
 
         <AddContainer
-            head={<CustomerInfo navigation={navigation} {...customer[0]} />}
+            BackButton={() => navigation.goBack()}
+            title="Details"
         >
-
+            <CustomerInfo navigation={navigation} {...customer[0]} />
             <HistoryDiv>
                 <Text>Purchase History</Text>
                 <RowDiv>
@@ -51,7 +52,7 @@ const DetailsScreen = ({ navigation, salesHistory, customers }) => {
                                             <BoldText>{item.name}</BoldText>
                                         </RowLeftView>
                                         <RowRightView>
-                                            <BoldText>{item.quantity}</BoldText>
+                                            <BoldText> {item.quantity}</BoldText>
                                         </RowRightView>
                                     </RowDiv>
 
@@ -62,7 +63,7 @@ const DetailsScreen = ({ navigation, salesHistory, customers }) => {
 
 
             </HistoryDiv>
-            <View style={{ height: 60 }}></View>
+
         </AddContainer>
 
     )
@@ -70,7 +71,7 @@ const DetailsScreen = ({ navigation, salesHistory, customers }) => {
 
 const mapCustomersSalesHistoryToProps = state => {
     return {
-        salesHistory: state.salesHistory,
+        salesHistory: state.salesHistory.sales,
         customers: state.customers
     }
 }
@@ -90,7 +91,7 @@ flex: 1
 align-Items: flex-start
 padding: 25px 
 margin: 5px 0px
-background : grey
+background : white
 border-radius : 25px
 shadow-color: #000
 shadow-opacity: 0.5
