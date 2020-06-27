@@ -79,7 +79,7 @@ export default ProductBox
 const ProductsContainer = styled.TouchableOpacity`
 flex:1 
 border-radius: 15px
-background:white
+background: grey
 margin: 5px 15px
 padding : 5px 15px
  shadow-color: #000

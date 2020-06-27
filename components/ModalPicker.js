@@ -50,14 +50,15 @@ const ModalPicker = ({ show, showTrigger, dataName, pickedValue, data, soldProdu
                         data.length === 0 || !data ?
                             <Text>your list is empty</Text> :
                             data.map(item => {
-                                const inStock = item.totalReceived - soldProducts[item.name].totalSold
+                                const inStock = soldProducts[item.id] ? item.totalReceived - soldProducts[item.id].totalSold : item.totalReceived
                                 if (inStock < 0) {
-                                    return <RowDiv>
+                                    return <RowDiv key={item.id}>
                                         <GrayText>{item.name}</GrayText>
                                         <RedText>{inStock}</RedText>
                                     </RowDiv>
                                 } else {
                                     return <TouchableOpacity
+                                        key={item.id}
                                         style={{
                                             // borderColor: "black",
                                             // borderWidth: 2,

@@ -44,6 +44,7 @@ const LoadingScreen = ({ navigation }) => {
                 dispatch(addProducts())
                 // dispatch(addSoldProducts())
                 console.log('products and sold received...')
+                navigation.navigate("MainFlow")
 
             })
             .catch(err => {
@@ -51,8 +52,6 @@ const LoadingScreen = ({ navigation }) => {
                 console.log(err);
             })
 
-
-        navigation.navigate("MainFlow")
 
     })
 

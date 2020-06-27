@@ -14,7 +14,7 @@ import AddedProduct from '../components/AddedProduct';
 
 
 
-const AddDeliveryScreen = ({ navigation, products, customers, salesHistory }) => {
+const AddDeliveryScreen = ({ navigation, products, customers, salesHistory, productsSale }) => {
 
 
     const dispatch = useDispatch()
@@ -34,14 +34,14 @@ const AddDeliveryScreen = ({ navigation, products, customers, salesHistory }) =>
     const modalPickerData = products.filter(item => {
         return pickedItemId[item.id] !== item.id
     })
-    // console.log("products")
-    // console.log(productsArr)
+
+
 
 
 
     const saveNewDelivery = () => {
         productsArr.forEach(item => {
-            const historyArr = [...item.history, item.deliveryObj]
+            const historyArr = [...item.history, item.productObj]
             const stringHistoryArr = JSON.stringify(historyArr)
             dispatch(editProduct(item.id, item.date, item.name, item.stock, stringHistoryArr))
         })
@@ -52,7 +52,7 @@ const AddDeliveryScreen = ({ navigation, products, customers, salesHistory }) =>
     const addProduct = () => {
         const obj = {
             ...pickedProduct,
-            deliveryObj: {
+            productObj: {
                 id: pickedProduct.id,
                 data: dateString,
                 quantity: JSON.parse(productAmount),
@@ -69,7 +69,7 @@ const AddDeliveryScreen = ({ navigation, products, customers, salesHistory }) =>
 
     const changeAmountAddedProduct = (value, index) => {
         const result = productsArr
-        result[index].deliveryObj.quantity = value
+        result[index].productObj.quantity = value
         setProductsArr(result)
     }
 
@@ -162,7 +162,7 @@ const AddDeliveryScreen = ({ navigation, products, customers, salesHistory }) =>
                 </AddButton>
             </AddButtonDiv>
             {/* _________________aded products list_____________________________________ */}
-            {/*  I had problem with re rendering list items after delete one of them  , so decided reusing map function when value of refreshing state changes*/}
+
             <ProductsDiv>
                 <Text>Products</Text>
                 {productsArr.length === 0 ?
@@ -176,14 +176,10 @@ const AddDeliveryScreen = ({ navigation, products, customers, salesHistory }) =>
                             index={index}
                             onDelete={(id, index) => deleteProduct(id, index)}
                             onChangeAmount={(value, index) => changeAmountAddedProduct(value, index)}
+                            productsSale={productsSale}
                             {...item}
                         />
                     })
-
-
-
-
-
                 }
 
             </ProductsDiv>
@@ -215,7 +211,8 @@ const mapStateToProps = (state) => {
     return {
         products: state.products,
         customers: state.customers,
-        salesHistory: state.salesHistory.sales
+        salesHistory: state.salesHistory.sales,
+        productsSale: state.salesHistory.productsSale
     }
 }
 

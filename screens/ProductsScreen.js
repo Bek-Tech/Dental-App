@@ -11,7 +11,7 @@ import ProductBox from '../components/ProductBox'
 
 const ProductsScreen = ({ products, salesHistory, navigation, soldProducts }) => {
     // console.log("products screen")
-    // console.log(products)
+    console.log(products)
     // console.log(soldProducts)
     const dispatch = useDispatch()
     return (
@@ -24,7 +24,7 @@ const ProductsScreen = ({ products, salesHistory, navigation, soldProducts }) =>
 
 
                 {products.map(item => {
-                    return <ProductBox sold={soldProducts[item.name] ? soldProducts[item.name] : null} navigation={navigation} {...item} />
+                    return <ProductBox sold={soldProducts[item.id] ? soldProducts[item.id] : null} navigation={navigation} {...item} />
                 })
                 }
 

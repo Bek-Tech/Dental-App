@@ -10,28 +10,23 @@ export const ADD_SOLD_PRODUCTS = "ADD_SOLD_PRODUCTS"
 
 export const addSoldProducts = (sales) => {
     return async dispatch => {
-        // console.log("triggered")
         try {
             const productsResult = await fetchProducts()
             const products = productsResult.rows._array
 
             const dataObj = {}
             for (let i = 0; i < products.length; i++) {
-                console.log(1)
-                const name = products[i].name
-                // const parsedHistory = JSON.parse(products[i].history)
-                dataObj[name] = {}
-                dataObj[name].soldArr = []
-                dataObj[name].totalSold = 0
-                // console.log("dataObj")
-                // console.log(dataObj["Rrr"])
+                const id = products[i].id
+                dataObj[id] = {}
+                dataObj[id].soldArr = []
+                dataObj[id].totalSold = 0
             }
             for (let j = 0; j < sales.length; j++) {
                 const productsArr = JSON.parse(sales[j].productsArr)
                 productsArr.forEach(item => {
-                    if (dataObj[item.name]) {
-                        dataObj[item.name].soldArr.push(item)
-                        dataObj[item.name].totalSold = dataObj[item.name].totalSold + item.quantity
+                    if (dataObj[item.id]) {
+                        dataObj[item.id].soldArr.push(item)
+                        dataObj[item.id].totalSold = dataObj[item.id].totalSold + item.quantity
                     } else {
                         return null
                     }
@@ -110,7 +105,6 @@ export const editSale = (id, day, month, year, customerId, customerName, product
         try {
             const stringArr = JSON.stringify(productsArr)
             await updateSale(id, day, month, year, customerId, customerName, stringArr)
-            console.log("action")
             dispatch(addSales())
         } catch (err) {
             throw err

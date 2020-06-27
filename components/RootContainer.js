@@ -82,16 +82,16 @@ const RootContainer = ({ children, title, addButton, newDeliveryButton }) => {
                 resizeRadius,
                 {
                     toValue: 0,
-                    duration: 500,
+                    duration: 300,
                 }
-            ).start(() => {
-                Animated.timing(resizeHeader,
-                    {
-                        toValue: 0,
-                        duration: 500,
-                    }
-                ).start()
-            })
+            ).start(),
+            Animated.timing(resizeHeader,
+                {
+                    toValue: 0,
+                    duration: 700,
+                }
+            ).start()
+
 
         )
         : Animated.add(
@@ -193,7 +193,7 @@ const RootContainer = ({ children, title, addButton, newDeliveryButton }) => {
 
     const scrollTextSize = AnimationY.interpolate({
         inputRange: [0, 100, 50000],
-        outputRange: [60, 30, 30],
+        outputRange: [60, 0, 0],
         extrapolate: 'clamp'
     })
 
@@ -250,19 +250,19 @@ const RootContainer = ({ children, title, addButton, newDeliveryButton }) => {
         >
 
             <BodyContainer>
-                <ImageBackground source={require("../assets/background.jpg")}
+                {/* <ImageBackground source={require("../assets/background.jpg")}
                     style={{
                         flex: 1,
                         resizeMode: "cover",
                         justifyContent: "center"
-                    }}>
+                    }}> */}
 
 
 
 
 
-                    {/* __________________________________________ */}
-                    {/* <View style={styles.ovalChild}>
+                {/* __________________________________________ */}
+                {/* <View style={styles.ovalChild}>
                         <Animated.Text style={{
                             color: "black",
                             fontSize: scrollTextSize,
@@ -283,48 +283,137 @@ const RootContainer = ({ children, title, addButton, newDeliveryButton }) => {
 
                 </View> */}
 
-                    {/* _______________ScrollView___________________________________________________ */}
+                {/* _______________ScrollView___________________________________________________ */}
 
-                    <Animated.ScrollView
-                        style={{
-                            flex: 1,
-                            paddingTop: 300,
-                            paddingBottom: 100
-                        }}
-                        scrollEventThrottle={5}
+                <Animated.ScrollView
+                    style={{
+                        flex: 1,
+                        // paddingTop: 300,
+                        paddingBottom: 100
+                    }}
+                    scrollEventThrottle={5}
 
-                        onScroll={Animated.event(
-                            [{
-                                nativeEvent: {
-                                    contentOffset: {
-                                        y: AnimationY
-                                    }
+                    onScroll={Animated.event(
+                        [{
+                            nativeEvent: {
+                                contentOffset: {
+                                    y: AnimationY
                                 }
-                            }], {
-                            listener: (event) => {
-                                event.nativeEvent.contentOffset.y > 200 ?
-                                    handleScroll ? null : setHandleScroll(true) :
-                                    handleScroll ? setHandleScroll(false) : null
                             }
-                        })
+                        }], {
+                        listener: (event) => {
+                            event.nativeEvent.contentOffset.y > 150 ?
+                                handleScroll ? null : setHandleScroll(true) :
+                                handleScroll ? setHandleScroll(false) : null
                         }
-                    // onMomentumScrollBegin={() => resizeAnimTrigger()}
-                    // onMomentumScrollEnd={() => fadeInTrigger()}
-                    // onScrollToTop={() => resizeAnimTrigger()}
-                    >
+                    })
+                    }
+                // onMomentumScrollBegin={() => resizeAnimTrigger()}
+                // onMomentumScrollEnd={() => fadeInTrigger()}
+                // onScrollToTop={() => resizeAnimTrigger()}
+                >
 
+                    {/* ___________________________________________oval header____________________________________________________________ */}
 
+                    <Animated.View style={{
+                        ...styles.headerContainerStyle,
+                        height: 300
+                    }} >
 
+                        <Animated.View style={{ height: scrollOvalHeaderHeight }}></Animated.View>
+                        <Animated.View style={{
+                            ...styles.ovalHeaderContainer,
+                            borderRadius: scrollHeaderRadius,
 
-                        <View style={{
-                            height: 20,
-                            flex: 1,
-                            justifyContent: "center",
-                            alignItems: "center"
                         }} >
+                            <View style={styles.headerItem}>
+                                {/* <View style={{ height: 0, backgroundColor: 'red' }}></View> */}
+                                <ImageBackground source={require("../assets/background.jpg")}
+                                    style={{
+                                        flex: 1,
+                                        resizeMode: "cover",
+                                        justifyContent: "center"
+                                    }}>
+                                    <Animated.Text style={{
+                                        color: "white",
+                                        fontSize: scrollTextSize,
+                                        fontWeight: "bold"
+                                    }}>{title}</Animated.Text>
+                                    {/* __________________________________________________________________ search  */}
+                                    <View style={{
+                                        width: windowWidth / 1.2,
+                                        height: 60,
+                                        marginLeft: 10,
+                                        marginRight: 10,
+                                        backgroundColor: "black",
+                                        opacity: 0.4,
+                                        borderRadius: 30,
+                                        justifyContent: 'center',
+                                        alignItems: "center"
+                                    }}>
+                                        <TextInput placeholder="search" style={{
+                                            width: windowWidth / 1.3,
+                                            height: 50,
+                                        }} />
+                                    </View>
+                                    <OvalHeaderRowDiv>
+                                        <Animated.View
+                                            style={{
+                                                ...styles.AnimatedButtonDiv,
+                                                height: scrollButtonSize,
+                                                width: scrollButtonSize,
+                                                // opacity: fadeAnimIn,
+                                            }}
+                                        >
+                                            <CircleButton>
+                                                <Entypo name="arrow-down" size={27} color="green" />
+                                            </CircleButton>
+                                        </Animated.View>
+                                        <Animated.View
+                                            style={{
+                                                ...styles.AnimatedButtonDiv,
+                                                height: scrollButtonSize,
+                                                width: scrollButtonSize,
+                                                // opacity: fadeAnimIn,
+                                            }}
+                                        >
+                                            <CircleButton>
+                                                <Entypo name="arrow-down" size={27} color="green" />
+                                            </CircleButton>
+                                        </Animated.View>
+                                        <Animated.View
+                                            style={{
+                                                ...styles.AnimatedButtonDiv,
+                                                height: scrollButtonSize,
+                                                width: scrollButtonSize,
+                                                // opacity: fadeAnimIn,
+                                            }}
+                                        >
+                                            <CircleButton onPress={newDeliveryButton}>
+                                                <MaterialCommunityIcons name="truck-fast" size={30} color="white" />
+                                            </CircleButton>
+                                        </Animated.View>
+                                    </OvalHeaderRowDiv>
+                                </ImageBackground>
+                            </View>
+
+                        </Animated.View>
+
+                    </Animated.View>
 
 
-                            {/* {chart ? <View>
+
+
+
+                    <View style={{
+                        height: 20,
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }} >
+
+
+                        {/* {chart ? <View>
                                 <LineChart
                                     data={{
                                         labels: ["January", "February", "March", "April", "May", "June", "july", " august", "september", "oktober"],
@@ -365,166 +454,86 @@ const RootContainer = ({ children, title, addButton, newDeliveryButton }) => {
                                 />
                             </View> : null} */}
 
-                        </View>
-                        <ListContainer>
-                            {children}
-                        </ListContainer>
-                        <View style={{ height: 200 }}></View>
+                    </View>
+                    <ListContainer>
+                        {children}
+                    </ListContainer>
+                    <View style={{ height: 200 }}></View>
 
-                    </Animated.ScrollView>
+                </Animated.ScrollView>
 
-                    {/* ___________________________________________oval header____________________________________________________________ */}
 
-                    <Animated.View style={{
-                        ...styles.headerContainerStyle,
-                        height: resizeHeader
-                    }} >
-                        <Animated.View style={{ height: scrollOvalHeaderHeight }}></Animated.View>
+
+                {/* __________________________________header________________________________________________________ */}
+                <Animated.View style={{
+                    ...styles.animatedHeader,
+                    height: scrollHeaderContainerHeight,
+                    backgroundColor: "black",
+                    opacity: animOpacity
+                }}>
+                    <HeaderRowDiv>
                         <Animated.View style={{
-                            ...styles.ovalHeaderContainer,
-                            borderRadius: scrollHeaderRadius,
-
-                        }} >
-                            <View style={styles.headerItem}>
-
-                                <Animated.Text style={{
-                                    color: "white",
-                                    fontSize: scrollTextSize,
-                                    fontWeight: "bold"
-                                }}>{title}</Animated.Text>
-                                {/* __________________________________________________________________ search  */}
-                                <View style={{
-                                    width: windowWidth / 1.2,
-                                    height: 60,
-                                    marginLeft: 10,
-                                    marginRight: 10,
-                                    backgroundColor: "black",
-                                    opacity: 0.4,
-                                    borderRadius: 30,
-                                    justifyContent: 'center',
-                                    alignItems: "center"
-                                }}>
-                                    <TextInput placeholder="search" style={{
-                                        width: windowWidth / 1.3,
-                                        height: 50,
-                                    }} />
-                                </View>
-                                <OvalHeaderRowDiv>
-                                    <Animated.View
-                                        style={{
-                                            ...styles.AnimatedButtonDiv,
-                                            height: scrollButtonSize,
-                                            width: scrollButtonSize,
-                                            // opacity: fadeAnimIn,
-                                        }}
-                                    >
-                                        <CircleButton>
-                                            <Entypo name="arrow-down" size={27} color="green" />
-                                        </CircleButton>
-                                    </Animated.View>
-                                    <Animated.View
-                                        style={{
-                                            ...styles.AnimatedButtonDiv,
-                                            height: scrollButtonSize,
-                                            width: scrollButtonSize,
-                                            // opacity: fadeAnimIn,
-                                        }}
-                                    >
-                                        <CircleButton>
-                                            <Entypo name="arrow-down" size={27} color="green" />
-                                        </CircleButton>
-                                    </Animated.View>
-                                    <Animated.View
-                                        style={{
-                                            ...styles.AnimatedButtonDiv,
-                                            height: scrollButtonSize,
-                                            width: scrollButtonSize,
-                                            // opacity: fadeAnimIn,
-                                        }}
-                                    >
-                                        <CircleButton onPress={newDeliveryButton}>
-                                            <MaterialCommunityIcons name="truck-fast" size={30} color="white" />
-                                        </CircleButton>
-                                    </Animated.View>
-                                </OvalHeaderRowDiv>
-
-                            </View>
+                            width: scrollTextDivWidth,
+                            justifyContent: 'flex-end',
+                            alignItems: "center"
+                        }}>
+                            <Animated.Text style={{
+                                color: "white",
+                                fontSize: scrollTextSize,
+                                fontWeight: "bold"
+                            }}>{title}</Animated.Text>
                         </Animated.View>
-                    </Animated.View>
+                        <Animated.View style={{
+                            width: scrollHeaderButtonsDivWidth,
+                            flexDirection: 'row',
 
+                        }}>
+                            <HeaderRowDiv>
+                                <Animated.View
+                                    style={{
+                                        ...styles.AnimatedButtonDiv,
+                                        marginRight: 10,
+                                        width: resizeButton,
+                                        height: resizeButton,
 
+                                    }}
+                                >
 
+                                    <CircleButton>
+                                        <Entypo name="arrow-down" size={27} color="green" />
+                                    </CircleButton>
+                                </Animated.View>
+                                <Animated.View
+                                    style={{
+                                        ...styles.AnimatedButtonDiv,
+                                        width: resizeButton,
+                                        height: resizeButton,
+                                        // opacity: fadeAnimIn,
+                                    }}
+                                >
+                                    <CircleButton onPress={newDeliveryButton}>
+                                        <MaterialCommunityIcons name="truck-fast" size={25} color="white" />
+                                    </CircleButton>
+                                </Animated.View>
+                            </HeaderRowDiv>
+                        </Animated.View>
 
-                    {/* __________________________________header________________________________________________________ */}
-                    <Animated.View style={{
-                        ...styles.animatedHeader,
-                        height: scrollHeaderContainerHeight,
-                        backgroundColor: "black",
-                        opacity: animOpacity
-                    }}>
-                        <HeaderRowDiv>
-                            <Animated.View style={{
-                                width: scrollTextDivWidth,
-                                justifyContent: 'flex-end',
-                                alignItems: "center"
-                            }}>
-                                <Animated.Text style={{
-                                    color: "white",
-                                    fontSize: scrollTextSize,
-                                    fontWeight: "bold"
-                                }}>{title}</Animated.Text>
-                            </Animated.View>
-                            <Animated.View style={{
-                                width: scrollHeaderButtonsDivWidth,
-                                flexDirection: 'row',
+                    </HeaderRowDiv>
+                </Animated.View>
 
-                            }}>
-                                <HeaderRowDiv>
-                                    <Animated.View
-                                        style={{
-                                            ...styles.AnimatedButtonDiv,
-                                            marginRight: 10,
-                                            width: resizeButton,
-                                            height: resizeButton,
-
-                                        }}
-                                    >
-
-                                        <CircleButton>
-                                            <Entypo name="arrow-down" size={27} color="green" />
-                                        </CircleButton>
-                                    </Animated.View>
-                                    <Animated.View
-                                        style={{
-                                            ...styles.AnimatedButtonDiv,
-                                            width: resizeButton,
-                                            height: resizeButton,
-                                            // opacity: fadeAnimIn,
-                                        }}
-                                    >
-                                        <CircleButton onPress={newDeliveryButton}>
-                                            <MaterialCommunityIcons name="truck-fast" size={25} color="white" />
-                                        </CircleButton>
-                                    </Animated.View>
-                                </HeaderRowDiv>
-                            </Animated.View>
-
-                        </HeaderRowDiv>
-                    </Animated.View>
-
-                    {/* _______________________add button______________________________________________________ */}
-                    <Animated.View style={{
-                        ...styles.addButtonDiv,
-                        width: resizeAddButton,
-                        height: resizeAddButton,
-                        right: rightAddButton,
-                        top: topAddButton
-                    }}>
-                        <CircleAddButton onPress={addButton}>
-                            <Ionicons name="ios-add" size={70} color="black" />
-                        </CircleAddButton>
-                    </Animated.View>
-                </ImageBackground>
+                {/* _______________________add button______________________________________________________ */}
+                <Animated.View style={{
+                    ...styles.addButtonDiv,
+                    width: resizeAddButton,
+                    height: resizeAddButton,
+                    right: rightAddButton,
+                    top: topAddButton
+                }}>
+                    <CircleAddButton onPress={addButton}>
+                        <Ionicons name="ios-add" size={70} color="black" />
+                    </CircleAddButton>
+                </Animated.View>
+                {/* </ImageBackground> */}
             </BodyContainer>
         </SafeAreaView>
     )
@@ -537,8 +546,8 @@ export default RootContainer
 const styles = StyleSheet.create({
     addButtonDiv: {
         overflow: "hidden",
-        borderWidth: 2,
-        borderColor: "black",
+        // borderWidth: 2,
+        // borderColor: "black",
         position: "absolute",
 
     },
@@ -552,8 +561,8 @@ const styles = StyleSheet.create({
     headerContainerStyle: {
         alignSelf: 'center',
         overflow: 'hidden',
-        position: "absolute",
-        top: 0,
+        // position: "absolute",
+        // top: 0,
         width: windowWidth,
         // borderColor: "blue",
         // borderWidth: 2,
@@ -577,12 +586,12 @@ const styles = StyleSheet.create({
         marginLeft: -(windowWidth / 2),
     },
     headerItem: {
-        height: windowWidth / 1.3,
+        height: windowWidth / 1.4,
         width: windowWidth,
         position: 'absolute',
         bottom: 0,
         marginLeft: windowWidth / 2,
-        backgroundColor: 'black',
+        backgroundColor: 'grey',
         justifyContent: "center",
         alignItems: "center",
     },
@@ -600,9 +609,8 @@ const styles = StyleSheet.create({
 
 const ListContainer = styled.View`
              flex: 1 
-            backgroundColor: white
+            ${'' /* backgroundColor: rgba(255,255,255,0.2) */}
             
-             margin: 5px
              margin-bottom: 60px
              padding: 15px   0px
                shadow-color: #000
@@ -615,6 +623,7 @@ const ListContainer = styled.View`
 const BodyContainer = styled.View`
 flex: 1
 width: 100%
+backgroundColor: grey
 
 `
 const CircleButton = styled.TouchableOpacity`
@@ -622,7 +631,7 @@ flex: 1
 align-items:center
 justify-content: center
 border-radius: 50px
-background: rgba(43, 43, 43, 0.8)
+background: rgba(0, 0, 0, 1)
 margin : 0px
 shadow-color: #000
 ${'' /* shadow-offset: {width: 0, height: 2} */}
@@ -657,6 +666,7 @@ shadow-radius: 6.3px
  `
 const OvalHeaderRowDiv = styled.View`
             width: ${windowWidth - 120}px
+            margin: 10px
             marginRight: 120px
  ${'' /* borderColor: black
    borderWidth: 2px */}

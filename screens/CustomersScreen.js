@@ -19,6 +19,7 @@ const CustomersScreen = ({ navigation, customers }) => {
             <RootContainer
                 title="Customers"
                 addButton={() => navigation.navigate("AddCustomer")}
+                newDeliveryButton={() => (navigation.navigate("AddDelivery"))}
             >
                 {customers.length > 0 ?
                     <FlatList

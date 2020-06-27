@@ -21,6 +21,7 @@ const SalesListScreen = ({ salesHistory, navigation, soldProducts }) => {
         <RootContainer
             addButton={() => navigation.navigate("Add")}
             title='Journal'
+            newDeliveryButton={() => (navigation.navigate("AddDelivery"))}
         // headerComponent={<HeaderComponent />}
         >
             {/* 

@@ -1,5 +1,5 @@
 import { insertProduct, deleteProduct, fetchProducts, updateProduct } from '../DataBase/productsDB'
-//insertProduct(date, name, stock, history)
+
 import { reFetchProducts } from "./index"
 export const ADD_PRODUCTS = 'ADD_PRODUCTS'
 export const ADD_NEW_PRODUCT = 'ADD_NEW_PRODUCTS'
@@ -42,8 +42,8 @@ export const addProducts = () => {
 export const addNewProduct = (date, name, stock, history) => {
     return async dispatch => {
         try {
-            await insertProduct(date, name, stock, history)
-            dispatch(reFetchProducts())
+            await insertProduct(date, name, stock, history, "active")  // status have to be equal to "active"  to be selected by sqlite
+            dispatch(addProducts())
         } catch (err) {
             throw err
         }

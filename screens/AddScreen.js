@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, Button, Modal, TouchableOpacity, Dimensions, Keyboard } from 'react-native'
 import { connect, useDispatch } from "react-redux"
 import styled from 'styled-components/native'
@@ -6,6 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { insertSale } from "../DataBase/salesDB"
 //insertSale(day, month, year, customerId, customerName, productsArr )
 import AddContainer from "../components/AddContainer"
+import AddedProduct from '../components/AddedProduct';
 import ModalPicker from "../components/ModalPicker"
 import { Entypo, AntDesign } from '@expo/vector-icons';
 import { addNewSale, editSale } from "../actions/salesActions"
@@ -15,10 +16,17 @@ import { addNewSale, editSale } from "../actions/salesActions"
 
 
 
-const AddScreen = ({ navigation, products, customers, salesHistory }) => {
+const AddScreen = ({ navigation, products, customers, salesHistory, productsSale }) => {
 
     const id = navigation.getParam("id")
     const saleData = salesHistory.filter(item => item.id === id)
+
+
+
+
+
+
+
 
     const dispatch = useDispatch()
     const [showCustomerPicker, setShowCustomerPicker] = useState(false);
@@ -31,46 +39,87 @@ const AddScreen = ({ navigation, products, customers, salesHistory }) => {
     const day = date.getDate()
     const month = date.getMonth() + 1
     const year = date.getFullYear()
-    const [productsArr, setProductsArr] = useState(id ? saleData[0].productsArr : [])
+    const [productsArr, setProductsArr] = useState([])
     const [pickedCustomer, setPickedCustomer] = useState(id ? { id: id, name: saleData[0].customerName } : { id: null, name: "choose product" })
     const [pickedProduct, setPickedProduct] = useState({ id: null, name: "choose product" })
     const [productAmount, setProductAmount] = useState('')
+    const [pickedItemId, setPickedItemId] = useState({})
     // console.log(dateString)
+    // console.log("products")
+    // console.log(saleData)
+
+
+    if (id) {
+        useEffect(() => {
+
+            const productsArrOnEdit = []
+            const idObj = {}
+            saleData[0].productsArr.forEach(item => {
+                idObj[item.id] = item.id
+                const product = products.filter(productItem => {
+                    return productItem.id === item.id
+                })
+                productsArrOnEdit.push(
+                    {
+                        ...product[0],
+                        productObj: {
+                            ...item
+                        }
+                    }
+                )
+
+            })
+            setPickedItemId(idObj)
+            setProductsArr(productsArrOnEdit)
+        }, [])
+
+    }
+
+
 
     const saveNewSale = () => {
-        dispatch(addNewSale(day, month, year, pickedCustomer.id, pickedCustomer.name, productsArr))
-        console.log("added")
+        const productsArrData = productsArr.map(item => { return item.productObj })
+
+        dispatch(addNewSale(day, month, year, pickedCustomer.id, pickedCustomer.name, productsArrData))
+
     }
 
     const saveChanges = async () => {
-        await dispatch(editSale(id, day, month, year, pickedCustomer.id, pickedCustomer.name, productsArr))
-        console.log("edited")
+        const productsArrData = productsArr.map(item => { return item.productObj })
+        await dispatch(editSale(id, day, month, year, pickedCustomer.id, pickedCustomer.name, productsArrData))
     }
 
     const addProduct = () => {
-        const obj = { customerId: pickedCustomer.id, id: pickedProduct.id, name: pickedProduct.name, quantity: JSON.parse(productAmount) }
+        const obj = {
+            ...pickedProduct,
+            productObj: {
+                name: pickedProduct.name,
+                customerId: pickedCustomer.id,
+                id: pickedProduct.id,
+                data: dateString,
+                quantity: JSON.parse(productAmount),
+            }
+        }
         setProductsArr([...productsArr, obj])
     }
 
 
 
+    const modalPickerData = products.filter(item => {
+        return pickedItemId[item.id] !== item.id
+    })
 
-    const saleObj = {
-        day,
-        month,
-        year,
-        customerId: pickedCustomer.id,
-        customerName: pickedCustomer.name,
-        productsArr
+    const deleteProduct = (id, index) => {
+        const result = productsArr.filter((item, i) => { return i !== index })
+        setPickedItemId({ ...pickedItemId, [id]: false })
+        setProductsArr(result)
     }
 
-
-    // const headerProps = { name, phone }
-
-    // const day = date.getDay()
-    // const month = date.getMonth() + 1
-    // const year = date.getFullYear()
-
+    const changeAmountAddedProduct = (value, index) => {
+        const result = productsArr
+        result[index].productObj.quantity = value
+        setProductsArr(result)
+    }
 
 
     const onChange = (event, selectedDate) => {
@@ -98,6 +147,7 @@ const AddScreen = ({ navigation, products, customers, salesHistory }) => {
 
             <ModalPicker
                 dataName="customers"
+                data={customers}
                 pickedValue={(value) => {
                     setPickedCustomer(value)
                     setError(false)
@@ -107,6 +157,7 @@ const AddScreen = ({ navigation, products, customers, salesHistory }) => {
             />
             <ModalPicker
                 dataName="products"
+                data={modalPickerData}
                 pickedValue={(value) => setPickedProduct(value)}
                 showTrigger={() => setShowProductPicker(!showProductPicker)}
                 show={showProductPicker}
@@ -161,7 +212,8 @@ const AddScreen = ({ navigation, products, customers, salesHistory }) => {
                     onPress={() => {
                         pickedProduct.id === null || productAmount === 0 || pickedCustomer.id === null ?
                             setError(true) + console.log("error") :
-                            addProduct()
+                            setPickedItemId({ ...pickedItemId, [pickedProduct.id]: pickedProduct.id })
+                        addProduct()
                         Keyboard.dismiss()
                         setPickedProduct({ id: null, name: "choose product" })
                         setProductAmount(0)
@@ -169,23 +221,24 @@ const AddScreen = ({ navigation, products, customers, salesHistory }) => {
                     <AntDesign name="plus" size={24} color="#fff" />
                 </AddButton>
             </AddButtonDiv>
+            {/* _______________________list______________________________________ */}
             <ProductsDiv>
                 <Text>Products</Text>
                 {productsArr.length === 0 ?
                     <EmptyDiv>
                         <Text>empty</Text>
                     </EmptyDiv> :
+
                     productsArr.map((item, index) => {
-                        return <RowDiv key={index}>
-                            <RowLeftView>
-                                <Text>name: </Text>
-                                <BoldText>{item.name}</BoldText>
-                            </RowLeftView>
-                            <RowRightView>
-                                <Text>quantity: </Text>
-                                <BoldText>{item.quantity}</BoldText>
-                            </RowRightView>
-                        </RowDiv>
+                        return <AddedProduct
+                            productsSale={productsSale}
+                            mode={id ? "editSale" : "newSale"}
+                            key={item.id}
+                            index={index}
+                            onDelete={(id, index) => deleteProduct(id, index)}
+                            onChangeAmount={(value, index) => changeAmountAddedProduct(value, index)}
+                            {...item}
+                        />
                     })
                 }
 
@@ -224,7 +277,8 @@ const mapStateToProps = (state) => {
     return {
         products: state.products,
         customers: state.customers,
-        salesHistory: state.salesHistory.sales
+        salesHistory: state.salesHistory.sales,
+        productsSale: state.salesHistory.productsSale
     }
 }
 
@@ -291,10 +345,10 @@ ${'' /* shadow-offset: {width: 0, height: 2} */}
             `
 
 
-const ProductsDiv = styled.View`
+const ProductsDiv = styled.ScrollView`
 margin-top: 5px
 width: 100%
-height: ${Dimensions.get('window').height / 2.8}px
+height: ${Dimensions.get('window').height / 2}px
 border-top-width: 2px
 border-bottom-width: 2px
 border-color: black

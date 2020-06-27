@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { View, Text, Button, Modal, TouchableOpacity, Dimensions, Keyboard } from 'react-native'
 import styled from 'styled-components/native'
 import { Entypo, AntDesign, FontAwesome } from '@expo/vector-icons';
@@ -9,11 +9,23 @@ import { Entypo, AntDesign, FontAwesome } from '@expo/vector-icons';
 
 const AddedProduct = (props) => {
 
-    const { name, deliveryObj, index, onChangeAmount, onDelete, id, totalReceived } = props
+    const { name, index, productObj, onChangeAmount, onDelete, id, totalReceived, mode, productsSale } = props
 
-    const [productAmount, setProductAmount] = useState(deliveryObj.quantity)
 
-    const remainInStock = totalReceived + productAmount
+    const [productAmount, setProductAmount] = useState(productObj.quantity)
+    const [error, setError] = useState(false)
+
+    let inStock = 0
+    const editProductAmount = useRef(productObj.quantity).current
+    if (mode === "newSale") {
+        inStock = totalReceived - productsSale[id].totalSold - productAmount
+    }
+    else if (mode === "editSale") {
+        inStock = totalReceived - productsSale[id].totalSold + editProductAmount - productAmount
+    } else {
+        inStock = totalReceived - productsSale[id].totalSold + productAmount
+    }
+
 
     // console.log(index)
     return (
@@ -21,7 +33,7 @@ const AddedProduct = (props) => {
             <RowLeftView>
 
                 <BoldText>{name}  </BoldText>
-                <Text>  ({remainInStock})</Text>
+                <Text>  ({inStock})</Text>
             </RowLeftView>
             <RowRightView>
                 <TouchableOpacity
@@ -38,11 +50,13 @@ const AddedProduct = (props) => {
                     keyboardType="number-pad"
                     value={`${productAmount}`}
                     onChangeText={(value) => {
-                        const parsedValue = JSON.parse(value)
+                        const parsedValue = value ? JSON.parse(value) : value
                         setProductAmount(parsedValue)
                         onChangeAmount(parsedValue, index)
                     }}
-                    onEndEditing={() => { }}
+                    onEndEditing={(value) => {
+                        productAmount ? setError(false) : setError(true)
+                    }}
 
                 />
                 <TouchableOpacity
@@ -53,6 +67,13 @@ const AddedProduct = (props) => {
                 >
                     <AntDesign name="plus" size={24} color="#fff" />
                 </TouchableOpacity>
+                {error ?
+                    <View>
+                        <ErrorText>enter</ErrorText>
+                        <ErrorText>amount</ErrorText>
+                    </View> : null
+                }
+
             </RowRightView>
             <DeleteButtonDiv onPress={() => {
                 onDelete(id, index)
@@ -67,6 +88,11 @@ const AddedProduct = (props) => {
 
 
 export default AddedProduct
+
+const ErrorText = styled.Text`
+font-size: 13
+color: red
+`
 
 
 const DeleteButtonDiv = styled.TouchableOpacity`

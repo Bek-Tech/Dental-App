@@ -4,10 +4,11 @@ import { View, Text, Button, TextInput, StyleSheet } from 'react-native'
 import CustomerInfo from "../components/CustomerInfo"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { connect, useDispatch } from "react-redux"
-import { insertProduct, updateProduct } from "../DataBase/productsDB"
+import { insertProduct, updateProduct, editProductInDB } from "../DataBase/productsDB"
 import AddContainer from "../components/AddContainer"
 import { addNewProduct, editProduct } from "../actions/productsActions"
-//insertProduct(date, name, stock) 
+// addNewProduct(date, name, stock, history, status)  status have to be string "active"
+
 
 
 
@@ -116,6 +117,9 @@ const AddProductScreen = ({ navigation, products }) => {
                 </ButtonStyled>
                 <ButtonStyled onPress={() => navigation.navigate('Products')}   >
                     <ButtonText>Cancel</ButtonText>
+                </ButtonStyled>
+                <ButtonStyled onPress={() => editProductInDB(1, "inactive")}   >
+                    <ButtonText>test</ButtonText>
                 </ButtonStyled>
             </ButtonRowDiv>
         </AddContainer>
