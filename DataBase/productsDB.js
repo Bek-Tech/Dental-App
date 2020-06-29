@@ -21,12 +21,12 @@ export const initProducts = () => {
     return promise;
 };
 
-export const insertProduct = (date, name, stock, history, status) => {
+export const insertProduct = (date, name, stock, history) => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
                 `INSERT INTO products (date, name, stock, history,status) VALUES ( ?, ?, ?,?,?);`,
-                [date, name, stock, history, status],
+                [date, name, stock, history, "active"],
                 (_, result) => {
                     resolve(result);
                 },
@@ -44,7 +44,7 @@ export const fetchProducts = () => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                `SELECT id, date, name, stock,history, status FROM products  ORDER BY id DESC `,
+                `SELECT id, date, name, stock,history,status FROM products GROUP BY id   HAVING status LIKE "active" ORDER BY id DESC `,
                 [],
                 (_, result) => {
                     resolve(result);
@@ -59,11 +59,32 @@ export const fetchProducts = () => {
     return promise;
 };
 
-export const deleteProduct = (id) => {
+export const fetchDeletedProducts = () => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                `DELETE FROM products WHERE id= ${id}`,
+                `SELECT id, date, name, stock,history, status FROM products GROUP BY status   HAVING status = "inactive" ORDER BY id DESC `,
+                [],
+                (_, result) => {
+                    resolve(result);
+                },
+                (_, err) => {
+                    alert("error has occurred")
+                    reject(err);
+                }
+            );
+        });
+    });
+    return promise;
+};
+
+
+
+export const totalyDeleteProduct = (id) => {
+    const promise = new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                `UPDATE products SET  name= "deleted",  date= "deleted" , stock= 0 , history='[]' , status = "deleted" WHERE id =${id}`,
                 [],
                 () => {
                     resolve();
@@ -93,25 +114,22 @@ export const updateProduct = (id, date, name, stock, history) => {
                 }
             );
         });
-
-
-
     });
     return promise;
 };
 
 
-export const editProductInDB = (id, status) => {
+export const deleteProduct = (id) => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                `UPDATE products SET status = "${status}" WHERE id =${id} `,
+                `UPDATE products SET  name= "deleted${id}",  date= "deleted" , stock= 0 , history='[]' , status = "deleted" WHERE id =${id}`,
                 [],
                 (_, result) => {
                     resolve(result);
                 },
                 (_, err) => {
-                    alert("error has occured , product names must be unique !")
+                    alert("error has occurred")
                     reject(err);
                 }
             );
@@ -119,3 +137,23 @@ export const editProductInDB = (id, status) => {
     });
     return promise;
 };
+
+export const updateProductStatus = (id, status) => {
+    const promise = new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                `UPDATE products SET status = "${status}" WHERE id =${id}`,
+                [],
+                (_, result) => {
+                    resolve(result);
+                },
+                (_, err) => {
+                    alert("error has occurred")
+                    reject(err);
+                }
+            );
+        });
+    });
+    return promise;
+};
+

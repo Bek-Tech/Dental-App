@@ -96,25 +96,45 @@ export const deleteSale = (id) => {
 };
 
 
+// export const updateSale = (id, day, month, year, customerId, customerName, productsArr) => {
+//     const promise = new Promise((resolve, reject) => {
+//         // update  query   did not  work so  use deletion and insert instead
+//         deleteSale(id).then(() => {
+//             db.transaction(tx => {
+//                 tx.executeSql(
+//                     `INSERT INTO sales (id,day, month, year, customerId, customerName, productsArr) VALUES (?,?, ?, ?,?, ?, ?)`,
+//                     [id, day, month, year, customerId, customerName, productsArr],
+//                     (_, result) => {
+//                         resolve(result);
+//                     },
+//                     (_, err) => {
+//                         reject(err);
+//                     }
+//                 );
+//             });
+
+//         })
+
+//     });
+//     return promise;
+// };
+
+
 export const updateSale = (id, day, month, year, customerId, customerName, productsArr) => {
     const promise = new Promise((resolve, reject) => {
-        // update  query   did not  work so  use deletion and insert instead
-        deleteSale(id).then(() => {
-            db.transaction(tx => {
-                tx.executeSql(
-                    `INSERT INTO sales (id,day, month, year, customerId, customerName, productsArr) VALUES (?,?, ?, ?,?, ?, ?)`,
-                    [id, day, month, year, customerId, customerName, productsArr],
-                    (_, result) => {
-                        resolve(result);
-                    },
-                    (_, err) => {
-                        reject(err);
-                    }
-                );
-            });
-
-        })
-
+        db.transaction(tx => {
+            tx.executeSql(
+                `UPDATE sales SET  day= ${day}, month=${month}, year= ${year}, customerId= ${customerId} , customerName= "${customerName}",  productsArr='${productsArr}' WHERE id =${id}`,
+                [],
+                (_, result) => {
+                    resolve(result);
+                },
+                (_, err) => {
+                    alert("error has occurred")
+                    reject(err);
+                }
+            );
+        });
     });
     return promise;
 };

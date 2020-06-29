@@ -50,7 +50,7 @@ export const editCustomer = (id, date, name, phone) => {
     return async dispatch => {
         try {
             await updateCustomer(id, date, name, phone)
-            dispatch(reFetchCustomers())
+            dispatch(addCustomers())
         } catch (err) {
             throw err
         }

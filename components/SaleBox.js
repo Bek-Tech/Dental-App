@@ -10,9 +10,10 @@ import { useDispatch } from "react-redux"
 
 const SaleBox = (prop) => {
 
+
     const dispatch = useDispatch()
     const { id, customerId, customerName, productsArr, year, day, month, navigation } = prop
-
+    const date = new Date(year, month, day).toLocaleDateString()
     const [modalVisible, setModalVisible] = useState(false)
 
     return <GroupItem onPress={() => navigation.navigate('Details', { customerName })}>
@@ -43,7 +44,7 @@ const SaleBox = (prop) => {
             {/* <UserImg source={{ uri: userImg }} /> */}
             <FullName>{customerName}</FullName>
             <RowDiv>
-                <DateText>{day}.{month}.{year}</DateText>
+                <DateText>{date}</DateText>
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
                     <SimpleLineIcons name="options-vertical" size={20} color="black" />
                 </TouchableOpacity>
