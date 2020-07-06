@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, FlatList, TouchableOpacity, Button } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, Button, Dimensions } from 'react-native'
 import RootContainer from "../components/RootContainer"
 import { connect, useDispatch } from "react-redux"
 import styled from 'styled-components/native'
@@ -9,23 +9,34 @@ import { SimpleLineIcons } from '@expo/vector-icons'
 import ProductBox from '../components/ProductBox'
 
 
+
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
+
 const ProductsScreen = ({ products, salesHistory, navigation, soldProducts }) => {
     // console.log("products screen")
-    console.log(products)
+    // console.log(products)
     // console.log(soldProducts)
     const dispatch = useDispatch()
     return (
         <>
             <RootContainer
+                backToTopButton={products.length > 5 ? true : false}
                 title='Products'
                 addButton={() => navigation.navigate("AddProduct", { id: null })}
                 newDeliveryButton={() => (navigation.navigate("AddDelivery"))}
             >
 
 
-                {products.map(item => {
-                    return <ProductBox sold={soldProducts[item.id] ? soldProducts[item.id] : null} navigation={navigation} {...item} />
-                })
+                {products.length > 0 ?
+                    products.map(item => {
+                        return <ProductBox
+                            key={item.id}
+                            sold={soldProducts[item.id] ? soldProducts[item.id] : null} navigation={navigation} {...item} />
+                    }) :
+                    <EmptyListDiv>
+                        <EmptyText>List Empty</EmptyText>
+                    </EmptyListDiv>
                 }
 
             </RootContainer>
@@ -44,6 +55,18 @@ const mapProductsToProp = state => {
 }
 
 export default connect(mapProductsToProp)(ProductsScreen)
+
+
+const EmptyListDiv = styled.View`
+flex:1
+height: ${windowHeight / 2.5}px
+align-items:center
+justify-content: center
+`
+
+const EmptyText = styled.Text`
+font-size: 18px
+`
 
 
 const ProductsContainer = styled.TouchableOpacity`

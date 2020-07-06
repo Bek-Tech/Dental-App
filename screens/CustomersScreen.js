@@ -3,40 +3,39 @@ import { Text, View, ScrollView, Animated, Dimensions } from 'react-native';
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { connect, useDispatch } from "react-redux"
-import { FlatList } from 'react-native-gesture-handler';
 import RootContainer from "../components/RootContainer"
-import AddButton from '../components/AddButton'
 import CustomerInfo from "../components/CustomerInfo"
-import { fetchCustomers } from "../DataBase/customersDB"
-import { addCustomers } from '../actions/customersActions'
+
+
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
+
 
 
 const CustomersScreen = ({ navigation, customers }) => {
 
     const [empty, setEmpty] = useState(false)
-    return (
-        <>
-            <RootContainer
-                title="Customers"
-                addButton={() => navigation.navigate("AddCustomer")}
-                newDeliveryButton={() => (navigation.navigate("AddDelivery"))}
-            >
-                {customers.length > 0 ?
-                    <FlatList
-                        data={customers}
-                        keyExtractor={(item => `${item.id}`)}
-                        renderItem={({ item }) => {
-                            return <CustomerInfo navigation={navigation}  {...item} />
-                        }}
-                    /> :
-                    null
-                }
+    return (<RootContainer
+        backToTopButton={customers.length > 6 ? true : false}
+        title="Customers"
+        addButton={() => navigation.navigate("AddCustomer")}
+        newDeliveryButton={() => (navigation.navigate("AddDelivery"))}
+    >
+        {customers.length > 0 ?
+            customers.map(item => {
+                return <CustomerInfo
+                    key={item.id}
+                    navigation={navigation}  {...item}
+                />
+            }) :
+            <EmptyListDiv>
+                <EmptyText>List Empty</EmptyText>
+            </EmptyListDiv>
+        }
 
 
-            </RootContainer>
+    </RootContainer>
 
-
-        </>
     )
 }
 
@@ -53,3 +52,14 @@ export default connect(mapCustomersToProps)(CustomersScreen)
 //styles ___________________
 
 
+
+const EmptyListDiv = styled.View`
+flex:1
+height: ${windowHeight / 2.5}px
+align-items:center
+justify-content: center
+`
+
+const EmptyText = styled.Text`
+font-size: 18px
+`

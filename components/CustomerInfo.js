@@ -90,15 +90,13 @@ const EditInput = styled.TextInput`
 
 
 const Container = styled.TouchableOpacity`
-margin: 5px 20px
- borderColor: black
-   borderBottomWidth: 2px
- padding: 3px 10px
-margin-bottom: 4px
-   ${'' /* flex-direction:row */}
-   align-items: flex-start
-  ${'' /* shadow-color: #000
-shadow-opacity: 0.2
+flex:1
+border-radius: 15px
+background: rgba(83,83,83,0.8)
+margin: 5px 5px
+padding : 5px 15px
+ ${'' /* shadow-color: #000
+shadow-opacity: 0.5
 shadow-radius: 6.3px
 elevation: 10 */}
 `

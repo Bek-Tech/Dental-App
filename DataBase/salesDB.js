@@ -6,7 +6,7 @@ export const initSales = () => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                'CREATE TABLE IF NOT EXISTS sales (id INTEGER PRIMARY KEY NOT NULL, day REAL NOT NULL,month REAL NOT NULL,year REAL NOT NULL, customerId REAL NOT NULL, customerName TEXT NOT NULL, productsArr TEXT NOT NULL);',
+                'CREATE TABLE IF NOT EXISTS sales (id INTEGER PRIMARY KEY NOT NULL, day REAL NOT NULL,month REAL NOT NULL,year REAL NOT NULL, customerId REAL NOT NULL, customerName TEXT NOT NULL, productsArr TEXT NOT NULL , status TEXT NOT NULL);',
                 [],
                 () => {
                     resolve();
@@ -45,8 +45,8 @@ export const insertSale = (day, month, year, customerId, customerName, productsA
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                `INSERT INTO sales (day,month,year , customerId, customerName, productsArr ) VALUES (?, ?, ?, ?, ?, ?);`,
-                [day, month, year, customerId, customerName, productsArr],
+                `INSERT INTO sales (day,month,year , customerId, customerName, productsArr ,status) VALUES (?, ?, ?, ?, ?, ?,?);`,
+                [day, month, year, customerId, customerName, productsArr, "active"],
                 (_, result) => {
                     resolve(result);
                 },
@@ -63,7 +63,7 @@ export const fetchSales = () => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                'SELECT id,day, month, year, customerId, customerName, productsArr FROM sales ORDER BY id DESC',
+                'SELECT id,day, month, year, customerId, customerName, productsArr FROM sales GROUP BY id   HAVING status LIKE "active" ORDER BY id DESC',
                 [],
                 (_, result) => {
                     resolve(result);
@@ -81,7 +81,7 @@ export const deleteSale = (id) => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                `DELETE FROM sales WHERE id= ${id}`,
+                `UPDATE sales SET  status = "inactive" WHERE id =${id}`,
                 [],
                 () => {
                     resolve();
@@ -96,28 +96,26 @@ export const deleteSale = (id) => {
 };
 
 
-// export const updateSale = (id, day, month, year, customerId, customerName, productsArr) => {
-//     const promise = new Promise((resolve, reject) => {
-//         // update  query   did not  work so  use deletion and insert instead
-//         deleteSale(id).then(() => {
-//             db.transaction(tx => {
-//                 tx.executeSql(
-//                     `INSERT INTO sales (id,day, month, year, customerId, customerName, productsArr) VALUES (?,?, ?, ?,?, ?, ?)`,
-//                     [id, day, month, year, customerId, customerName, productsArr],
-//                     (_, result) => {
-//                         resolve(result);
-//                     },
-//                     (_, err) => {
-//                         reject(err);
-//                     }
-//                 );
-//             });
 
-//         })
+export const totallyDeleteSale = (id) => {
+    const promise = new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                `UPDATE sales SET day=0 , month =0, year = 0 , customerId = 0 ,  customerName= "deleted",  date= "deleted"  , productsArr='[]' , status = "deleted" WHERE id =${id}`,
+                [],
+                () => {
+                    resolve();
+                },
+                (_, err) => {
+                    alert("error has occurred")
+                    reject(err);
+                }
+            );
+        });
+    });
+    return promise;
+};
 
-//     });
-//     return promise;
-// };
 
 
 export const updateSale = (id, day, month, year, customerId, customerName, productsArr) => {

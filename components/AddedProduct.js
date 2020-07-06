@@ -11,19 +11,20 @@ const AddedProduct = (props) => {
 
     const { name, index, productObj, onChangeAmount, onDelete, id, totalReceived, mode, productsSale } = props
 
-
+    const soldAmount = productsSale[id].totalSold ? productsSale[id].totalSold : 0
+    console.log(soldAmount)
     const [productAmount, setProductAmount] = useState(productObj.quantity)
     const [error, setError] = useState(false)
 
     let inStock = 0
     const editProductAmount = useRef(productObj.quantity).current
     if (mode === "newSale") {
-        inStock = totalReceived - productsSale[id].totalSold - productAmount
+        inStock = totalReceived - soldAmount - productAmount
     }
     else if (mode === "editSale") {
-        inStock = totalReceived - productsSale[id].totalSold + editProductAmount - productAmount
+        inStock = totalReceived - soldAmount + editProductAmount - productAmount
     } else {
-        inStock = totalReceived - productsSale[id].totalSold + productAmount
+        inStock = totalReceived - soldAmount + productAmount
     }
 
 

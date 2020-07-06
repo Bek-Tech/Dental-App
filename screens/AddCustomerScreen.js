@@ -53,7 +53,7 @@ const AddCustomerScreen = ({ customers, navigation }) => {
 
     return (
         <AddContainer
-
+            title={id ? "Edit Customer" : "Add New Customer"}
         >
 
             <RowDiv>

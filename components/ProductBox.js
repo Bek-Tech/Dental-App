@@ -15,17 +15,18 @@ import ModalOptions from './ModalOptions'
 
 
 
-const ProductBox = ({ date, id, name, stock, totalReceived, navigation, sold }) => {
-
+const ProductBox = (props) => {
+    const { id, name, stock, totalReceived, navigation, sold } = props
     const totalSold = sold === null ? 0 : sold.totalSold
     // console.log("box")
 
-    // console.log(sold)
 
+
+
+    const date = new Date(props.date).toLocaleDateString()
     const dispatch = useDispatch()
     const [modalVisible, setModalVisible] = useState(false)
-
-    return <ProductsContainer onPress={() => navigation.navigate("ProductDetails")}>
+    return <ProductsContainer onPress={() => navigation.navigate("ProductDetails", { id })}>
         <ModalOptions
             visible={modalVisible}
             visibilityToggler={() => setModalVisible(!modalVisible)}
@@ -44,9 +45,13 @@ const ProductBox = ({ date, id, name, stock, totalReceived, navigation, sold }) 
         <RowDiv>
 
             <NameText>{name}</NameText>
-            <TouchableOpacity onPress={() => setModalVisible(true)}>
-                <SimpleLineIcons name="options-vertical" size={20} color="black" />
-            </TouchableOpacity>
+            <View style={{ flexDirection: "row" }}>
+                <DateText>reg : {date}</DateText>
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                    <SimpleLineIcons name="options-vertical" size={20} color="black" />
+                </TouchableOpacity>
+            </View>
+
 
         </RowDiv>
         <BlockRowDiv>
@@ -79,13 +84,13 @@ export default ProductBox
 const ProductsContainer = styled.TouchableOpacity`
 flex:1 
 border-radius: 15px
-background: grey
-margin: 5px 15px
+background: rgba(53,53,53,0.5)
+margin: 5px 5px
 padding : 5px 15px
- shadow-color: #000
+ ${'' /* shadow-color: #000
 shadow-opacity: 0.5
 shadow-radius: 6.3px
-elevation: 10
+elevation: 10 */}
 `
 
 const NameText = styled.Text`
@@ -141,5 +146,11 @@ const SmallText = styled.Text`
 font-size : 16px
 line-height : 30px
 
+color: black
+`
+const DateText = styled.Text`
+font-size : 16px
+line-height : 30px
+marginRight: 15px
 color: black
 `

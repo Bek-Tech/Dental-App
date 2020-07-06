@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Text, View, Animated, TouchableOpacity, Dimensions, Modal, Button } from 'react-native';
+console.log("sales")
+import { Text, Dimensions } from 'react-native';
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import RootContainer from "../components/RootContainer"
@@ -8,8 +9,9 @@ import AddButton from '../components/AddButton'
 import { connect, useDispatch } from "react-redux"
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 
-
-
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
+console.log("sales1111")
 const SalesListScreen = ({ salesHistory, navigation, soldProducts }) => {
 
 
@@ -17,8 +19,9 @@ const SalesListScreen = ({ salesHistory, navigation, soldProducts }) => {
     const [visible, setVisible] = useState(false)
     // console.log(soldProducts)
 
-    return (<View style={{ flex: 1 }}>
+    return (
         <RootContainer
+            backToTopButton={salesHistory.length >= 3 ? true : false}
             addButton={() => navigation.navigate("Add")}
             title='Journal'
             newDeliveryButton={() => (navigation.navigate("AddDelivery"))}
@@ -37,18 +40,21 @@ const SalesListScreen = ({ salesHistory, navigation, soldProducts }) => {
 
             </Modal>
             <Button title="open" onPress={() => setVisible(true)} /> */}
-            <FlatList
-                data={salesHistory}
-                keyExtractor={item => `${item.id}`}
-                renderItem={({ item }) => {
-                    return <SaleBox navigation={navigation} {...item} />
-
-                }}
-            />
+            {salesHistory.length > 0 ?
+                salesHistory.map(item => {
+                    return <SaleBox
+                        key={item.id}
+                        navigation={navigation} {...item}
+                    />
+                }) :
+                <EmptyListDiv>
+                    <EmptyText>List Empty</EmptyText>
+                </EmptyListDiv>
+            }
 
         </RootContainer>
 
-    </View>
+
 
     );
 
@@ -64,6 +70,19 @@ const mapSalesHistoryToProps = state => {
 export default connect(mapSalesHistoryToProps)(SalesListScreen)
 
 // styles___________________________________________
+
+
+const EmptyListDiv = styled.View`
+flex:1
+height: ${windowHeight / 2.5}px
+align-items:center
+justify-content: center
+`
+
+const EmptyText = styled.Text`
+font-size: 18px
+`
+
 const ListContainer = styled.View`
      flex: 1
      backgroundColor: white

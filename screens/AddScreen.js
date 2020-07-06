@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Button, Modal, TouchableOpacity, Dimensions, Keyboard } from 'react-native'
+import { View, Text, Button, Modal, TouchableOpacity, Dimensions, Keyboard, KeyboardAvoidingView } from 'react-native'
 import { connect, useDispatch } from "react-redux"
 import styled from 'styled-components/native'
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -222,28 +222,32 @@ const AddScreen = ({ navigation, products, customers, salesHistory, productsSale
                 </AddButton>
             </AddButtonDiv>
             {/* _______________________list______________________________________ */}
-            <ProductsDiv>
-                <Text>Products</Text>
-                {productsArr.length === 0 ?
-                    <EmptyDiv>
-                        <Text>empty</Text>
-                    </EmptyDiv> :
+            <KeyboardAvoidingView
+                // behavior={Platform.OS == "ios" ? "padding" : "height"}
+                style={{ flex: 1 }}
+            >
+                <ProductsDiv>
+                    <Text>Products</Text>
+                    {productsArr.length === 0 ?
+                        <EmptyDiv>
+                            <Text>empty</Text>
+                        </EmptyDiv> :
 
-                    productsArr.map((item, index) => {
-                        return <AddedProduct
-                            productsSale={productsSale}
-                            mode={id ? "editSale" : "newSale"}
-                            key={item.id}
-                            index={index}
-                            onDelete={(id, index) => deleteProduct(id, index)}
-                            onChangeAmount={(value, index) => changeAmountAddedProduct(value, index)}
-                            {...item}
-                        />
-                    })
-                }
+                        productsArr.map((item, index) => {
+                            return <AddedProduct
+                                productsSale={productsSale}
+                                mode={id ? "editSale" : "newSale"}
+                                key={item.id}
+                                index={index}
+                                onDelete={(id, index) => deleteProduct(id, index)}
+                                onChangeAmount={(value, index) => changeAmountAddedProduct(value, index)}
+                                {...item}
+                            />
+                        })
+                    }
 
-            </ProductsDiv>
-
+                </ProductsDiv>
+            </KeyboardAvoidingView>
 
 
 
@@ -348,7 +352,7 @@ ${'' /* shadow-offset: {width: 0, height: 2} */}
 const ProductsDiv = styled.ScrollView`
 margin-top: 5px
 width: 100%
-height: ${Dimensions.get('window').height / 2}px
+height: ${Dimensions.get('window').height / 2.2}px
 border-top-width: 2px
 border-bottom-width: 2px
 border-color: black

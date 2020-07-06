@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Component } from 'react'
-import { View, Text, ActivityIndicator, ImageBackground } from 'react-native';
+import { View, Text, ActivityIndicator, ImageBackground, } from 'react-native';
 import { initSales, fetchSales, sortSales } from '../DataBase/salesDB'
 import { initCustomers, fetchCustomers } from '../DataBase/customersDB'
 import { initProducts, fetchProducts } from '../DataBase/productsDB'

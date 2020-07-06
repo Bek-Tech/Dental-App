@@ -23,14 +23,16 @@ const AddContainer = ({ children, title, head, BackButton }) => {
                     <TouchableOpacity onPress={BackButton}>
                         <AntDesign name="arrowleft" size={24} color="black" />
                     </TouchableOpacity>
-                    <TitleText>{title}</TitleText>
+                    <TitleText>  {title}</TitleText>
                 </RowDiv>
 
                 <KeyboardAvoidingView
                     // behavior={Platform.OS == "ios" ? "padding" : "height"}
                     style={{ flex: 1 }}
                 >
-                    <ScrollView>
+                    <ScrollView
+                        scrollEnabled={false}
+                        style={{ flex: 1 }}>
                         {head}
                         <ItemsContainer
 
@@ -61,7 +63,7 @@ const ItemsContainer = styled.View`
      
     flex:1
     resizeMode: cover
-     backgroundColor: rgba(255,255,255,0.4)
+     backgroundColor: rgba(155,155,155,0.4)
      borderRadius: 35px            
      margin: 5px  
      marginTop: 10px
@@ -82,6 +84,7 @@ const RowDiv = styled.View`
             width: 100%
             ${'' /* borderColor: black
             borderWidth: 2px */}
+            margin: 5px
             padding: 5px
             flex-direction: row
             justify-content: flex-start

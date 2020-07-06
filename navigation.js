@@ -56,7 +56,7 @@ const RootNavigation = createSwitchNavigator({
             AddCustomer: {
                 screen: AddCustomerScreen,
                 navigationOptions: {
-
+                    headerShown: false
                 }
             },
             CustomerInfo: DetailsScreen
@@ -76,7 +76,9 @@ const RootNavigation = createSwitchNavigator({
             },
             ProductDetails: {
                 screen: ProductDetailsScreen,
-                navigationOptions: { ...headerStyle, title: "Product Info" }
+                navigationOptions: {
+                    headerShown: false
+                }
             },
             AddDelivery: {
                 screen: AddDeliveryScreen,
