@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import { View, Text, Button, Modal, TouchableOpacity, Dimensions, Keyboard } from 'react-native'
 import styled from 'styled-components/native'
 import { Entypo, AntDesign, FontAwesome } from '@expo/vector-icons';
-
+import { connect, } from "react-redux"
 
 
 
@@ -11,8 +11,11 @@ const AddedProduct = (props) => {
 
     const { name, index, productObj, onChangeAmount, onDelete, id, totalReceived, mode, productsSale } = props
 
-    const soldAmount = productsSale[id].totalSold ? productsSale[id].totalSold : 0
-    console.log(soldAmount)
+    const soldAmount = productsSale[id] ? productsSale[id].totalSold : 0
+
+
+
+
     const [productAmount, setProductAmount] = useState(productObj.quantity)
     const [error, setError] = useState(false)
 
@@ -85,10 +88,14 @@ const AddedProduct = (props) => {
         </RowDiv>
     )
 }
+const mapStateToProp = state => {
+    return {
+        productsSale: state.salesHistory.productsSale
+    }
+}
 
 
-
-export default AddedProduct
+export default connect(mapStateToProp)(AddedProduct)
 
 const ErrorText = styled.Text`
 font-size: 13

@@ -19,7 +19,7 @@ const CustomersScreen = ({ navigation, customers }) => {
         backToTopButton={customers.length > 6 ? true : false}
         title="Customers"
         addButton={() => navigation.navigate("AddCustomer")}
-        newDeliveryButton={() => (navigation.navigate("AddDelivery"))}
+        navigation={navigation}
     >
         {customers.length > 0 ?
             customers.map(item => {

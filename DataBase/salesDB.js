@@ -77,6 +77,26 @@ export const fetchSales = () => {
     return promise;
 };
 
+export const fetchDeletedSales = () => {
+    const promise = new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                `SELECT  id,day, month, year, customerId, customerName, productsArr, status FROM sales GROUP BY id  HAVING status LIKE "inactive" ORDER BY id DESC `,
+                [],
+                (_, result) => {
+                    resolve(result);
+                },
+                (_, err) => {
+                    alert("error has occurred")
+                    reject(err);
+                }
+            );
+        });
+    });
+    return promise;
+};
+
+
 export const deleteSale = (id) => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
@@ -101,7 +121,7 @@ export const totallyDeleteSale = (id) => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                `UPDATE sales SET day=0 , month =0, year = 0 , customerId = 0 ,  customerName= "deleted",  date= "deleted"  , productsArr='[]' , status = "deleted" WHERE id =${id}`,
+                `UPDATE sales SET day=0 , month =0, year = 0 , customerId = 0 ,  customerName= "deleted" , productsArr='[]' , status = "deleted" WHERE id =${id}`,
                 [],
                 () => {
                     resolve();
@@ -123,6 +143,25 @@ export const updateSale = (id, day, month, year, customerId, customerName, produ
         db.transaction(tx => {
             tx.executeSql(
                 `UPDATE sales SET  day= ${day}, month=${month}, year= ${year}, customerId= ${customerId} , customerName= "${customerName}",  productsArr='${productsArr}' WHERE id =${id}`,
+                [],
+                (_, result) => {
+                    resolve(result);
+                },
+                (_, err) => {
+                    alert("error has occurred")
+                    reject(err);
+                }
+            );
+        });
+    });
+    return promise;
+};
+
+export const updateSaleStatus = (id, status) => {
+    const promise = new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                `UPDATE sales SET status = "${status}" WHERE id =${id}`,
                 [],
                 (_, result) => {
                     resolve(result);

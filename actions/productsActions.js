@@ -1,6 +1,8 @@
-import { insertProduct, deleteProduct, fetchProducts, updateProduct } from '../DataBase/productsDB'
+import { insertProduct, deleteProduct, fetchProducts, updateProduct, updateProductStatus, totallyDeleteProduct } from '../DataBase/productsDB'
 
 import { reFetchProducts } from "./index"
+
+
 export const ADD_PRODUCTS = 'ADD_PRODUCTS'
 export const ADD_NEW_PRODUCT = 'ADD_NEW_PRODUCTS'
 export const DELETE_PRODUCT = 'DELETE_PRODUCT'
@@ -34,15 +36,14 @@ export const addProducts = () => {
     };
 
 
-
-
-
 }
+
+
 
 export const addNewProduct = (date, name, stock, history) => {
     return async dispatch => {
         try {
-            await insertProduct(date, name, stock, history, "active")  // status have to be equal to "active"  to be selected by sqlite
+            await insertProduct(date, name, stock, history)
             dispatch(addProducts())
         } catch (err) {
             throw err
@@ -50,7 +51,18 @@ export const addNewProduct = (date, name, stock, history) => {
 
     }
 
+}
 
+export const restoreProduct = (id) => {
+    return dispatch => {
+        try {
+            updateProductStatus(id, "active")
+            dispatch(reFetchProducts())
+        } catch (err) {
+            throw err
+        }
+
+    }
 
 }
 
@@ -71,6 +83,18 @@ export const editProduct = (id, date, name, stock, history) => {
         try {
             await updateProduct(id, date, name, stock, history)
             dispatch(reFetchProducts())
+        } catch (err) {
+            throw err
+        }
+
+    }
+}
+
+
+export const totallyDeleteProductAction = (id) => {
+    return () => {
+        try {
+            totallyDeleteProduct(id)
         } catch (err) {
             throw err
         }

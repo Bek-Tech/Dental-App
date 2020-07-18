@@ -12,10 +12,12 @@ import AddContainer from "../components/AddContainer"
 const DetailsScreen = ({ navigation, salesHistory, customers }) => {
 
 
-    const CustomerName = navigation.getParam('customerName')
-    const purchaseData = salesHistory.filter(item => item.customerName === CustomerName)
-    const customer = customers.filter(item => item.name === CustomerName)
+    const customerId = navigation.getParam('id')
+    const purchaseData = salesHistory.filter(item => item.customerId === customerId)
+    const customer = customers.filter(item => item.id === customerId)
 
+    console.log(customerId)
+    console.log(purchaseData)
 
     return (
 

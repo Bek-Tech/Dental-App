@@ -16,7 +16,7 @@ const SaleBox = (prop) => {
     const date = new Date(year, month, day).toLocaleDateString()
     const [modalVisible, setModalVisible] = useState(false)
 
-    return <GroupItem onPress={() => navigation.navigate('Details', { customerName })}>
+    return <GroupItem onPress={() => navigation.navigate('Details', { id: customerId })}>
         {/* <LinearGradient
                 colors={['#9484DE', '#49036C']}
                 start={{ x: -1, y: 0 }}
@@ -55,21 +55,16 @@ const SaleBox = (prop) => {
 
         <View style={{ flex: 1 }}>
 
-            <FlatList
-                data={productsArr}
-                keyExtractor={(item, index) => `${index}`}
-                renderItem={({ item }) => {
-                    return <RowDiv>
-                        <RowLeftView>
-                            <BoldText>{item.name}</BoldText>
-                        </RowLeftView>
-                        <RowRightView>
-                            <BoldText>{item.quantity}</BoldText>
-                        </RowRightView>
-                    </RowDiv>
-
-                }}
-            />
+            {productsArr.map(item => {
+                return <RowDiv key={item.name}>
+                    <RowLeftView>
+                        <BoldText>{item.name}</BoldText>
+                    </RowLeftView>
+                    <RowRightView>
+                        <BoldText>{item.quantity}</BoldText>
+                    </RowRightView>
+                </RowDiv>
+            })}
         </View>
 
         {/* </LinearGradient> */}

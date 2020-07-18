@@ -4,8 +4,9 @@ import styled from 'styled-components/native'
 import { TextInput } from 'react-native-gesture-handler';
 import { LineChart } from "react-native-chart-kit";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons, Entypo, FontAwesome5, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
+import { Ionicons, Entypo, FontAwesome5, MaterialIcons, AntDesign, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons'
 import ModalTrashBox from './ModalTrashBox'
+import navigation from '../navigation'
 
 
 const windowHeight = Dimensions.get('window').height;
@@ -16,7 +17,7 @@ const windowWidth = Dimensions.get('window').width;
 
 
 
-const RootContainer = ({ backToTopButton, children, title, addButton, newDeliveryButton }) => {
+const RootContainer = ({ backToTopButton, children, title, addButton, navigation }) => {
 
     const [handleScroll, setHandleScroll] = useState(false)
     const [showTrashBox, setShowTrashBox] = useState(false);
@@ -193,8 +194,8 @@ const RootContainer = ({ backToTopButton, children, title, addButton, newDeliver
     })
 
     const scrollTextSize = AnimationY.interpolate({
-        inputRange: [0, 100, 50000],
-        outputRange: [60, 30, 0],
+        inputRange: [0, 60, 150, 50000],
+        outputRange: [60, 60, 30, 0],
         extrapolate: 'clamp'
     })
 
@@ -208,7 +209,7 @@ const RootContainer = ({ backToTopButton, children, title, addButton, newDeliver
     })
 
     const scrollOvalHeaderHeight = AnimationY.interpolate({
-        inputRange: [0, 50, 300, 20000],
+        inputRange: [0, 50, 250, 20000],
         outputRange: [300, 300, 0, 0]
     })
 
@@ -237,8 +238,8 @@ const RootContainer = ({ backToTopButton, children, title, addButton, newDeliver
     })
 
     const scrollToTopButtonOpacity = AnimationY.interpolate({
-        inputRange: [0, 100, 200, 50000],
-        outputRange: [0, 1, 1, 1]
+        inputRange: [0, 200, 300, 50000],
+        outputRange: [0, 0, 1, 1]
     })
 
 
@@ -299,7 +300,7 @@ const RootContainer = ({ backToTopButton, children, title, addButton, newDeliver
                         style={{
                             flex: 1,
                             paddingTop: 300,
-                            paddingBottom: 100
+                            paddingBottom: 300
                         }}
                         scrollEventThrottle={5}
                         ref={scrollViewRef}
@@ -382,7 +383,7 @@ const RootContainer = ({ backToTopButton, children, title, addButton, newDeliver
                             {children}
                         </ListContainer>
 
-                        {backToTopButton ?
+                        {true ?
                             <Animated.View style={{
                                 height: 500,
                                 width: "100%",
@@ -439,8 +440,8 @@ const RootContainer = ({ backToTopButton, children, title, addButton, newDeliver
                                         }}
                                     >
 
-                                        <CircleButton>
-                                            <Entypo name="arrow-down" size={27} color="green" />
+                                        <CircleButton onPress={() => navigation.navigate("Charts")}>
+                                            <FontAwesome name="line-chart" size={24} color="white" />
                                         </CircleButton>
                                     </Animated.View>
                                     <Animated.View
@@ -451,7 +452,7 @@ const RootContainer = ({ backToTopButton, children, title, addButton, newDeliver
                                             // opacity: fadeAnimIn,
                                         }}
                                     >
-                                        <CircleButton onPress={newDeliveryButton}>
+                                        <CircleButton onPress={() => navigation.navigate("AddDelivery")}>
                                             <MaterialCommunityIcons name="truck-fast" size={25} color="white" />
                                         </CircleButton>
                                     </Animated.View>
@@ -530,8 +531,8 @@ const RootContainer = ({ backToTopButton, children, title, addButton, newDeliver
                                                 opacity: scrollButtonOpacity
                                             }}
                                         >
-                                            <CircleButton>
-                                                <Entypo name="arrow-down" size={27} color="green" />
+                                            <CircleButton onPress={() => navigation.navigate("Charts")}>
+                                                <FontAwesome name="line-chart" size={24} color="white" />
                                             </CircleButton>
                                         </Animated.View>
                                         <Animated.View
@@ -542,7 +543,7 @@ const RootContainer = ({ backToTopButton, children, title, addButton, newDeliver
                                                 opacity: scrollButtonOpacity
                                             }}
                                         >
-                                            <CircleButton onPress={newDeliveryButton}>
+                                            <CircleButton onPress={() => navigation.navigate("AddDelivery")}>
                                                 <MaterialCommunityIcons name="truck-fast" size={30} color="white" />
                                             </CircleButton>
                                         </Animated.View>

@@ -6,7 +6,7 @@ export const initProducts = () => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                'CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY NOT NULL, date TEXT NOT NULL, name TEXT NOT NULL UNIQUE,  stock REAL NOT NULL, history BLOB, status TEXT NOT NULL);',
+                'CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY NOT NULL, date TEXT NOT NULL, name TEXT NOT NULL UNIQUE,  stock REAL NOT NULL, history BLOB, status TEXT);',
                 [],
                 () => {
                     resolve();
@@ -63,7 +63,7 @@ export const fetchDeletedProducts = () => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                `SELECT id, date, name, stock,history, status FROM products GROUP BY status   HAVING status = "inactive" ORDER BY id DESC `,
+                `SELECT id, date, name, stock,history, status FROM products GROUP BY id  HAVING status LIKE "inactive" ORDER BY id DESC `,
                 [],
                 (_, result) => {
                     resolve(result);
@@ -80,11 +80,11 @@ export const fetchDeletedProducts = () => {
 
 
 
-export const totalyDeleteProduct = (id) => {
+export const totallyDeleteProduct = (id) => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                `UPDATE products SET  name= "deleted",  date= "deleted" , stock= 0 , history='[]' , status = "deleted" WHERE id =${id}`,
+                `UPDATE products SET   name= "deleted${id}",  date= "deleted" , stock= 0 , history='[]' , status = "deleted" WHERE id =${id}`,
                 [],
                 () => {
                     resolve();
@@ -123,7 +123,7 @@ export const deleteProduct = (id) => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                `UPDATE products SET  name= "deleted${id}",  date= "deleted" , stock= 0 , history='[]' , status = "deleted" WHERE id =${id}`,
+                `UPDATE products SET status = "inactive" WHERE id =${id}`,
                 [],
                 (_, result) => {
                     resolve(result);

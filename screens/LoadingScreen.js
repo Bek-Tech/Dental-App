@@ -53,7 +53,7 @@ const LoadingScreen = ({ navigation }) => {
             })
 
 
-    })
+    }, [])
 
 
     return <View style={{

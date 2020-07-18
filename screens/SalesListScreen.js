@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-console.log("sales")
 import { Text, Dimensions } from 'react-native';
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -11,7 +10,7 @@ import { FlatList, ScrollView } from 'react-native-gesture-handler';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
-console.log("sales1111")
+
 const SalesListScreen = ({ salesHistory, navigation, soldProducts }) => {
 
 
@@ -24,7 +23,8 @@ const SalesListScreen = ({ salesHistory, navigation, soldProducts }) => {
             backToTopButton={salesHistory.length >= 3 ? true : false}
             addButton={() => navigation.navigate("Add")}
             title='Journal'
-            newDeliveryButton={() => (navigation.navigate("AddDelivery"))}
+            newDeliveryButton={() => (navigation.navigate("Charts"))}
+            navigation={navigation}
         // headerComponent={<HeaderComponent />}
         >
             {/* 
@@ -47,7 +47,7 @@ const SalesListScreen = ({ salesHistory, navigation, soldProducts }) => {
                         navigation={navigation} {...item}
                     />
                 }) :
-                <EmptyListDiv>
+                <EmptyListDiv key="empty">
                     <EmptyText>List Empty</EmptyText>
                 </EmptyListDiv>
             }

@@ -1,4 +1,4 @@
-import { insertSale, deleteSale, fetchSales, updateSale } from '../DataBase/salesDB'
+import { insertSale, deleteSale, fetchSales, updateSale, updateSaleStatus, totallyDeleteSale } from '../DataBase/salesDB'
 import { fetchProducts } from '../DataBase/productsDB'
 
 
@@ -90,8 +90,19 @@ export const addNewSale = (day, month, year, customerId, customerName, productsA
 export const deleteSaleAction = (id) => {
     return async dispatch => {
         try {
-            await deleteSale(id)
+            deleteSale(id)
             dispatch(addSales())
+        } catch (err) {
+            throw err
+        }
+
+    }
+}
+
+export const totallyDeleteSaleAction = (id) => {
+    return () => {
+        try {
+            totallyDeleteSale(id)
         } catch (err) {
             throw err
         }
@@ -111,4 +122,19 @@ export const editSale = (id, day, month, year, customerId, customerName, product
         }
 
     }
+}
+
+
+
+export const restoreSale = (id) => {
+    return async dispatch => {
+        try {
+            await updateSaleStatus(id, "active")
+            dispatch(addSales())
+        } catch (err) {
+            throw err
+        }
+
+    }
+
 }

@@ -12,6 +12,7 @@ import CustomersScreen from './screens/CustomersScreen'
 import ProductDetailsScreen from './screens/ProductDetailsScreen'
 import ProductsScreen from './screens/ProductsScreen'
 import AddDeliveryScreen from './screens/AddDeliveryScreen'
+import ChartsScreen from './screens/ChartsScreen'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const headerStyle = {
@@ -33,6 +34,7 @@ const RootNavigation = createSwitchNavigator({
                     headerShown: false
                 }
             },
+
             Details: {
                 screen: DetailsScreen,
                 navigationOptions: {
@@ -44,7 +46,21 @@ const RootNavigation = createSwitchNavigator({
                 navigationOptions: {
                     headerShown: false
                 }
-            }
+            },
+            AddDelivery: {
+                screen: AddDeliveryScreen,
+
+                navigationOptions: {
+                    headerShown: false,
+                    unmountOnBlur: true,
+                }
+            },
+            Charts: {
+                screen: ChartsScreen,
+                navigationOptions: {
+                    headerShown: false
+                }
+            },
         }),
         Customers: createStackNavigator({
             Customers: {
@@ -59,7 +75,24 @@ const RootNavigation = createSwitchNavigator({
                     headerShown: false
                 }
             },
-            CustomerInfo: DetailsScreen
+            CustomerInfo: {
+                screen: DetailsScreen,
+                navigationOptions: {
+                    headerShown: false
+                }
+            },
+            AddDelivery: {
+                screen: AddDeliveryScreen,
+                navigationOptions: {
+                    headerShown: false
+                }
+            },
+            Charts: {
+                screen: ChartsScreen,
+                navigationOptions: {
+                    headerShown: false
+                }
+            },
         }),
         Products: createStackNavigator({
             Products: {
@@ -85,7 +118,13 @@ const RootNavigation = createSwitchNavigator({
                 navigationOptions: {
                     headerShown: false
                 }
-            }
+            },
+            Charts: {
+                screen: ChartsScreen,
+                navigationOptions: {
+                    headerShown: false
+                }
+            },
         })
     },
         {

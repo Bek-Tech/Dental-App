@@ -18,7 +18,7 @@ const CustomerInfo = (props) => {
 
 
     return <Container
-        onPress={() => navigation.navigate('Details')}>
+        onPress={() => navigation.navigate('Details', { id })}>
         <ModalOptions
             visible={modalVisible}
             visibilityToggler={() => setModalVisible(!modalVisible)}

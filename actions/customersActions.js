@@ -1,4 +1,4 @@
-import { fetchCustomers, deleteCustomer, insertCustomer, updateCustomer } from '../DataBase/customersDB'
+import { fetchCustomers, deleteCustomer, insertCustomer, updateCustomer, updateCustomerStatus, totallyDeleteCustomer } from '../DataBase/customersDB'
 //insertCustomer (date, name, phone)
 
 export const ADD_CUSTOMERS = 'ADD_CUSTOMERS'
@@ -33,12 +33,41 @@ export const addNewCustomer = (date, name, phone) => {
 
 
 
+export const restoreCustomer = (id) => {
+    return async dispatch => {
+        try {
+            await updateCustomerStatus(id, "active")
+            dispatch(addCustomers())
+        } catch (err) {
+            throw err
+        }
+
+    }
+
+}
+
+
+
+
 export const deleteCustomerAction = id => {
 
     return async dispatch => {
         try {
             await deleteCustomer(id)
             dispatch({ type: DELETE_CUSTOMER, id })
+        } catch (err) {
+            throw err
+        }
+
+    }
+}
+
+
+
+export const totallyDeleteCustomerAction = (id) => {
+    return () => {
+        try {
+            totallyDeleteCustomer(id)
         } catch (err) {
             throw err
         }

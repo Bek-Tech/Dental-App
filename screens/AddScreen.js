@@ -40,7 +40,7 @@ const AddScreen = ({ navigation, products, customers, salesHistory, productsSale
     const month = date.getMonth() + 1
     const year = date.getFullYear()
     const [productsArr, setProductsArr] = useState([])
-    const [pickedCustomer, setPickedCustomer] = useState(id ? { id: id, name: saleData[0].customerName } : { id: null, name: "choose product" })
+    const [pickedCustomer, setPickedCustomer] = useState(id ? { id: id, name: saleData[0].customerName } : { id: null, name: "Choose Customer" })
     const [pickedProduct, setPickedProduct] = useState({ id: null, name: "choose product" })
     const [productAmount, setProductAmount] = useState('')
     const [pickedItemId, setPickedItemId] = useState({})
@@ -235,7 +235,6 @@ const AddScreen = ({ navigation, products, customers, salesHistory, productsSale
 
                         productsArr.map((item, index) => {
                             return <AddedProduct
-                                productsSale={productsSale}
                                 mode={id ? "editSale" : "newSale"}
                                 key={item.id}
                                 index={index}
@@ -248,7 +247,6 @@ const AddScreen = ({ navigation, products, customers, salesHistory, productsSale
 
                 </ProductsDiv>
             </KeyboardAvoidingView>
-
 
 
 

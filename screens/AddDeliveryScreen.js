@@ -10,9 +10,10 @@ import { editProduct } from "../actions/productsActions"
 // editProduct(id, date, name, stock, history)
 import AddedProduct from '../components/AddedProduct';
 
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 
-
-
+console.log(windowHeight)
 
 const AddDeliveryScreen = ({ navigation, products, customers, salesHistory, productsSale }) => {
 
@@ -176,7 +177,6 @@ const AddDeliveryScreen = ({ navigation, products, customers, salesHistory, prod
                             index={index}
                             onDelete={(id, index) => deleteProduct(id, index)}
                             onChangeAmount={(value, index) => changeAmountAddedProduct(value, index)}
-                            productsSale={productsSale}
                             {...item}
                         />
                     })
@@ -288,9 +288,10 @@ ${'' /* shadow-offset: {width: 0, height: 2} */}
 
 
 const ProductsDiv = styled.ScrollView`
+flex:1
 margin-top: 5px
 width: 100%
-height: ${Dimensions.get('window').height / 2}px
+height: ${ windowHeight - 365}px
 border-top-width: 2px
 border-bottom-width: 2px
 border-color: black

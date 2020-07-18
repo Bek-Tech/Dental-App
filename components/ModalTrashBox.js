@@ -1,12 +1,107 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, Modal, TouchableOpacity, Dimensions } from 'react-native'
 import styled from 'styled-components/native'
+import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons'
 import { ScrollView } from 'react-native-gesture-handler'
 import { connect, useDispatch } from "react-redux"
+import { restoreProduct, totallyDeleteProductAction } from '../actions/productsActions'
+import { restoreCustomer, totallyDeleteCustomerAction } from '../actions/customersActions'
+import { restoreSale, totallyDeleteSaleAction } from '../actions/salesActions'
+import { fetchDeletedProducts } from "../DataBase/productsDB"
+import { fetchDeletedCustomers, totallyDeleteCustomer } from '../DataBase/customersDB'
+import { fetchDeletedSales } from '../DataBase/salesDB'
+
+
 
 
 const ModalTrashBox = ({ show, showTrigger, soldProducts }) => {
 
+
+    const dispatch = useDispatch()
+
+    const [deletedProducts, setDeletedProducts] = useState([])
+    const [deletedCustomers, setDeletedCustomers] = useState([])
+    const [deletedSales, setDeletedSales] = useState([])
+
+
+    useEffect(() => {
+        fetchDeletedProducts().then(result => {
+            setDeletedProducts(result.rows._array)
+        })
+        fetchDeletedCustomers().then(result => {
+            setDeletedCustomers(result.rows._array)
+        })
+        fetchDeletedSales().then(result => {
+            const parsedData = result.rows._array.map(item => {
+                const parsedProductsArr = JSON.parse(item.productsArr)
+                return { ...item, productsArr: parsedProductsArr }
+            })
+            setDeletedSales(parsedData)
+        })
+
+
+    }, [show])
+
+
+    // export const addProducts = () => {
+    //     return async dispatch => {
+    //         try {
+    //             const result = await fetchDeletedProducts()
+
+
+
+    //         } catch (err) {
+    //             throw err;
+    //         }
+    //     };
+    const restoreProductFunction = (id) => {
+        dispatch(restoreProduct(id))
+
+        fetchDeletedProducts().then(result => {
+            const parsedData = result.rows._array.map(item => {
+                const parsedProductsArr = JSON.parse(item.productsArr)
+                return { ...item, productsArr: parsedProductsArr }
+            })
+            setDeletedSales(parsedData)
+        })
+    }
+    const restoreCustomerFunction = (id) => {
+        dispatch(restoreCustomer(id))
+        fetchDeletedCustomers().then(result => {
+            setDeletedCustomers(result.rows._array)
+        })
+    }
+    const restoreSaleFunction = (id) => {
+        dispatch(restoreSale(id))
+        fetchDeletedSales().then(result => {
+            setDeletedSales(result.rows._array)
+        })
+    }
+    const totallyDeleteProductFunction = (id) => {
+        dispatch(totallyDeleteProductAction(id))
+        fetchDeletedProducts().then(result => {
+            setDeletedProducts(result.rows._array)
+        })
+
+    }
+    const totallyDeleteCustomerFunction = (id) => {
+        dispatch(totallyDeleteCustomerAction(id))
+        fetchDeletedCustomers().then(result => {
+            setDeletedCustomers(result.rows._array)
+        })
+
+    }
+    const totallyDeleteSaleFunction = (id) => {
+        dispatch(totallyDeleteSaleAction(id))
+        fetchDeletedSales().then(result => {
+            const parsedData = result.rows._array.map(item => {
+                const parsedProductsArr = JSON.parse(item.productsArr)
+                return { ...item, productsArr: parsedProductsArr }
+            })
+            setDeletedSales(parsedData)
+        })
+
+    }
 
 
 
@@ -25,65 +120,106 @@ const ModalTrashBox = ({ show, showTrigger, soldProducts }) => {
                 showTrigger();
             }}>
             <ModalView>
+                <TitleDiv>
+                    <FontAwesome5 name="trash" size={30} color="black" />
+                </TitleDiv>
                 <ScrollView
                     style={{
                         // alignItems: "center",
                         // justifyContent: "center",
-                        borderColor: "black",
-                        borderWidth: 2,
+                        // borderColor: "gray",
+                        // borderWidth: 2,
+                        padding: 5,
                         width: Dimensions.get('window').width / 1.2,
                         height: Dimensions.get('window').height / 3.5
 
                     }}
                 >
-                    {/* {dataName === "customers" ?
-                        data.length === 0 || !data ?
-                            <Text>your list is empty</Text> :
-                            data.map(item => {
-                                return <TouchableOpacity
-                                    style={{
-                                        flex: 1,
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        // borderColor: "black",
-                                        // borderBottomWidth: 2,
-                                    }}
-                                    onPress={() => {
-                                        pickedValue(item)
-                                        showTrigger();
-                                    }}>
-                                    <ListText >{item.name}</ListText>
-                                </TouchableOpacity>
-                            }) :
-                        data.length === 0 || !data ?
-                            <Text>your list is empty</Text> :
-                            data.map(item => {
-                                const inStock = soldProducts[item.id] ? item.totalReceived - soldProducts[item.id].totalSold : item.totalReceived
-                                if (inStock < 0) {
-                                    return <RowDiv key={item.id}>
-                                        <GrayText>{item.name}</GrayText>
-                                        <RedText>{inStock}</RedText>
-                                    </RowDiv>
-                                } else {
-                                    return <TouchableOpacity
-                                        key={item.id}
-                                        style={{
-                                            // borderColor: "black",
-                                            // borderWidth: 2,
-                                        }}
-                                        onPress={() => {
-                                            pickedValue(item)
-                                            showTrigger();
-                                        }}>
-                                        <RowDiv>
-                                            <ListText >{item.name}</ListText>
-                                            <ListText>{inStock}</ListText>
-                                        </RowDiv>
-                                    </TouchableOpacity>
-                                }
+                    <TitleDiv>
+                        <TitleText>products</TitleText>
+                    </TitleDiv>
 
-                            })
-                    } */}
+                    {deletedProducts.length === 0 ?
+                        <Text>your list is empty</Text> :
+                        deletedProducts.map(item => {
+                            return <ListItemDiv>
+                                <GrayText>{item.name}</GrayText>
+                                <ButtonsRowDiv>
+                                    <Button onPress={() => restoreProductFunction(item.id)}>
+                                        <MaterialCommunityIcons name="file-restore" size={28} color="green" />
+                                    </Button>
+                                    <Button onPress={() => totallyDeleteProductFunction(item.id)}>
+                                        <FontAwesome5 name="trash" size={26} color="red" />
+                                    </Button>
+
+                                </ButtonsRowDiv>
+
+                            </ListItemDiv>
+
+
+                        })
+                    }
+                    <TitleDiv>
+                        <TitleText>Customers</TitleText>
+                    </TitleDiv>
+                    {deletedCustomers.length === 0 ?
+                        <Text>your list is empty</Text> :
+                        deletedCustomers.map(item => {
+                            return <ListItemDiv>
+                                <GrayText>{item.name}</GrayText>
+                                <ButtonsRowDiv>
+                                    <Button onPress={() => restoreCustomerFunction(item.id)}>
+                                        <MaterialCommunityIcons name="file-restore" size={28} color="green" />
+                                    </Button>
+                                    <Button onPress={() => totallyDeleteCustomerFunction(item.id)}>
+                                        <FontAwesome5 name="trash" size={26} color="red" />
+                                    </Button>
+
+                                </ButtonsRowDiv>
+
+                            </ListItemDiv>
+
+                        })
+                    }
+                    <TitleDiv>
+                        <TitleText>Sales</TitleText>
+                    </TitleDiv>
+                    {deletedSales.length === 0 ?
+                        <Text>your list is empty</Text> :
+                        deletedSales.map(item => {
+                            return <SalesListView>
+                                <ListItemDiv>
+                                    <GrayText>{item.customerName}</GrayText>
+                                    <ButtonsRowDiv>
+                                        <Button onPress={() => restoreSaleFunction(item.id)}>
+                                            <MaterialCommunityIcons name="file-restore" size={28} color="green" />
+                                        </Button>
+                                        <Button onPress={() => totallyDeleteSaleFunction(item.id)}>
+                                            <FontAwesome5 name="trash" size={26} color="red" />
+                                        </Button>
+
+
+
+                                    </ButtonsRowDiv>
+
+                                </ListItemDiv>
+                                {item.productsArr.map(item => {
+                                    return <RowDiv key={item.name}>
+                                        <RowLeftView>
+                                            <Text>{item.name}</Text>
+                                        </RowLeftView>
+                                        <RowRightView>
+                                            <Text>{item.quantity}</Text>
+                                        </RowRightView>
+                                    </RowDiv>
+                                })}
+
+                            </SalesListView>
+                        })
+                    }
+
+
+
 
 
 
@@ -116,26 +252,82 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps)(ModalTrashBox)
 
 
-const ListText = styled.Text`
+const SalesListView = styled.View`
+borderColor: black
+borderBottomWidth:2px
+paddingBottom: 3px
+`
+
+
+const RowLeftView = styled.View`
+
+${'' /* border-left-width:2px */}
+border-color: gray
+flex: 1
+padding: 5px
+flex-direction: row
+justify-content: flex-start
+align-items: center
+`
+const RowRightView = styled.View`
+${'' /* border-right-width:2px */}
+border-left-width:2px
+border-color: gray
+flex: 1
+padding: 5px
+flex-direction: row
+justify-content: flex-start
+align-items: center
+`
+
+const Button = styled.TouchableOpacity`
+margin-left  : 10px
+`
+
+const ButtonsRowDiv = styled.View`
+${'' /* borderColor: black
+borderWidth: 2px */}
+flex-direction: row
+`
+
+const ListItemDiv = styled.View`
+width: 100%
+${'' /* borderColor: gray
+borderBottomWidth: 1px */}
+flex-direction: row
+justify-content: space-between
+align-items : baseline
+`
+
+const TitleDiv = styled.View`
+width: 100%
+justify-content: center
+align-items: center
+`
+
+
+const TitleText = styled.Text`
 color: #277FC4
-font-size: 20px
-marginTop: 5px
+font-size: 30px
+fontWeight : bold
+${'' /* marginTop: 5px */}
 `
 const GrayText = styled.Text`
-color: gray
+color: black
 font-size: 20px
-marginTop: 5px
+fontWeight : bold
+marginTop: 8px
 `
 const RedText = styled.Text`
 color: red
 font-size: 20px
-marginTop: 5px
+marginTop: 8px
 `
 
 const RowDiv = styled.View`
     ${'' /* borderColor: black
    borderWidth: 2px */}
-padding: 5px
+
 flex-direction: row
 justify-content: space-between
 align-items: center

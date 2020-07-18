@@ -24,7 +24,7 @@ const ProductsScreen = ({ products, salesHistory, navigation, soldProducts }) =>
                 backToTopButton={products.length > 5 ? true : false}
                 title='Products'
                 addButton={() => navigation.navigate("AddProduct", { id: null })}
-                newDeliveryButton={() => (navigation.navigate("AddDelivery"))}
+                navigation={navigation}
             >
 
 

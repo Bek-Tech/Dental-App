@@ -56,6 +56,26 @@ export const fetchCustomers = () => {
 };
 
 
+export const fetchDeletedCustomers = () => {
+    const promise = new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                `SELECT id, date, name, phone, status FROM customers GROUP BY id  HAVING status LIKE "inactive" ORDER BY id DESC `,
+                [],
+                (_, result) => {
+                    resolve(result);
+                },
+                (_, err) => {
+                    alert("error has occurred")
+                    reject(err);
+                }
+            );
+        });
+    });
+    return promise;
+};
+
+
 export const totallyDeleteCustomer = (id) => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
@@ -102,6 +122,27 @@ export const updateCustomer = (id, date, name, phone) => {
         db.transaction(tx => {
             tx.executeSql(
                 `UPDATE customers SET  name= "${name}",  date= "${date}" , phone=${phone} WHERE id =${id}`,
+                [],
+                (_, result) => {
+                    resolve(result);
+                },
+                (_, err) => {
+                    alert("error has occurred")
+                    reject(err);
+                }
+            );
+        });
+    });
+    return promise;
+};
+
+
+
+export const updateCustomerStatus = (id, status) => {
+    const promise = new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                `UPDATE customers SET status = "${status}" WHERE id =${id}`,
                 [],
                 (_, result) => {
                     resolve(result);
