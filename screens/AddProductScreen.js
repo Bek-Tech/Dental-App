@@ -8,6 +8,8 @@ import { insertProduct, updateProduct, updateProductStatus } from "../DataBase/p
 import AddContainer from "../components/AddContainer"
 import { addNewProduct, editProduct } from "../actions/productsActions"
 // addNewProduct(date, name, stock, history, status)  status have to be string "active"
+import { ColorPicker } from 'react-native-color-picker'
+
 
 
 
@@ -26,7 +28,7 @@ const AddProductScreen = ({ navigation, products }) => {
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const [dateString, setDateString] = useState(id ? product[0].date : date.toDateString())
-
+    const [color, setColor] = useState(id ? product[0].color : "#407b78")
 
 
 
@@ -53,6 +55,26 @@ const AddProductScreen = ({ navigation, products }) => {
         showMode('date');
     };
 
+    const saveProduct = () => {
+        if (id) {
+            name.length === 0 || stock.length === 0 ? setError(true) : dispatch(editProduct(id, dateString, name, stock, historyString))
+            console.log("product edited")
+            navigation.navigate('Products')
+
+        } else {
+
+            try {
+                name.length === 0 || stock.length === 0 ? setError(true)
+                    : dispatch(addNewProduct(dateString, name, stock, historyString, color))
+                        .then(() => {
+                            console.log("new product added")
+                            navigation.navigate('Products')
+                        })
+            } catch (err) {
+                alert("error")
+            }
+        }
+    }
 
     return (
         <AddContainer
@@ -89,40 +111,32 @@ const AddProductScreen = ({ navigation, products }) => {
                 keyboardType="number-pad"
                 placeholder="enter amount"
                 onChangeText={num => setStock(num)} />
+            <View style={{ width: 20, height: 20, backgroundColor: color }}>
+
+            </View>
+
+            <ColorPicker
+                onColorSelected={color => setColor(color)}
+                style={{ flex: 1, height: 200, }}
+                defaultColor={color}
+            />
+
+
+
+
             <ButtonRowDiv>
 
+
                 <ButtonStyled
-                    onPress={() => {
-                        if (id) {
-                            name.length === 0 || stock.length === 0 ? setError(true) : dispatch(editProduct(id, dateString, name, stock, historyString))
-                            console.log("product edited")
-                            navigation.navigate('Products')
-
-                        } else {
-
-                            try {
-                                name.length === 0 || stock.length === 0 ? setError(true)
-                                    : dispatch(addNewProduct(dateString, name, stock, historyString))
-                                        .then(() => {
-                                            console.log("new product added")
-                                            navigation.navigate('Products')
-                                        })
-                            } catch (err) {
-                                alert("error")
-                            }
-
-                        }
-                    }}  >
+                    onPress={() => saveProduct()}
+                >
                     <ButtonText>Save</ButtonText>
                 </ButtonStyled>
                 <ButtonStyled onPress={() => navigation.navigate('Products')}   >
                     <ButtonText>Cancel</ButtonText>
                 </ButtonStyled>
-                <ButtonStyled onPress={() => updateProductStatus(2, "active")}   >
-                    <ButtonText>test</ButtonText>
-                </ButtonStyled>
             </ButtonRowDiv>
-        </AddContainer>
+        </AddContainer >
     );
 }
 

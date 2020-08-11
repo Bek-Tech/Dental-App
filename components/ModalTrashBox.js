@@ -54,15 +54,10 @@ const ModalTrashBox = ({ show, showTrigger, soldProducts }) => {
     //             throw err;
     //         }
     //     };
-    const restoreProductFunction = (id) => {
-        dispatch(restoreProduct(id))
-
+    const restoreProductFunction = async (id) => {
+        await dispatch(restoreProduct(id))
         fetchDeletedProducts().then(result => {
-            const parsedData = result.rows._array.map(item => {
-                const parsedProductsArr = JSON.parse(item.productsArr)
-                return { ...item, productsArr: parsedProductsArr }
-            })
-            setDeletedSales(parsedData)
+            setDeletedProducts(result.rows._array)
         })
     }
     const restoreCustomerFunction = (id) => {
@@ -71,8 +66,8 @@ const ModalTrashBox = ({ show, showTrigger, soldProducts }) => {
             setDeletedCustomers(result.rows._array)
         })
     }
-    const restoreSaleFunction = (id) => {
-        dispatch(restoreSale(id))
+    const restoreSaleFunction = async (id) => {
+        await dispatch(restoreSale(id))
         fetchDeletedSales().then(result => {
             setDeletedSales(result.rows._array)
         })

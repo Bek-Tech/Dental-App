@@ -40,10 +40,11 @@ export const addProducts = () => {
 
 
 
-export const addNewProduct = (date, name, stock, history) => {
+export const addNewProduct = (date, name, stock, history, color) => {
     return async dispatch => {
         try {
-            await insertProduct(date, name, stock, history)
+            console.log("actions")
+            await insertProduct(date, name, stock, history, color)
             dispatch(addProducts())
         } catch (err) {
             throw err
@@ -78,10 +79,10 @@ export const deleteProductAction = (id) => {
     }
 }
 
-export const editProduct = (id, date, name, stock, history) => {
+export const editProduct = (id, date, name, stock, history, color) => {
     return async dispatch => {
         try {
-            await updateProduct(id, date, name, stock, history)
+            await updateProduct(id, date, name, stock, history, color)
             dispatch(reFetchProducts())
         } catch (err) {
             throw err

@@ -3,6 +3,10 @@ import { Text, View, TouchableOpacity, KeyboardAvoidingView, Dimensions, ImageBa
 import styled from 'styled-components/native'
 import { AntDesign } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+
+
+
 const AddContainer = ({ children, title, head, BackButton }) => {
 
     const [state, setState] = useState(Dimensions.get('window').height / 1.3)
@@ -63,17 +67,18 @@ const ItemsContainer = styled.View`
      
     flex:1
     resizeMode: cover
-     backgroundColor: rgba(155,155,155,0.4)
+    overflow: hidden
+    backgroundColor: rgba(152,152,152,0.2)
      borderRadius: 35px            
      margin: 5px  
      marginTop: 10px
      margin-bottom: 60px             
-     padding: 15px   15px     
-       shadow-color: #000
+     padding: 0px   15px     
+       ${'' /* shadow-color: #000 */}
 ${'' /* shadow-offset: {width: 0, height: 2} */}
-            shadow-opacity: 0.5
+            ${'' /* shadow-opacity: 0.5
             shadow-radius: 6.3px
-            elevation: 10   
+            elevation: 10    */}
 `
 
 const BodyContainer = styled.View`

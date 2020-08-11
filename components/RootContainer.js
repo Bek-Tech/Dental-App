@@ -2,12 +2,9 @@ import React, { useState, useRef, useEffect } from 'react'
 import { Text, View, Animated, TouchableOpacity, Dimensions, ImageBackground, StyleSheet, ScrollView, Button } from 'react-native';
 import styled from 'styled-components/native'
 import { TextInput } from 'react-native-gesture-handler';
-import { LineChart } from "react-native-chart-kit";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons, Entypo, FontAwesome5, MaterialIcons, AntDesign, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons'
 import ModalTrashBox from './ModalTrashBox'
-import navigation from '../navigation'
-
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
@@ -32,6 +29,9 @@ const RootContainer = ({ backToTopButton, children, title, addButton, navigation
     const rightAddButton = useRef(new Animated.Value(0)).current
     const resizeButton = useRef(new Animated.Value(0)).current
     const scrollViewRef = useRef()
+
+
+
 
 
     const fadeAnimOut = (new Animated.Value(1))
@@ -243,7 +243,7 @@ const RootContainer = ({ backToTopButton, children, title, addButton, navigation
     })
 
 
-    // const [chart, setChart] = useState(false)
+
 
 
 
@@ -337,46 +337,7 @@ const RootContainer = ({ backToTopButton, children, title, addButton, navigation
                         }} >
 
 
-                            {/* {chart ? <View>
-                                <LineChart
-                                    data={{
-                                        labels: ["January", "February", "March", "April", "May", "June", "july", " august", "september", "oktober"],
-                                        datasets: [
-                                            {
-                                                data: [
-                                                    Math.random() * 100, 44, 55, 22, 4, 64, 73, 23, 44, 10
-                                                ]
-                                            }
-                                        ]
-                                    }}
-                                    width={windowWidth - 20}
-                                    height={windowHeight / 7}
-                                    yAxisLabel=""
-                                    yAxisSuffix=""
-                                    yAxisInterval={1} // optional, defaults to 1
-                                    chartConfig={{
-                                        backgroundColor: "black",
-                                        backgroundGradientFrom: "grey",
-                                        backgroundGradientTo: "black",
-                                        decimalPlaces: 2, // optional, defaults to 2dp
-                                        color: (opacity = 0) => `rgba(255, 255, 255, ${opacity})`,
-                                        labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                                        style: {
-                                            borderRadius: 16
-                                        },
-                                        propsForDots: {
-                                            r: "3",
-                                            strokeWidth: "2",
-                                            stroke: "white"
-                                        }
-                                    }}
-                                    bezier
-                                    style={{
-                                        marginVertical: 8,
-                                        borderRadius: 16
-                                    }}
-                                />
-                            </View> : null} */}
+
 
                         </View>
                         <ListContainer>
@@ -401,6 +362,102 @@ const RootContainer = ({ backToTopButton, children, title, addButton, navigation
 
 
                     </ScrollView>
+
+
+
+                    {/* ___________________________________________oval header____________________________________________________________ */}
+
+                    <Animated.View style={{
+                        ...styles.headerContainerStyle,
+                        height: scrollOvalHeaderHeight,
+
+                    }} >
+
+                        {/* <Animated.View
+                             style={{ height: scrollOvalHeaderHeight }}
+                             ></Animated.View> */}
+                        <Animated.View style={{
+                            ...styles.ovalHeaderContainer,
+                            borderRadius: scrollHeaderRadius
+
+                        }} >
+                            <View style={styles.headerItem}>
+                                {/* <View style={{ height: 0, backgroundColor: 'red' }}></View> */}
+                                <ImageBackground source={require("../assets/background.jpg")}
+                                    style={{
+                                        flex: 1,
+                                        resizeMode: "cover",
+                                        justifyContent: "center"
+                                    }}>
+                                    <Animated.Text style={{
+                                        color: "black",
+                                        fontSize: scrollTextSize,
+                                        fontWeight: "bold"
+                                    }}>{title}</Animated.Text>
+                                    {/* __________________________________________________________________ search  */}
+                                    <View style={{
+                                        width: windowWidth / 1.2,
+                                        height: 60,
+                                        marginLeft: 10,
+                                        marginRight: 10,
+                                        backgroundColor: "black",
+                                        opacity: 0.4,
+                                        borderRadius: 30,
+                                        justifyContent: 'center',
+                                        alignItems: "center"
+                                    }}>
+                                        <TextInput placeholder="search" style={{
+                                            width: windowWidth / 1.3,
+                                            height: 50,
+                                        }} />
+                                    </View>
+                                    <OvalHeaderRowDiv>
+                                        <Animated.View
+                                            style={{
+                                                ...styles.AnimatedButtonDiv,
+                                                height: 60,
+                                                width: 60,
+                                                opacity: scrollButtonOpacity
+                                            }}
+                                        >
+                                            <CircleButton onPress={() => setShowTrashBox(true)}>
+                                                <FontAwesome5 name="trash" size={20} color="black" />
+                                            </CircleButton>
+                                        </Animated.View>
+                                        <Animated.View
+                                            style={{
+                                                ...styles.AnimatedButtonDiv,
+                                                height: 60,
+                                                width: 60,
+                                                opacity: scrollButtonOpacity
+                                            }}
+                                        >
+                                            <CircleButton onPress={() => navigation.navigate("Charts")}>
+                                                <FontAwesome name="line-chart" size={24} color="black" />
+                                            </CircleButton>
+                                        </Animated.View>
+                                        <Animated.View
+                                            style={{
+                                                ...styles.AnimatedButtonDiv,
+                                                height: 60,
+                                                width: 60,
+                                                opacity: scrollButtonOpacity
+                                            }}
+                                        >
+                                            <CircleButton onPress={() => navigation.navigate("AddDelivery")}>
+                                                <MaterialCommunityIcons name="truck-fast" size={30} color="black" />
+                                            </CircleButton>
+                                        </Animated.View>
+                                    </OvalHeaderRowDiv>
+                                </ImageBackground>
+                            </View>
+
+                        </Animated.View>
+
+                    </Animated.View>
+
+
+
 
 
 
@@ -441,7 +498,7 @@ const RootContainer = ({ backToTopButton, children, title, addButton, navigation
                                     >
 
                                         <CircleButton onPress={() => navigation.navigate("Charts")}>
-                                            <FontAwesome name="line-chart" size={24} color="white" />
+                                            <FontAwesome name="line-chart" size={18} color="black" />
                                         </CircleButton>
                                     </Animated.View>
                                     <Animated.View
@@ -453,7 +510,7 @@ const RootContainer = ({ backToTopButton, children, title, addButton, navigation
                                         }}
                                     >
                                         <CircleButton onPress={() => navigation.navigate("AddDelivery")}>
-                                            <MaterialCommunityIcons name="truck-fast" size={25} color="white" />
+                                            <MaterialCommunityIcons name="truck-fast" size={25} color="black" />
                                         </CircleButton>
                                     </Animated.View>
                                 </HeaderRowDiv>
@@ -462,98 +519,6 @@ const RootContainer = ({ backToTopButton, children, title, addButton, navigation
                         </HeaderRowDiv>
                     </Animated.View>
 
-
-
-                    {/* ___________________________________________oval header____________________________________________________________ */}
-
-                    <Animated.View style={{
-                        ...styles.headerContainerStyle,
-                        height: scrollOvalHeaderHeight,
-
-                    }} >
-
-                        {/* <Animated.View
-                             style={{ height: scrollOvalHeaderHeight }}
-                             ></Animated.View> */}
-                        <Animated.View style={{
-                            ...styles.ovalHeaderContainer,
-                            borderRadius: scrollHeaderRadius
-
-                        }} >
-                            <View style={styles.headerItem}>
-                                {/* <View style={{ height: 0, backgroundColor: 'red' }}></View> */}
-                                <ImageBackground source={require("../assets/background.jpg")}
-                                    style={{
-                                        flex: 1,
-                                        resizeMode: "cover",
-                                        justifyContent: "center"
-                                    }}>
-                                    <Animated.Text style={{
-                                        color: "white",
-                                        fontSize: scrollTextSize,
-                                        fontWeight: "bold"
-                                    }}>{title}</Animated.Text>
-                                    {/* __________________________________________________________________ search  */}
-                                    <View style={{
-                                        width: windowWidth / 1.2,
-                                        height: 60,
-                                        marginLeft: 10,
-                                        marginRight: 10,
-                                        backgroundColor: "black",
-                                        opacity: 0.4,
-                                        borderRadius: 30,
-                                        justifyContent: 'center',
-                                        alignItems: "center"
-                                    }}>
-                                        <TextInput placeholder="search" style={{
-                                            width: windowWidth / 1.3,
-                                            height: 50,
-                                        }} />
-                                    </View>
-                                    <OvalHeaderRowDiv>
-                                        <Animated.View
-                                            style={{
-                                                ...styles.AnimatedButtonDiv,
-                                                height: 60,
-                                                width: 60,
-                                                opacity: scrollButtonOpacity
-                                            }}
-                                        >
-                                            <CircleButton onPress={() => setShowTrashBox(true)}>
-                                                <FontAwesome5 name="trash" size={20} color="white" />
-                                            </CircleButton>
-                                        </Animated.View>
-                                        <Animated.View
-                                            style={{
-                                                ...styles.AnimatedButtonDiv,
-                                                height: 60,
-                                                width: 60,
-                                                opacity: scrollButtonOpacity
-                                            }}
-                                        >
-                                            <CircleButton onPress={() => navigation.navigate("Charts")}>
-                                                <FontAwesome name="line-chart" size={24} color="white" />
-                                            </CircleButton>
-                                        </Animated.View>
-                                        <Animated.View
-                                            style={{
-                                                ...styles.AnimatedButtonDiv,
-                                                height: 60,
-                                                width: 60,
-                                                opacity: scrollButtonOpacity
-                                            }}
-                                        >
-                                            <CircleButton onPress={() => navigation.navigate("AddDelivery")}>
-                                                <MaterialCommunityIcons name="truck-fast" size={30} color="white" />
-                                            </CircleButton>
-                                        </Animated.View>
-                                    </OvalHeaderRowDiv>
-                                </ImageBackground>
-                            </View>
-
-                        </Animated.View>
-
-                    </Animated.View>
 
 
 
@@ -599,7 +564,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomWidth: 1,
         borderColor: "gray",
-        backgroundColor: "rgba(0,0,0,0.6)"
+        backgroundColor: "rgba(0,0,0,0.5)"
     },
     headerContainerStyle: {
         alignSelf: 'center',
@@ -614,7 +579,7 @@ const styles = StyleSheet.create({
         height: windowHeight * 2,
         marginBottom: 15,
         shadowColor: "#000",
-        shadowOpacity: 0.5,
+        shadowOpacity: 0.8,
         shadowRadius: 6.3,
         elevation: 10,
         justifyContent: "center",
@@ -682,7 +647,7 @@ flex: 1
 width: ${windowWidth}px
 borderColor: black
 borderWidth: 2px
-backgroundColor: rgba(152,152,152,0.3)
+backgroundColor: rgba(152,152,152,0.2)
 
 `
 const CircleButton = styled.TouchableOpacity`
@@ -690,13 +655,15 @@ flex: 1
 align-items:center
 justify-content: center
 border-radius: 50px
-background: rgba(0, 0, 0, 1)
+background: rgba(50, 50, 50,0.4 )
+borderColor:gray
+borderWidth: 2px
 margin : 0px
-shadow-color: #000
+${'' /* shadow-color: #000 */}
 ${'' /* shadow-offset: {width: 0, height: 2} */}
- shadow-opacity: 0.5
+ ${'' /* shadow-opacity: 0.5
 shadow-radius: 6.3px
- elevation: 10
+ elevation: 10 */}
  `
 const HeaderRowDiv = styled.View`
             width: 100%

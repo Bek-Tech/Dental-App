@@ -26,108 +26,34 @@ const headerStyle = {
 
 const RootNavigation = createSwitchNavigator({
     Loading: LoadingScreen,
-    MainFlow: createBottomTabNavigator({
-        Sales: createStackNavigator({
-            SalesList: {
-                screen: SalesListScreen,
-                navigationOptions: {
-                    headerShown: false
+    MainFlow: createStackNavigator({
+        MainScreens: createBottomTabNavigator({
+            Sales: createStackNavigator({
+                SalesList: {
+                    screen: SalesListScreen,
+                    navigationOptions: {
+                        headerShown: false
+                    }
+                },
+            }),
+            Customers: createStackNavigator({
+                Customers: {
+                    screen: CustomersScreen,
+                    navigationOptions: {
+                        headerShown: false
+                    }
+                },
+            }),
+            Products: createStackNavigator({
+                Products: {
+                    screen: ProductsScreen,
+                    navigationOptions: {
+                        headerShown: false
+                    }
                 }
-            },
+            }),
 
-            Details: {
-                screen: DetailsScreen,
-                navigationOptions: {
-                    headerShown: false
-                }
-            },
-            Add: {
-                screen: AddScreen,
-                navigationOptions: {
-                    headerShown: false
-                }
-            },
-            AddDelivery: {
-                screen: AddDeliveryScreen,
-
-                navigationOptions: {
-                    headerShown: false,
-                    unmountOnBlur: true,
-                }
-            },
-            Charts: {
-                screen: ChartsScreen,
-                navigationOptions: {
-                    headerShown: false
-                }
-            },
-        }),
-        Customers: createStackNavigator({
-            Customers: {
-                screen: CustomersScreen,
-                navigationOptions: {
-                    headerShown: false
-                }
-            },
-            AddCustomer: {
-                screen: AddCustomerScreen,
-                navigationOptions: {
-                    headerShown: false
-                }
-            },
-            CustomerInfo: {
-                screen: DetailsScreen,
-                navigationOptions: {
-                    headerShown: false
-                }
-            },
-            AddDelivery: {
-                screen: AddDeliveryScreen,
-                navigationOptions: {
-                    headerShown: false
-                }
-            },
-            Charts: {
-                screen: ChartsScreen,
-                navigationOptions: {
-                    headerShown: false
-                }
-            },
-        }),
-        Products: createStackNavigator({
-            Products: {
-                screen: ProductsScreen,
-                navigationOptions: {
-                    headerShown: false
-                }
-            },
-            AddProduct: {
-                screen: AddProductScreen,
-                navigationOptions: {
-                    headerShown: false
-                }
-            },
-            ProductDetails: {
-                screen: ProductDetailsScreen,
-                navigationOptions: {
-                    headerShown: false
-                }
-            },
-            AddDelivery: {
-                screen: AddDeliveryScreen,
-                navigationOptions: {
-                    headerShown: false
-                }
-            },
-            Charts: {
-                screen: ChartsScreen,
-                navigationOptions: {
-                    headerShown: false
-                }
-            },
-        })
-    },
-        {
+        }, {
             defaultNavigationOptions: ({ navigation }) => ({
                 tabBarIcon: ({ focused, horizontal, tintColor }) => {
                     const { routeName } = navigation.state;
@@ -136,10 +62,7 @@ const RootNavigation = createSwitchNavigator({
                     if (routeName === 'Sales') {
                         iconName = focused
                             ? 'ios-information-circle'
-                            : 'ios-information-circle-outline';
-                        // Sometimes we want to add badges to some icons.
-                        // You can check the implementation below.
-                        // IconComponent = HomeIconWithBadge;
+                            : 'ios-information-circle-outline'
                     } else if (routeName === 'Products') {
                         iconName = focused ? 'ios-list-box' : 'ios-list';
                     } else if (routeName === 'Customers') {
@@ -177,7 +100,64 @@ const RootNavigation = createSwitchNavigator({
                     borderBottomWidth: 2,
                 }
             }
-        })
+        }),
+        Charts: {
+            screen: ChartsScreen,
+            navigationOptions: {
+                headerShown: false
+            }
+        },
+        AddDelivery: {
+            screen: AddDeliveryScreen,
+            navigationOptions: {
+                headerShown: false
+            }
+        },
+        Details: {
+            screen: DetailsScreen,
+            navigationOptions: {
+                headerShown: false
+            }
+        },
+        Add: {
+            screen: AddScreen,
+            navigationOptions: {
+                headerShown: false
+            }
+        },
+        AddCustomer: {
+            screen: AddCustomerScreen,
+            navigationOptions: {
+                headerShown: false
+            }
+        },
+        CustomerInfo: {
+            screen: DetailsScreen,
+            navigationOptions: {
+                headerShown: false
+            }
+        },
+        AddProduct: {
+            screen: AddProductScreen,
+            navigationOptions: {
+                headerShown: false
+            }
+        },
+        ProductDetails: {
+            screen: ProductDetailsScreen,
+            navigationOptions: {
+                headerShown: false
+            }
+        }
+
+
+
+    }, {
+        defaultNavigationOptions: {
+            headerShown: false
+        }
+    }
+    )
 })
 
 
