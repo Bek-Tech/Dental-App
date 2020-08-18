@@ -14,15 +14,14 @@ const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 const ProductsScreen = ({ products, salesHistory, navigation, soldProducts }) => {
-    // console.log("products screen")
-    // console.log(products)
-    // console.log(soldProducts)
-    const dispatch = useDispatch()
+
+
     return (
         <>
             <RootContainer
-                backToTopButton={products.length > 5 ? true : false}
                 title='Products'
+                totalSold={salesHistory.totalSold}
+                totalProducts={products.length}
                 addButton={() => navigation.navigate("AddProduct", { id: null })}
                 navigation={navigation}
             >
@@ -32,7 +31,8 @@ const ProductsScreen = ({ products, salesHistory, navigation, soldProducts }) =>
                     products.map(item => {
                         return <ProductBox
                             key={item.id}
-                            sold={soldProducts[item.id] ? soldProducts[item.id] : null} navigation={navigation} {...item} />
+                            sold={soldProducts[item.id] ? soldProducts[item.id] : null} navigation={navigation}
+                            {...item} />
                     }) :
                     <EmptyListDiv>
                         <EmptyText>List Empty</EmptyText>
@@ -59,9 +59,11 @@ export default connect(mapProductsToProp)(ProductsScreen)
 
 const EmptyListDiv = styled.View`
 flex:1
-height: ${windowHeight / 2.5}px
+height: ${windowHeight - 600}px
 align-items:center
 justify-content: center
+borderWidth:2px
+borderColor: red
 `
 
 const EmptyText = styled.Text`

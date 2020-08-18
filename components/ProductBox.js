@@ -6,8 +6,8 @@ import { deleteProductAction, editProduct } from "../actions/productsActions"
 //editProduct(id, date, name, stock, history)
 import { SimpleLineIcons } from '@expo/vector-icons'
 import ModalOptions from './ModalOptions'
-
-
+import * as colors from "./Colors"
+import { LinearGradient } from 'expo-linear-gradient'
 
 
 
@@ -16,8 +16,8 @@ import ModalOptions from './ModalOptions'
 
 
 const ProductBox = (props) => {
-    const { id, name, stock, totalReceived, navigation, sold } = props
-    const totalSold = sold === null ? 0 : sold.totalSold
+    const { id, name, stock, totalReceived, navigation, sold, color } = props
+    const totalSold = sold ? sold.totalSold : 0
     // console.log("box")
 
 
@@ -27,130 +27,142 @@ const ProductBox = (props) => {
     const dispatch = useDispatch()
     const [modalVisible, setModalVisible] = useState(false)
     return <ProductsContainer onPress={() => navigation.navigate("ProductDetails", { id })}>
-        <ModalOptions
-            visible={modalVisible}
-            visibilityToggler={() => setModalVisible(!modalVisible)}
-            onPressIncome={(amount) => console.log(amount)}
-            onPressEdit={() => {
-                navigation.navigate("AddProduct", { id: id })
-                setModalVisible(false)
+
+        <LinearGradient
+            colors={["transparent", colors.secondaryBodyColor]}
+            style={{
+                flex: 1
             }}
-            onPressDelete={() => {
-                dispatch(deleteProductAction(id))
-                setModalVisible(!modalVisible)
-            }}
-            onPressCall={false}
-            onPressMessage={false}
-        />
-        <RowDiv>
+        >
+            <ModalOptions
+                visible={modalVisible}
+                visibilityToggler={() => setModalVisible(!modalVisible)}
+                // onPressIncome={(amount) => console.log(amount)}
+                onPressEdit={() => {
+                    navigation.navigate("AddProduct", { id: id })
+                    setModalVisible(false)
+                }}
+                onPressDelete={() => {
+                    dispatch(deleteProductAction(id))
+                    setModalVisible(!modalVisible)
+                }}
+                onPressCall={false}
+                onPressMessage={false}
+            />
+            <RowDiv>
+                <View style={{ flex: 1, alignItems: "flex-start" }}>
+                    <NameText>{name}</NameText>
+                </View>
 
-            <NameText>{name}</NameText>
-            <View style={{ flexDirection: "row" }}>
-                <DateText>reg : {date}</DateText>
-                <TouchableOpacity onPress={() => setModalVisible(true)}>
-                    <SimpleLineIcons name="options-vertical" size={20} color="black" />
-                </TouchableOpacity>
-            </View>
-
-
-        </RowDiv>
-        <BlockRowDiv>
-            <View>
-                <SmallText>received</SmallText>
-                <ReceivedNumText>{totalReceived}</ReceivedNumText>
-            </View>
-            <View>
-                <SmallText>sold</SmallText>
-                <SoldNumText>{totalSold}</SoldNumText>
-            </View>
-            <View>
-                <SmallText>stock</SmallText>
-                <StockNumText>{totalReceived - totalSold}</StockNumText>
-            </View>
-
-            {/* <NameText>inStock  : {stock - totalSold}</NameText> */}
-        </BlockRowDiv>
+                <View style={{ flexDirection: "row", flex: 1, justifyContent: "flex-end" }}>
+                    <DateText>reg : {date}</DateText>
+                    <TouchableOpacity onPress={() => setModalVisible(true)}>
+                        <SimpleLineIcons name="options-vertical" size={20} color="black" />
+                    </TouchableOpacity>
+                </View>
 
 
+            </RowDiv>
+            <BlockRowDiv>
+                <View>
+                    <SmallText>received</SmallText>
+                    <ReceivedNumText>{totalReceived}</ReceivedNumText>
+                </View>
+                <View>
+                    <SmallText>sold</SmallText>
+                    <SoldNumText>{totalSold}</SoldNumText>
+                </View>
+                <View>
+                    <SmallText>stock</SmallText>
+                    <StockNumText>{totalReceived - totalSold}</StockNumText>
+                </View>
 
-    </ProductsContainer>
+                {/* <NameText>inStock  : {stock - totalSold}</NameText> */}
+            </BlockRowDiv>
+
+
+        </LinearGradient>
+    </ProductsContainer >
 
 }
 
 
 export default ProductBox
 
-
 const ProductsContainer = styled.TouchableOpacity`
-flex:1 
-border-radius: 15px
-background: rgba(53,53,53,0.5)
-margin: 5px 5px
-padding : 5px 15px
- ${'' /* shadow-color: #000
-shadow-opacity: 0.5
-shadow-radius: 6.3px
-elevation: 10 */}
-`
+                flex:1
+                border-radius: 15px
+        background: ${colors.secondaryBodyColor}
+        margin: 5px 5px
+        padding: 5px 10px
+        overflow: hidden
+         shadow-color: black
+        shadow-opacity: 1
+        shadow-radius: 6.3px
+        elevation: 18
+ ${'' /* borderColor: ${colors.mainColor}
+   borderBottomWidth: 2px  */}
+        `
+
 
 const NameText = styled.Text`
-font-weight : 800
-font-size : 28px
-line-height : 30px
-margin-bottom: 5px
-color: black
-`
+        font-weight : 900
+        font-size : 28px
+        line-height : 30px
+        margin-bottom: 5px
+        color: ${colors.mainTextColor}
+        `
 
 const RowDiv = styled.View`
-width: 100%
+        width: 100%
  ${'' /* borderColor: black
    borderWidth: 2px  */}
-padding: 3px 5px
-flex-direction: row
-justify-content: space-between
-align-items: center
+        padding: 3px 5px
+        flex-direction: row
+        justify-content: space-between
+        align-items: center
 
-`
+        `
 const BlockRowDiv = styled.View`
-width: 100%
-padding: 0px 5px
-flex-direction: row
-justify-content: space-between
-align-items: center
+        width: 100%
+        padding: 0px 5px
+        flex-direction: row
+        justify-content: space-between
+        align-items: center
 
-`
+        `
 
 const ReceivedNumText = styled.Text`
-font-size : 18px
-font-weight: bold
+        font-size : 18px
+        font-weight: bold
 ${'' /* line-height : 30px */}
 
-color: blue
-`
+        color: #52A9EB
+        `
 const SoldNumText = styled.Text`
-font-size : 18px
-font-weight: bold
+        font-size : 18px
+        font-weight: bold
 ${'' /* line-height : 30px */}
 
-color: green
-`
+        color: green
+        `
 const StockNumText = styled.Text`
-font-size : 18px
-font-weight: bold
+        font-size : 18px
+        font-weight: bold
 ${'' /* line-height : 30px */}
 
-color: black
-`
+        color: black
+        `
 
 const SmallText = styled.Text`
-font-size : 16px
-line-height : 30px
-
-color: black
-`
+        font-size : 16px
+        line-height : 30px
+        
+        color: ${colors.secondaryTextColor}
+        `
 const DateText = styled.Text`
-font-size : 16px
-line-height : 30px
-marginRight: 15px
-color: black
+        font-size : 16px
+        line-height : 30px
+        marginRight: 15px
+        color: black
 `

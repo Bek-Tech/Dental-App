@@ -13,7 +13,7 @@ import AddedProduct from '../components/AddedProduct';
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
-console.log(windowHeight)
+
 
 const AddDeliveryScreen = ({ navigation, products, customers, salesHistory, productsSale }) => {
 
@@ -44,7 +44,7 @@ const AddDeliveryScreen = ({ navigation, products, customers, salesHistory, prod
         productsArr.forEach(item => {
             const historyArr = [...item.history, item.productObj]
             const stringHistoryArr = JSON.stringify(historyArr)
-            dispatch(editProduct(item.id, item.date, item.name, item.stock, stringHistoryArr))
+            dispatch(editProduct(item.id, item.date, item.name, item.stock, stringHistoryArr, item.color))
         })
 
     }
@@ -291,7 +291,7 @@ const ProductsDiv = styled.ScrollView`
 flex:1
 margin-top: 5px
 width: 100%
-height: ${ windowHeight - 365}px
+height: ${ windowHeight - 310}px
 border-top-width: 2px
 border-bottom-width: 2px
 border-color: black

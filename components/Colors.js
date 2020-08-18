@@ -1,0 +1,8 @@
+export const mainColor = "#f54b64"
+export const secondaryColor = "#f78361"
+export const bodyColor = "#15152a"
+export const secondaryBodyColor = "#15152a"
+export const mainTextColor = "#f54b64"
+export const secondaryTextColor = "gray"
+export const iconColor = "white"
+export const addButtonColor = "#f54b64"

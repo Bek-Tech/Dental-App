@@ -103,7 +103,7 @@ export const updateProduct = (id, date, name, stock, history, color) => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                `UPDATE products SET  name= "${name}",  date= "${date}" , stock=${stock} , history='${history}',,color="${color}" WHERE id =${id}`,
+                `UPDATE products SET  name= "${name}",  date= "${date}" , stock=${stock} , history='${history}',color="${color}" WHERE id =${id}`,
                 [],
                 (_, result) => {
                     resolve(result);

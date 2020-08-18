@@ -6,6 +6,7 @@ import styled from 'styled-components/native' //  do not forget adding  /native 
 import { SimpleLineIcons } from '@expo/vector-icons'
 import { deleteSaleAction } from "../actions/salesActions"
 import { useDispatch } from "react-redux"
+import * as colors from "./Colors"
 
 
 const SaleBox = (prop) => {
@@ -39,16 +40,17 @@ const SaleBox = (prop) => {
             onPressCall={false}
             onPressMessage={false}
         />
-        <DataRowDiv style={{ width: "100%" }}>
+        <DataRowDiv>
 
-            {/* <UserImg source={{ uri: userImg }} /> */}
-            <FullName>{customerName}</FullName>
-            <RowDiv>
-                <DateText>{date}</DateText>
+            <View style={{ flex: 1 }}>
+                <FullName>{customerName}</FullName>
+            </View>
+            <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}>
+                <DateText>reg : {date}</DateText>
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
                     <SimpleLineIcons name="options-vertical" size={20} color="black" />
                 </TouchableOpacity>
-            </RowDiv>
+            </View>
 
         </DataRowDiv>
 
@@ -68,7 +70,7 @@ const SaleBox = (prop) => {
         </View>
 
         {/* </LinearGradient> */}
-    </GroupItem>
+    </GroupItem >
 
 }
 
@@ -76,20 +78,21 @@ export default SaleBox
 
 //styles ____________________________________________________________
 const RowLeftView = styled.View`
-
+flex:1
 ${'' /* border-left-width:2px */}
 border-color: gray
-width: 150px
+${'' /* width: 150px */}
 padding: 0px 5px
 flex-direction: row
 justify-content: flex-start
 align-items: center
 `
 const RowRightView = styled.View`
+flex:1
 ${'' /* border-right-width:2px */}
 border-left-width:2px
 border-color: black
-width: 150px
+${'' /* width: 150px */}
 padding: 0px 5px
 flex-direction: row
 justify-content: flex-start
@@ -105,36 +108,48 @@ align-items: center
 `
 
 const BoldText = styled.Text`
-font-size : 16px
+font-size : 14px
+color: ${colors.secondaryTextColor}
 font-weight: bold,
 margin-left : 3px
 margin-right: 15px
 `
 
 const RowDiv = styled.View`
+width: 100%
 padding: 5px
 flex-direction: row
 justify-content: flex-start
 align-items: center
+${'' /* border-width:2px
+border-color: black */}
 
 `
 
+// const DateText = styled.Text`
+//  margin-right: 10px
+//  background: black
+//  color : #fff
+//  border-radius: 24px
+//  font-weight: 600
+//  font-size : 18px
+//  padding: 0px 8px
+//  height: 32px
+//  text-align: center
+//  line-height : 30px
+//  shadow-color: #000
+// shadow-opacity: 0.5
+// shadow-radius: 6.3px
+// elevation: 10
+// `
 const DateText = styled.Text`
- margin-right: 10px
- background: black
- color : #fff
- border-radius: 24px
- font-weight: 600
- font-size : 18px
- padding: 0px 8px
- height: 32px
- text-align: center
- line-height : 30px
- shadow-color: #000
-shadow-opacity: 0.5
-shadow-radius: 6.3px
-elevation: 10
+font-size : 16px
+line-height : 30px
+marginRight: 15px
+color: ${colors.mainTextColor}
 `
+
+
 
 const ProductText = styled.Text`
  background: #49036C
@@ -153,6 +168,7 @@ elevation: 10
 const FullName = styled.Text`
 font-weight: bold
 font-size : 20px
+color : ${colors.mainTextColor}
 `
 
 

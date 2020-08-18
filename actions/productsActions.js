@@ -43,7 +43,6 @@ export const addProducts = () => {
 export const addNewProduct = (date, name, stock, history, color) => {
     return async dispatch => {
         try {
-            console.log("actions")
             await insertProduct(date, name, stock, history, color)
             dispatch(addProducts())
         } catch (err) {

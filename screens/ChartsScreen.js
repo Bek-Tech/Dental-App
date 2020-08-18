@@ -13,7 +13,8 @@ import {
     ContributionGraph,
     StackedBarChart
 } from "react-native-chart-kit";
-
+import * as colors from "../components/Colors"
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 
@@ -29,11 +30,10 @@ const ChartsScreen = ({ navigation, products, customers, salesHistory, soldProdu
     const [customersChartData, setCustomersChartData] = useState([])
     const [productsChartData, setProductsChartData] = useState({ data: [], totalSoldAmount: 0 })
 
-    console.log(salesHistory)
+
     const filteredByDataSales = salesHistory.filter(item => {
         return item
     })
-
     const monthsArr = ["Jan", "Feb", "March", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dek"]
 
     const monthsObj = { Jan: { total: 0, data: [] }, Feb: { total: 0, data: [] }, March: { total: 0, data: [] }, Apr: { total: 0, data: [] }, May: { total: 0, data: [] }, Jun: { total: 0, data: [] }, "Jul": { total: 0, data: [] }, Aug: { total: 0, data: [] }, "Sep": { total: 0, data: [] }, "Okt": { total: 0, data: [] }, "Nov": { total: 0, data: [] }, "Dek": { total: 0, data: [] } }
@@ -70,7 +70,7 @@ const ChartsScreen = ({ navigation, products, customers, salesHistory, soldProdu
         setDatePeriod(lastSixMonths)
 
 
-        salesHistory.forEach(item => {
+        filteredByDataSales.forEach(item => {
             monthsObj[monthsArr[item.month]].data.push(item)
             const totalAmount = item.productsArr.reduce((acc, item) => {
                 return acc + item.quantity
@@ -112,7 +112,7 @@ const ChartsScreen = ({ navigation, products, customers, salesHistory, soldProdu
                 totalSold: Math.trunc(totalSoldAmount * 0.01)
             }
             pieChartArr.push(pieChartData[i])
-            pieChartArr.push(empty)
+            // pieChartArr.push(empty)
         }
         setProductsChartData({
             data: pieChartArr,
@@ -122,11 +122,13 @@ const ChartsScreen = ({ navigation, products, customers, salesHistory, soldProdu
 
 
         const customersChartArr = customers.map(item => {
+
             return {
                 name: item.name,
-                totalPurchased: customersObj[item.id].totalPurchased
+                totalPurchased: customersObj[item.id] ? customersObj[item.id].totalPurchased : 0
             }
         })
+
         customersChartArr.sort((a, b) => {
             return b.totalPurchased - a.totalPurchased
         });
@@ -140,16 +142,12 @@ const ChartsScreen = ({ navigation, products, customers, salesHistory, soldProdu
 
 
     const [chart, setChart] = useState(true)
-    return (<SafeAreaView
-        style={{ flex: 1 }}
-    >
-        <BodyContainer>
-            <ImageBackground source={require("../assets/background.jpg")}
-                style={{
-                    flex: 1,
-                    resizeMode: "cover",
-                    justifyContent: "center"
-                }}>
+    return (
+        <SafeAreaView
+            style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center', backgroundColor: colors.bodyColor }}
+        >
+            <BodyContainer>
+
                 <RowDiv>
                     <TouchableOpacity onPress={() => navigation.goBack()}>
                         <AntDesign name="arrowleft" size={24} color="black" />
@@ -167,198 +165,225 @@ const ChartsScreen = ({ navigation, products, customers, salesHistory, soldProdu
 
 
                         <ItemsContainer>
-
-                            <TitleDiv>
-                                <SectionTitleText>Sales</SectionTitleText>
-                            </TitleDiv>
-
-                            <View>
-
-                                <LineChart
-                                    data={{
-                                        labels: salesChartData.map(item => item.label),
-                                        datasets: [
-                                            {
-                                                data: salesChartData.map(item => item.amount)
-                                            }
-                                        ]
-                                    }}
-                                    width={windowWidth - 45}
-                                    height={220}
-                                    yAxisLabel=''
-                                    yAxisSuffix=""
-                                    yAxisInterval={1} // optional, defaults to 1
-                                    chartConfig={{
-                                        backgroundColor: "black",
-                                        backgroundGradientFrom: "black",
-                                        backgroundGradientTo: "black",
-                                        decimalPlaces: 2, // optional, defaults to 2dp
-                                        color: (opacity = 0) => `rgba(255, 255, 255, ${opacity})`,
-                                        labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-
-                                        propsForDots: {
-                                            r: "3",
-                                            strokeWidth: "2",
-                                            stroke: "white"
-                                        }
-                                    }}
-                                    bezier
-                                    style={{
-                                        marginVertical: 0,
-                                        borderRadius: 16
-                                    }}
-                                />
-                            </View>
-                            <FlatList
+                            <LinearGradient
+                                colors={[colors.secondaryColor, colors.mainColor,]}
                                 style={{
                                     flex: 1,
-                                    marginTop: 20,
-                                    paddingBottom: 15,
-                                    paddingLeft: 10
+                                    borderRadius: 35,
+                                    margin: 10,
+                                    marginTop: 15,
+                                    padding: 10
                                 }}
-                                data={salesChartData}
-                                numColumns={2}
-                                keyExtractor={(item, index) => item.label}
-                                renderItem={({ item }) => {
-                                    return <ListItemDiv>
-
-                                        <ListText>{item.label} :</ListText>
-                                        <AmountText> {item.amount}</AmountText>
-                                    </ListItemDiv>
-
-                                }}
-                            />
-                        </ItemsContainer>
-                        <ItemsContainer>
-                            <TitleDiv>
-                                <SectionTitleText>Customers</SectionTitleText>
-                            </TitleDiv>
-
-                            <ScrollView
-                                horizontal={true}
                             >
-                                <View>
-                                    <BarChart
+                                <TitleDiv>
+                                    <SectionTitleText>Sales</SectionTitleText>
+                                </TitleDiv>
 
+                                <View>
+
+                                    <LineChart
                                         data={{
-                                            labels: customersChartData.map((item) => {
-                                                return `${item.name}`
-                                            }),
+                                            labels: salesChartData.map(item => item.label),
                                             datasets: [
                                                 {
-                                                    data: customersChartData.map(item => item.totalPurchased)
+                                                    data: salesChartData.map(item => item.amount)
                                                 }
                                             ]
                                         }}
                                         width={windowWidth - 45}
                                         height={220}
-                                        fromZero={true}
-                                        yAxisLabel=""
+                                        yAxisLabel=''
+                                        yAxisSuffix=""
+                                        yAxisInterval={1} // optional, defaults to 1
                                         chartConfig={{
-                                            backgroundColor: "grey",
-                                            backgroundGradientFrom: "black",
-                                            backgroundGradientTo: 'black',
+                                            backgroundColor: colors.bodyColor,
+                                            backgroundGradientFrom: colors.bodyColor,
+                                            backgroundGradientTo: colors.secondaryBodyColor,
                                             decimalPlaces: 2, // optional, defaults to 2dp
                                             color: (opacity = 0) => `rgba(255, 255, 255, ${opacity})`,
                                             labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+
                                             propsForDots: {
                                                 r: "3",
                                                 strokeWidth: "2",
                                                 stroke: "white"
                                             }
                                         }}
+                                        bezier
                                         style={{
                                             marginVertical: 0,
                                             borderRadius: 16
                                         }}
-                                        verticalLabelRotation={0}
                                     />
                                 </View>
-                            </ScrollView>
-                            <FlatList
-                                style={{
-                                    flex: 1,
-                                    marginTop: 20,
-                                    paddingBottom: 15,
-                                    paddingLeft: 10
-                                }}
-                                data={customersChartData}
-                                numColumns={2}
-                                keyExtractor={(item, index) => item.name}
-                                renderItem={({ item }) => {
-                                    return <ListItemDiv>
+                                <FlatList
+                                    style={{
+                                        flex: 1,
+                                        marginTop: 20,
+                                        paddingBottom: 15,
+                                        paddingLeft: 10
+                                    }}
+                                    data={salesChartData}
+                                    numColumns={2}
+                                    keyExtractor={(item, index) => item.label}
+                                    renderItem={({ item }) => {
+                                        return <ListItemDiv>
 
-                                        <ListText>{item.name} :</ListText>
-                                        <AmountText> {item.totalPurchased}</AmountText>
-                                    </ListItemDiv>
+                                            <ListText>{item.label} :</ListText>
+                                            <AmountText> {item.amount}</AmountText>
+                                        </ListItemDiv>
 
-                                }}
-                            />
+                                    }}
+                                />
+                            </LinearGradient>
                         </ItemsContainer>
                         <ItemsContainer>
-                            <TitleDiv>
-                                <SectionTitleText>Products </SectionTitleText>
-                            </TitleDiv>
-                            <View
+                            <LinearGradient
+                                colors={[colors.secondaryColor, colors.mainColor,]}
                                 style={{
                                     flex: 1,
-                                    opacity: 0.6
+                                    borderRadius: 35,
+                                    margin: 10,
+                                    marginTop: 15,
+                                    padding: 10
                                 }}
                             >
-                                <PieChart
-                                    data={productsChartData.data.filter(item => {
-                                        return item.totalSold !== 0
-                                    })}
-                                    width={windowWidth * 1.8}
-                                    height={370}
-                                    chartConfig={chartConfig}
-                                    accessor="totalSold"
-                                    backgroundColor="transparent"
-                                    absolute
+                                <TitleDiv>
+                                    <SectionTitleText>Customers</SectionTitleText>
+                                </TitleDiv>
 
+                                <ScrollView
+                                    horizontal={true}
+                                >
+                                    <View>
+                                        <BarChart
+
+                                            data={{
+                                                labels: customersChartData.map((item) => {
+                                                    return `${item.name}`
+                                                }),
+                                                datasets: [
+                                                    {
+                                                        data: customersChartData.map(item => item.totalPurchased)
+                                                    }
+                                                ]
+                                            }}
+                                            width={windowWidth - 45}
+                                            height={220}
+                                            fromZero={true}
+                                            yAxisLabel=""
+                                            chartConfig={{
+                                                backgroundColor: "grey",
+                                                backgroundGradientFrom: colors.bodyColor,
+                                                backgroundGradientTo: colors.secondaryBodyColor,
+                                                decimalPlaces: 2, // optional, defaults to 2dp
+                                                color: (opacity = 0) => `rgba(255, 255, 255, ${opacity})`,
+                                                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                                propsForDots: {
+                                                    r: "3",
+                                                    strokeWidth: "2",
+                                                    stroke: "white"
+                                                }
+                                            }}
+                                            style={{
+                                                marginVertical: 0,
+                                                borderRadius: 16
+                                            }}
+                                            verticalLabelRotation={0}
+                                        />
+                                    </View>
+                                </ScrollView>
+                                <FlatList
+                                    style={{
+                                        flex: 1,
+                                        marginTop: 20,
+                                        paddingBottom: 15,
+                                        paddingLeft: 10
+                                    }}
+                                    data={customersChartData}
+                                    numColumns={2}
+                                    keyExtractor={(item, index) => item.name}
+                                    renderItem={({ item }) => {
+                                        return <ListItemDiv>
+
+                                            <ListText>{item.name} :</ListText>
+                                            <AmountText> {item.totalPurchased}</AmountText>
+                                        </ListItemDiv>
+
+                                    }}
                                 />
-                            </View>
-                            <TitleDiv>
-                                <TitleText>Total Sold : {productsChartData.totalSoldAmount}</TitleText>
-                            </TitleDiv>
-
-                            <FlatList
+                            </LinearGradient>
+                        </ItemsContainer>
+                        <ItemsContainer>
+                            <LinearGradient
+                                colors={[colors.secondaryColor, colors.mainColor,]}
                                 style={{
                                     flex: 1,
-                                    paddingBottom: 15
+                                    borderRadius: 35,
+                                    margin: 10,
+                                    marginTop: 15,
+                                    padding: 10
                                 }}
-                                data={productsChartData.data.filter(item => {
-                                    return item.name !== "empty"
-                                })}
-                                numColumns={2}
-                                keyExtractor={(item, index) => item.name}
-                                renderItem={({ item }) => {
-                                    return <ListItemDiv>
-                                        <View style={{
-                                            borderRadius: 30,
-                                            width: 10,
-                                            height: 10,
-                                            margin: 5,
-                                            backgroundColor: item.color
-                                        }}></View>
-                                        <ListText>{item.name} :</ListText>
-                                        <AmountText> {item.totalSold}</AmountText>
-                                    </ListItemDiv>
+                            >
+                                <TitleDiv>
+                                    <SectionTitleText>Products </SectionTitleText>
+                                </TitleDiv>
+                                <View
+                                    style={{
+                                        flex: 1,
+                                        // opacity: 0.6
+                                    }}
+                                >
+                                    <PieChart
+                                        data={productsChartData.data.filter(item => {
+                                            return item.totalSold !== 0
+                                        })}
+                                        width={windowWidth * 1.8}
+                                        height={370}
+                                        chartConfig={chartConfig}
+                                        accessor="totalSold"
+                                        backgroundColor="transparent"
+                                        absolute
 
-                                }}
-                            />
+                                    />
+                                </View>
+                                <TitleDiv>
+                                    <TitleText>Total Sold : {productsChartData.totalSoldAmount}</TitleText>
+                                </TitleDiv>
 
+                                <FlatList
+                                    style={{
+                                        flex: 1,
+                                        paddingBottom: 15
+                                    }}
+                                    data={productsChartData.data.filter(item => {
+                                        return item.name !== "empty"
+                                    })}
+                                    numColumns={2}
+                                    keyExtractor={(item, index) => item.name}
+                                    renderItem={({ item }) => {
+                                        return <ListItemDiv>
+                                            <View style={{
+                                                borderRadius: 30,
+                                                width: 10,
+                                                height: 10,
+                                                margin: 5,
+                                                backgroundColor: item.color
+                                            }}></View>
+                                            <ListText>{item.name} :</ListText>
+                                            <AmountText> {item.totalSold}</AmountText>
+                                        </ListItemDiv>
 
-
-
-
+                                    }}
+                                />
+                            </LinearGradient>
 
                         </ItemsContainer>
                     </ScrollView>
                 </KeyboardAvoidingView>
-            </ImageBackground>
-        </BodyContainer>
-    </SafeAreaView>
+
+            </BodyContainer>
+        </SafeAreaView>
 
     );
 }
@@ -416,25 +441,27 @@ fontWeight : bold
 margin: 0px 0px 20px 0px
 `
 
-
 const ItemsContainer = styled.View`
      
     flex:1
     resizeMode: cover
-    backgroundColor: rgba(152,152,152,0.2)
+    overflow: hidden
+    ${'' /* backgroundColor: ${colors.bodyColor} */}
      borderRadius: 35px            
-     margin: 10px  
-                
-     padding: 10px   10px     
-       ${'' /* shadow-color: #000 */}
-${'' /* shadow-offset: {width: 0, height: 2} */}
-            ${'' /* shadow-opacity: 0.5
+     margin: 5px  
+     marginTop: 10px
+           
+     padding: 5px   15px     
+       shadow-color: #000
+shadow-offset: {width: 0, height: 2}
+            shadow-opacity: 0.5
             shadow-radius: 6.3px
-            elevation: 10    */}
+            elevation: 10   
 `
 
 const BodyContainer = styled.View`
 flex: 1
+
 
 `
 const RowDiv = styled.View`

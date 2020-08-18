@@ -28,7 +28,7 @@ const AddProductScreen = ({ navigation, products }) => {
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const [dateString, setDateString] = useState(id ? product[0].date : date.toDateString())
-    const [color, setColor] = useState(id ? product[0].color : "#407b78")
+    const [color, setColor] = useState(id ? product[0].color : "rgb(20,20,42)")
 
 
 
@@ -111,7 +111,7 @@ const AddProductScreen = ({ navigation, products }) => {
                 keyboardType="number-pad"
                 placeholder="enter amount"
                 onChangeText={num => setStock(num)} />
-            <View style={{ width: 20, height: 20, backgroundColor: color }}>
+            <View style={{ margin: 10, borderRadius: 15, width: "100%", height: 80, backgroundColor: color }}>
 
             </View>
 

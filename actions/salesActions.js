@@ -15,6 +15,7 @@ export const addSoldProducts = (sales) => {
             const products = productsResult.rows._array
 
             const dataObj = {}
+            dataObj.totalSold = 0
             for (let i = 0; i < products.length; i++) {
                 const id = products[i].id
                 dataObj[id] = {}
@@ -27,8 +28,9 @@ export const addSoldProducts = (sales) => {
                     if (dataObj[item.id]) {
                         dataObj[item.id].soldArr.push(item)
                         dataObj[item.id].totalSold = dataObj[item.id].totalSold + item.quantity
+                        dataObj.totalSold = dataObj.totalSold + item.quantity
                     } else {
-                        return null
+                        dataObj.totalSold = dataObj.totalSold + item.quantity
                     }
 
                 })

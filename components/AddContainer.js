@@ -3,7 +3,8 @@ import { Text, View, TouchableOpacity, KeyboardAvoidingView, Dimensions, ImageBa
 import styled from 'styled-components/native'
 import { AntDesign } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import * as colors from "./Colors"
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 
@@ -13,16 +14,21 @@ const AddContainer = ({ children, title, head, BackButton }) => {
 
 
 
-    return (<SafeAreaView
-        style={{ flex: 1 }}
-    >
-        <BodyContainer>
-            <ImageBackground source={require("../assets/background.jpg")}
-                style={{
-                    flex: 1,
-                    resizeMode: "cover",
-                    justifyContent: "center"
-                }}>
+    return (
+        // <ImageBackground source={require("../assets/background.jpg")}
+        //     style={{
+        //         flex: 1,
+        //         resizeMode: "cover",
+        //         justifyContent: "center"
+        //     }}>
+        <SafeAreaView
+            style={{
+                flex: 1,
+                backgroundColor: colors.bodyColor
+            }}
+        >
+            <BodyContainer>
+
                 <RowDiv>
                     <TouchableOpacity onPress={BackButton}>
                         <AntDesign name="arrowleft" size={24} color="black" />
@@ -41,14 +47,25 @@ const AddContainer = ({ children, title, head, BackButton }) => {
                         <ItemsContainer
 
                         >
-                            {children}
+                            <LinearGradient
+                                colors={[colors.secondaryColor, colors.mainColor,]}
+                                style={{
+                                    flex: 1,
+                                    borderRadius: 35,
+                                    margin: 10,
+                                    marginTop: 15,
+                                    padding: 10
+                                }}
+                            >
+                                {children}
+                            </LinearGradient>
                         </ItemsContainer>
                     </ScrollView>
                 </KeyboardAvoidingView>
-            </ImageBackground>
-        </BodyContainer>
-    </SafeAreaView>
 
+            </BodyContainer>
+        </SafeAreaView>
+        // </ImageBackground >
     )
 
 
@@ -68,17 +85,17 @@ const ItemsContainer = styled.View`
     flex:1
     resizeMode: cover
     overflow: hidden
-    backgroundColor: rgba(152,152,152,0.2)
+    backgroundColor: ${colors.bodyColor}
      borderRadius: 35px            
      margin: 5px  
      marginTop: 10px
-     margin-bottom: 60px             
-     padding: 0px   15px     
-       ${'' /* shadow-color: #000 */}
-${'' /* shadow-offset: {width: 0, height: 2} */}
-            ${'' /* shadow-opacity: 0.5
+           
+     padding: 5px   15px     
+       shadow-color: #000
+shadow-offset: {width: 0, height: 2}
+            shadow-opacity: 0.5
             shadow-radius: 6.3px
-            elevation: 10    */}
+            elevation: 10   
 `
 
 const BodyContainer = styled.View`

@@ -36,8 +36,8 @@ const AddedProduct = (props) => {
         <RowDiv>
             <RowLeftView>
 
-                <BoldText>{name}  </BoldText>
-                <Text>  ({inStock})</Text>
+                <BoldText>{name}   ({inStock})</BoldText>
+
             </RowLeftView>
             <RowRightView>
                 <TouchableOpacity
@@ -112,7 +112,8 @@ justify-content: flex-end
 `
 
 const RowLeftView = styled.View`
-height: 20px
+
+
 ${'' /* border-left-width:2px */}
 border-color: gray
 flex: 4

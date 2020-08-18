@@ -5,15 +5,18 @@ import { useDispatch } from "react-redux"
 import { SimpleLineIcons } from '@expo/vector-icons'
 import ModalOptions from "../components/ModalOptions"
 import { deleteCustomerAction } from "../actions/customersActions"
+import * as colors from "./Colors"
+
+
 
 
 const CustomerInfo = (props) => {
 
     const [modalVisible, setModalVisible] = useState(false)
-    const { navigation, name, phone, id } = props
+    const { date, navigation, name, phone, id } = props
     const dispatch = useDispatch()
 
-
+    const localData = new Date(date).toLocaleDateString()
 
 
 
@@ -34,16 +37,18 @@ const CustomerInfo = (props) => {
             onPressMessage={() => Linking.openURL(`sms://${phone}`)}
         />
         <RowDiv>
-            <View>
+            <View style={{ flex: 1, alignItems: "flex-start" }}>
                 <Name>{name ? name : "deleted"}</Name>
-                <NumberText>phone : {phone ? phone : "deleted"}</NumberText>
             </View>
-            <TouchableOpacity onPress={name ? () => setModalVisible(true) : () => alert("customer was deleted")}>
-                <SimpleLineIcons name="options-vertical" size={20} color="black" />
-            </TouchableOpacity>
+            <View style={{ flexDirection: "row", flex: 1, justifyContent: "flex-end" }}>
+                <DateText>reg : {localData}</DateText>
+                <TouchableOpacity onPress={name ? () => setModalVisible(true) : () => alert("customer was deleted")}>
+                    <SimpleLineIcons name="options-vertical" size={20} color="black" />
+                </TouchableOpacity>
+            </View>
         </RowDiv>
         <RowDiv>
-
+            <NumberText>phone : {phone ? phone : "deleted"}</NumberText>
         </RowDiv>
     </Container>
 }
@@ -56,22 +61,13 @@ export default CustomerInfo
 
 
 
-const ModuleButtonText = styled.Text`
-font-size: 19px
-color : white
+
+const DateText = styled.Text`
+font-size : 16px
+line-height : 30px
+marginRight: 15px
+color: black
 `
-
-const ModuleButton = styled.TouchableOpacity`
-margin: 10px 5px
-width: 90px
-height: 30px
-border-radius : 25px
-background-color: #4294ff
-justify-content: center
-align-items: center
-`
-
-
 
 
 
@@ -92,17 +88,18 @@ const EditInput = styled.TextInput`
 const Container = styled.TouchableOpacity`
 flex:1
 border-radius: 15px
-background: rgba(83,83,83,0.8)
+background: ${colors.secondaryBodyColor}
 margin: 5px 5px
-padding : 5px 15px
- ${'' /* shadow-color: #000
+padding : 10px 15px
+ shadow-color: #000
 shadow-opacity: 0.5
 shadow-radius: 6.3px
-elevation: 10 */}
+elevation: 10
 `
 
 const NumberText = styled.Text`
- color : white
+font-size: 18px
+ color : ${colors.secondaryTextColor}
  margin-bottom: 5px
 `
 
@@ -124,6 +121,7 @@ font-weight : 800
 font-size : 28px
 line-height : 30px
 margin-bottom: 5px
+color: ${colors.mainTextColor}
 
 `
 

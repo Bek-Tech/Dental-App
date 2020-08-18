@@ -13,33 +13,18 @@ const windowWidth = Dimensions.get('window').width;
 
 const SalesListScreen = ({ salesHistory, navigation, soldProducts }) => {
 
-
-    const dispatch = useDispatch()
-    const [visible, setVisible] = useState(false)
-    // console.log(soldProducts)
+    console.log(soldProducts)
 
     return (
         <RootContainer
             backToTopButton={salesHistory.length >= 3 ? true : false}
             addButton={() => navigation.navigate("Add")}
             title='Journal'
-            newDeliveryButton={() => (navigation.navigate("Charts"))}
             navigation={navigation}
-        // headerComponent={<HeaderComponent />}
+            totalOperations={salesHistory.length}
+            totalSold={soldProducts.totalSold}
         >
-            {/* 
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={visible}
-            >
-                <View style={{ flex: 1, marginTop: 50, backgroundColor: "white" }}>
-                    <Button title="hide" onPress={() => setVisible(false)} />
 
-                </View>
-
-            </Modal>
-            <Button title="open" onPress={() => setVisible(true)} /> */}
             {salesHistory.length > 0 ?
                 salesHistory.map(item => {
                     return <SaleBox
@@ -74,7 +59,7 @@ export default connect(mapSalesHistoryToProps)(SalesListScreen)
 
 const EmptyListDiv = styled.View`
 flex:1
-height: ${windowHeight / 2.5}px
+height: ${windowHeight - 350}px
 align-items:center
 justify-content: center
 `

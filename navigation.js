@@ -75,7 +75,7 @@ const RootNavigation = createSwitchNavigator({
             animationEnabled: true,
 
             tabBarOptions: {
-                activeTintColor: 'white',
+                activeTintColor: "#f54b64",
                 inactiveTintColor: 'gray',
                 style: {
                     margin: 5,

@@ -350,7 +350,7 @@ ${'' /* shadow-offset: {width: 0, height: 2} */}
 const ProductsDiv = styled.ScrollView`
 margin-top: 5px
 width: 100%
-height: ${Dimensions.get('window').height / 2.2}px
+height: ${Dimensions.get('window').height - 335}px
 border-top-width: 2px
 border-bottom-width: 2px
 border-color: black
