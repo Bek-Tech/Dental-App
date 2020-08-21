@@ -401,7 +401,7 @@ export default connect(mapStateToProps)(ChartsScreen)
 
 const ListText = styled.Text`
     font-weight: bold
-     font-size : 22px
+     font-size : 16px
     color : #000000
   `
 

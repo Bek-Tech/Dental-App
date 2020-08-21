@@ -20,6 +20,7 @@ const CustomersScreen = ({ navigation, customers }) => {
         title="Customers"
         addButton={() => navigation.navigate("AddCustomer")}
         navigation={navigation}
+        totalsData={{ name: "Customers", amount: customers.length }}
     >
         {customers.length > 0 ?
             customers.map(item => {

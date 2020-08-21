@@ -54,6 +54,8 @@ const AddCustomerScreen = ({ customers, navigation }) => {
     return (
         <AddContainer
             title={id ? "Edit Customer" : "Add New Customer"}
+            BackButton={() => navigation.goBack()}
+
         >
 
             <RowDiv>
@@ -77,7 +79,13 @@ const AddCustomerScreen = ({ customers, navigation }) => {
 
             <Input placeholder="enter name" value={name} onChangeText={text => setName(text)} />
             {error ? <ErrorText>enter customer name </ErrorText> : null}
-            <Input keyboardType="number-pad" value={`${phone}`} placeholder="phone number" onChangeText={num => setPhone(num)} />
+            <Input
+                dataDetectorTypes='phoneNumber'
+                multiline={true}
+                keyboardType="phone-pad"
+                value={`${phone}`}
+                placeholder="phone number"
+                onChangeText={num => setPhone(num)} />
             <RowDiv>
 
                 <ButtonStyled

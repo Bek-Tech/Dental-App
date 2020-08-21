@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from "react-redux"
-import { Text, View, FlatList } from 'react-native';
+import { Text, View, FlatList, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'
 import styled from 'styled-components/native'
 import Button from '../components/Button'
 import { Ionicons, Foundation } from '@expo/vector-icons'
 import CustomerInfo from "../components/CustomerInfo"
 import AddContainer from "../components/AddContainer"
+import { ScrollView } from 'react-native-gesture-handler';
 // import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+
+const windowHeight = Dimensions.get('window').height
+const windowWidth = Dimensions.get('window').width
+
 
 const DetailsScreen = ({ navigation, salesHistory, customers }) => {
 
@@ -16,8 +21,7 @@ const DetailsScreen = ({ navigation, salesHistory, customers }) => {
     const purchaseData = salesHistory.filter(item => item.customerId === customerId)
     const customer = customers.filter(item => item.id === customerId)
 
-    console.log(customerId)
-    console.log(purchaseData)
+
 
     return (
 
@@ -25,7 +29,10 @@ const DetailsScreen = ({ navigation, salesHistory, customers }) => {
             BackButton={() => navigation.goBack()}
             title="Details"
         >
-            <CustomerInfo navigation={navigation} {...customer[0]} />
+
+
+
+            <CustomerInfo navigation={navigation} {...customer[0]} detailsScreen={true} />
             <HistoryDiv>
                 <Text>Purchase History</Text>
                 <RowDiv>
@@ -38,9 +45,10 @@ const DetailsScreen = ({ navigation, salesHistory, customers }) => {
                         <LabelText>Quantity </LabelText>
                     </RowRightView>
                 </RowDiv>
-
+                <ScrollView></ScrollView>
                 <FlatList
                     data={purchaseData}
+                    style={{ height: windowHeight - 320 }}
                     keyExtractor={item => `${item.id}`}
                     renderItem={({ item }) => {
                         return <DataView>

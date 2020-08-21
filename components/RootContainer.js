@@ -3,19 +3,12 @@ import { Text, View, Animated, TouchableOpacity, Dimensions, ImageBackground, St
 import styled from 'styled-components/native'
 import { TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons, Entypo, FontAwesome5, MaterialIcons, AntDesign, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons'
+import { Ionicons, Entypo, FontAwesome5, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons'
 import ModalTrashBox from './ModalTrashBox'
 import { LinearGradient } from 'expo-linear-gradient';
 import * as colors from "./Colors"
 import { connect, useDispatch } from "react-redux"
-import {
-    LineChart,
-    BarChart,
-    PieChart,
-    ProgressChart,
-    ContributionGraph,
-    StackedBarChart
-} from "react-native-chart-kit";
+import { LineChart } from "react-native-chart-kit";
 
 
 const windowHeight = Dimensions.get('window').height;
@@ -25,15 +18,13 @@ const windowWidth = Dimensions.get('window').width;
 
 
 
-const RootContainer = ({ children, title, addButton, navigation, totalOperations, products, customers, soldProducts, salesHistory }) => {
+const RootContainer = ({ children, title, addButton, navigation, totalOperations, products, customers, soldProducts, salesHistory, totalsData }) => {
 
     const [handleScroll, setHandleScroll] = useState(false)
-    const [showTrashBox, setShowTrashBox] = useState(false);
-    const [datePeriod, setDatePeriod] = useState([])
+    const [showTrashBox, setShowTrashBox] = useState(false)
     const [salesChartData, setSalesChartData] = useState([{ label: 'no data', amount: 0 }])
 
 
-    // const fadeAnimIn = useRef(new Animated.Value(0)).current
     const AnimationY = useRef(new Animated.Value(0)).current
     const resizeAnim = useRef(new Animated.Value(0)).current
     const animOpacity = useRef(new Animated.Value(0)).current
@@ -53,6 +44,9 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
 
     useEffect(() => {
 
+
+        // ________________calculating data for chart
+
         const monthsArr = ["Jan", "Feb", "March", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dek"]
 
 
@@ -71,7 +65,6 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
             lastSixMonths.unshift(monthsArr[i])
         }
 
-        setDatePeriod(lastSixMonths)
 
 
         salesHistory.forEach(item => {
@@ -282,7 +275,7 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
 
     const addButtonTop = AnimationY.interpolate({
         inputRange: [0, 50, 290, 50000],
-        outputRange: [240, 240, 17, 17]
+        outputRange: [240, 240, 12, 12]
     })
 
     const scrollTextSize = AnimationY.interpolate({
@@ -301,7 +294,7 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
     })
 
     const scrollOvalHeaderHeight = AnimationY.interpolate({
-        inputRange: [0, 50, 400, 20000],
+        inputRange: [0, 50, 380, 20000],
         outputRange: [350, 350, 0, 0]
     })
 
@@ -342,18 +335,12 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
 
     return (
         <LinearGradient
-            // Background Linear Gradient
             colors={[colors.secondaryColor, colors.mainColor,]}
             style={{
                 flex: 1,
             }}
         >
-            {/* <ImageBackground source={require("../assets/background.jpg")}
-        style={{
-            flex: 1,
-            resizeMode: "cover",
-            justifyContent: "center"
-        }}> */}
+
             <SafeAreaView
                 style={{ backgroundColor: handleScroll ? colors.mainColor : null, flex: 1, justifyContent: 'space-between', alignItems: 'center' }}
             >
@@ -374,10 +361,7 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
                     <ScrollView
                         style={{
                             flex: 1,
-                            paddingTop: 350,
-                            // paddingBottom: 200,
-                            // borderWidth: 2,
-                            // borderColor: "red"
+                            paddingTop: 360,
                         }}
                         scrollEventThrottle={5}
                         ref={scrollViewRef}
@@ -404,8 +388,6 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
 
                         {handleScroll ?
                             <Animated.View style={{
-                                // borderColor: "black",
-                                // borderWidth: 2,
                                 height: 500,
                                 width: "100%",
                                 opacity: scrollToTopButtonOpacity,
@@ -435,9 +417,6 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
                     }} >
 
 
-                        {/* <Animated.View
-                             style={{ height: scrollOvalHeaderHeight }}
-                             ></Animated.View> */}
                         <Animated.View style={{
                             ...styles.ovalHeaderContainer,
                             borderRadius: scrollHeaderRadius
@@ -445,13 +424,6 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
                         }} >
 
                             <View style={styles.headerItem}>
-                                {/* <View style={{ height: 0, backgroundColor: 'red' }}></View> */}
-                                {/* <ImageBackground source={require("../assets/background.jpg")}
-                                style={{
-                                    flex: 1,
-                                    resizeMode: "cover",
-                                    justifyContent: "flex-start"
-                                }}> */}
                                 <LinearGradient
                                     colors={[colors.secondaryColor, colors.mainColor,]}
                                     style={{
@@ -495,7 +467,6 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
                                                 color: colors.bodyColor,
                                                 fontSize: scrollTextSize,
                                                 fontWeight: "bold",
-                                                fontFamily: 'Roboto'
 
                                             }}>{title}</Animated.Text>
                                         </View>
@@ -516,8 +487,6 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
                                             <Animated.View
                                                 style={{
                                                     ...styles.AnimatedButtonDiv,
-                                                    // borderColor: "black",
-                                                    // borderWidth: 2,
                                                     height: 40,
                                                     width: 40,
                                                     opacity: scrollButtonOpacity
@@ -586,37 +555,33 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
                                         />
                                     </Animated.View>
                                     <View style={{
-                                        // borderColor: "black",
-                                        // borderWidth: 2,
-                                        // flexDirection: "row",
                                         marginTop: 20,
                                         marginLeft: 30,
                                         width: 230,
                                         height: 30,
-                                        // alignItems: "center",
                                         justifyContent: "center"
                                     }}>
 
-                                        {totalOperations ? <View style={{
+                                        <View style={{
                                             flex: 1,
                                             flexDirection: "row",
                                             alignItems: "center",
                                             justifyContent: "space-between"
                                         }}>
-                                            <Text style={{ margin: 10, fontSize: 14, color: colors.bodyColor }}>total operations : </Text>
+                                            <Text style={{ margin: 10, fontSize: 14 }}>{totalsData.name} :</Text>
                                             <View style={{
                                                 width: 90,
                                             }}>
-                                                <Text style={{ fontSize: 14, color: "white" }}>{totalOperations}</Text>
+                                                <Text style={{ fontSize: 14, color: "white" }}>{totalsData.amount}</Text>
                                             </View>
 
-                                        </View> : null}
+                                        </View>
                                         <View style={{
                                             flexDirection: "row",
                                             alignItems: "center",
                                             justifyContent: "space-between"
                                         }}>
-                                            <Text style={{ fontSize: 14, margin: 10, color: colors.bodyColor }}>total sold : </Text>
+                                            <Text style={{ fontSize: 14, margin: 10 }}>Total sales : </Text>
                                             <View style={{
                                                 width: 90
                                             }}>
@@ -627,7 +592,6 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
 
                                     </View>
                                 </LinearGradient>
-                                {/* </ImageBackground> */}
                             </View>
 
 
@@ -710,7 +674,6 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
                             </Animated.View>
 
                         </HeaderRowDiv>
-                        {/* </ImageBackground> */}
                     </Animated.View>
 
 
@@ -750,8 +713,6 @@ export default connect(mapStateToProps)(RootContainer)
 const styles = StyleSheet.create({
     addButtonDiv: {
         overflow: "hidden",
-        // borderWidth: 2,
-        // borderColor: "black",
         position: "absolute",
 
     },
@@ -761,8 +722,6 @@ const styles = StyleSheet.create({
         top: 0,
         justifyContent: "center",
         alignItems: 'center',
-        // borderBottomWidth: 1,
-        // borderColor: "gray",
         backgroundColor: colors.mainColor
     },
     headerContainerStyle: {
@@ -771,20 +730,12 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 0,
         width: windowWidth,
-        // borderColor: "blue",
-        // borderWidth: 2,
     },
     ovalHeaderContainer: {
         height: windowHeight * 2,
         marginBottom: 15,
-        // shadowColor: "#000",
-        // shadowOpacity: 0.8,
-        // shadowRadius: 6.3,
-        // elevation: 10,
         justifyContent: "flex-start",
         alignItems: "baseline",
-        // borderColor: "white",
-        // borderWidth: 2,
         position: 'absolute',
         bottom: 0,
         overflow: 'hidden',
@@ -807,68 +758,56 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         justifyContent: "center",
 
-        // borderColor: "black",
-        // borderWidth: 2
     },
 
 })
 
 const ScrollToTopButton = styled.TouchableOpacity`
-align-items:center
-justify-content: center
-width: 120px
-height: 120px
-border-radius: 150px
-background: ${colors.mainColor}
-shadow-color: #000
-shadow-offset: {width: 0, height: 2}
+ align-items:center
+ justify-content: center
+ width: 120px
+ height: 120px
+ border-radius: 150px
+ background: ${colors.mainColor}
+ shadow-color: #000
+ shadow-offset: {width: 0, height: 2}
  shadow-opacity: 0.5
-shadow-radius: 6.3px
+ shadow-radius: 6.3px
  elevation: 10
  `
 
 
 const ListContainer = styled.View`
-             flex: 1 
-            
-            ${'' /* backgroundColor: rgba(255,255,255,0.2) */}
-            
-             margin-bottom: 60px
-             padding: 15px   0px
-               shadow-color: #000
-
-            shadow-opacity: 0.5
-            shadow-radius: 6.3px
-            elevation: 10
+  flex: 1 
+  margin-bottom: 60px
+  padding: 15px   0px
+  shadow-color: #000
+  shadow-opacity: 0.5
+  shadow-radius: 6.3px
+  elevation: 10
 `
 
 const BodyContainer = styled.View`
-flex: 1
-width: ${windowWidth}px
-${'' /* borderColor: black
-borderWidth: 2px */}
-backgroundColor: ${colors.bodyColor}
+  flex: 1
+  width: ${windowWidth}px
+  backgroundColor: ${colors.bodyColor}
 
 `
 const CircleButton = styled.TouchableOpacity`
-flex: 1
-align-items:center
-justify-content: center
-border-radius: 50px
-background: black
-${'' /* borderColor:gray
-borderWidth: 2px */}
-margin : 0px
-${'' /* shadow-color: #000 */}
+ flex: 1
+ align-items:center
+ justify-content: center
+ border-radius: 50px
+ background: black
+ margin : 0px
+ shadow-color: #000
 ${'' /* shadow-offset: {width: 0, height: 2} */}
- ${'' /* shadow-opacity: 0.5
-shadow-radius: 6.3px
- elevation: 10 */}
+ shadow-opacity: 0.5
+ shadow-radius: 6.3px
+ elevation: 10
  `
 const HeaderRowDiv = styled.View`
      width: 100%
-     ${'' /* borderColor: black
-      borderWidth: 2px */}
       padding-right: 100px
       padding-left: 10px
       flex-direction: row
@@ -877,45 +816,27 @@ const HeaderRowDiv = styled.View`
             
             `
 const CircleAddButton = styled.TouchableOpacity`
-flex:1
-align-items:center
-justify-content: center
-margin: 15px
-border-radius: 100px
-${'' /* borderWidth:2px
-borderColor:gray */}
-background: ${colors.addButtonColor}
-shadow-color: #000
-${'' /* shadow-offset: {width: 0, height: 2} */}
+ flex:1
+ align-items:center
+ justify-content: center
+ margin: 15px
+ border-radius: 100px
+ background: ${colors.addButtonColor}
+ shadow-color: #000
  shadow-opacity: 0.5
-shadow-radius: 6.3px
+ shadow-radius: 6.3px
  elevation: 10
  `
-const OvalHeaderRowDiv = styled.View`
-            width: ${windowWidth - 120}px
-            margin: 10px
-            marginRight: 120px
- ${'' /* borderColor: black
-   borderWidth: 2px */}
-            ${'' /* padding: 5px */}
-            flex-direction: row
-            justify-content: space-evenly
-            align-items: center
-            
-            `
+
 
 
 const RowDiv = styled.View`
-            marginTop: 30px
-            width: 100%
- ${'' /* borderColor: black
-   borderWidth: 2px */}
-            ${'' /* padding: 5px */}
-            flex-direction: row
-            justify-content: space-evenly
-            align-items: center
-            
-            `
+ marginTop: 30px
+ width: 100%
+ flex-direction: row
+ justify-content: space-evenly
+ align-items: center
+   `
 
 
 

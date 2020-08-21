@@ -10,11 +10,11 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/PSM-icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/PSM-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#15152a"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,7 +23,23 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": false
+      "bundleIdentifier": "com.bek-tech.pocket-store-manager",
+      "supportsTablet": false,
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "versionCode": 1,
+      "package": "com.bek_tech.pocket_store_manager",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/PSM-icon.png",
+        "backgroundColor": "#15152a"
+      },
+      "splash": {
+        "image": "./assets/PSM-icon.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#15152a"
+      },
+      "permissions": []
     }
   }
 }

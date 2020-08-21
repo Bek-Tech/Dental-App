@@ -31,7 +31,7 @@ const AddContainer = ({ children, title, head, BackButton }) => {
 
                 <RowDiv>
                     <TouchableOpacity onPress={BackButton}>
-                        <AntDesign name="arrowleft" size={24} color="black" />
+                        <AntDesign name="arrowleft" size={24} color={colors.secondaryColor} />
                     </TouchableOpacity>
                     <TitleText>  {title}</TitleText>
                 </RowDiv>
@@ -76,6 +76,7 @@ export default AddContainer
 const TitleText = styled.Text`
     fontSize: 30px
     font-weight: bold
+    color: ${colors.secondaryColor}
 
 `
 

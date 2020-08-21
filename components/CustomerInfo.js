@@ -12,9 +12,40 @@ import * as colors from "./Colors"
 
 const CustomerInfo = (props) => {
 
+
     const [modalVisible, setModalVisible] = useState(false)
-    const { date, navigation, name, phone, id } = props
+    const { date, navigation, name, phone, detailsScreen, id } = props
     const dispatch = useDispatch()
+
+    // ____________________styles
+
+    const Container = styled.TouchableOpacity`
+flex:1
+border-radius: 15px
+background: ${detailsScreen ? colors.secondaryColor : colors.secondaryBodyColor}
+margin: 5px 5px
+padding : 10px 15px
+ shadow-color: #000
+shadow-opacity: 0.5
+shadow-radius: 6.3px
+elevation: 10
+`
+
+
+    const Name = styled.Text`
+font-weight : 800
+font-size : 28px
+line-height : 30px
+margin-bottom: 5px
+color: ${ detailsScreen ? colors.secondaryBodyColor : colors.mainTextColor}
+`
+
+    const DateText = styled.Text`
+font-size : 16px
+line-height : 30px
+marginRight: 15px
+color: ${ detailsScreen ? colors.secondaryBodyColor : colors.mainTextColor}
+`
 
     const localData = new Date(date).toLocaleDateString()
 
@@ -51,6 +82,7 @@ const CustomerInfo = (props) => {
             <NumberText>phone : {phone ? phone : "deleted"}</NumberText>
         </RowDiv>
     </Container>
+
 }
 
 
@@ -62,12 +94,6 @@ export default CustomerInfo
 
 
 
-const DateText = styled.Text`
-font-size : 16px
-line-height : 30px
-marginRight: 15px
-color: black
-`
 
 
 
@@ -85,17 +111,6 @@ const EditInput = styled.TextInput`
 
 
 
-const Container = styled.TouchableOpacity`
-flex:1
-border-radius: 15px
-background: ${colors.secondaryBodyColor}
-margin: 5px 5px
-padding : 10px 15px
- shadow-color: #000
-shadow-opacity: 0.5
-shadow-radius: 6.3px
-elevation: 10
-`
 
 const NumberText = styled.Text`
 font-size: 18px
@@ -116,14 +131,6 @@ ${'' /* align-items: center */}
 
 
 
-const Name = styled.Text`
-font-weight : 800
-font-size : 28px
-line-height : 30px
-margin-bottom: 5px
-color: ${colors.mainTextColor}
-
-`
 
 
 

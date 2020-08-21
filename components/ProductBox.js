@@ -16,83 +16,14 @@ import { LinearGradient } from 'expo-linear-gradient'
 
 
 const ProductBox = (props) => {
-    const { id, name, stock, totalReceived, navigation, sold, color } = props
+    const { id, name, stock, totalReceived, navigation, sold, color, detailsScreen } = props
     const totalSold = sold ? sold.totalSold : 0
     // console.log("box")
 
-
-
-
-    const date = new Date(props.date).toLocaleDateString()
-    const dispatch = useDispatch()
-    const [modalVisible, setModalVisible] = useState(false)
-    return <ProductsContainer onPress={() => navigation.navigate("ProductDetails", { id })}>
-
-        <LinearGradient
-            colors={["transparent", colors.secondaryBodyColor]}
-            style={{
-                flex: 1
-            }}
-        >
-            <ModalOptions
-                visible={modalVisible}
-                visibilityToggler={() => setModalVisible(!modalVisible)}
-                // onPressIncome={(amount) => console.log(amount)}
-                onPressEdit={() => {
-                    navigation.navigate("AddProduct", { id: id })
-                    setModalVisible(false)
-                }}
-                onPressDelete={() => {
-                    dispatch(deleteProductAction(id))
-                    setModalVisible(!modalVisible)
-                }}
-                onPressCall={false}
-                onPressMessage={false}
-            />
-            <RowDiv>
-                <View style={{ flex: 1, alignItems: "flex-start" }}>
-                    <NameText>{name}</NameText>
-                </View>
-
-                <View style={{ flexDirection: "row", flex: 1, justifyContent: "flex-end" }}>
-                    <DateText>reg : {date}</DateText>
-                    <TouchableOpacity onPress={() => setModalVisible(true)}>
-                        <SimpleLineIcons name="options-vertical" size={20} color="black" />
-                    </TouchableOpacity>
-                </View>
-
-
-            </RowDiv>
-            <BlockRowDiv>
-                <View>
-                    <SmallText>received</SmallText>
-                    <ReceivedNumText>{totalReceived}</ReceivedNumText>
-                </View>
-                <View>
-                    <SmallText>sold</SmallText>
-                    <SoldNumText>{totalSold}</SoldNumText>
-                </View>
-                <View>
-                    <SmallText>stock</SmallText>
-                    <StockNumText>{totalReceived - totalSold}</StockNumText>
-                </View>
-
-                {/* <NameText>inStock  : {stock - totalSold}</NameText> */}
-            </BlockRowDiv>
-
-
-        </LinearGradient>
-    </ProductsContainer >
-
-}
-
-
-export default ProductBox
-
-const ProductsContainer = styled.TouchableOpacity`
+    const ProductsContainer = styled.TouchableOpacity`
                 flex:1
                 border-radius: 15px
-        background: ${colors.secondaryBodyColor}
+        background: ${detailsScreen ? colors.secondaryColor : colors.secondaryBodyColor}
         margin: 5px 5px
         padding: 5px 10px
         overflow: hidden
@@ -104,14 +35,94 @@ const ProductsContainer = styled.TouchableOpacity`
    borderBottomWidth: 2px  */}
         `
 
-
-const NameText = styled.Text`
+    const NameText = styled.Text`
         font-weight : 900
         font-size : 28px
         line-height : 30px
         margin-bottom: 5px
-        color: ${colors.mainTextColor}
+        color: ${detailsScreen ? colors.secondaryBodyColor : colors.mainTextColor}
         `
+    const DateText = styled.Text`
+        font-size : 16px
+        line-height : 30px
+        marginRight: 15px
+        color: ${detailsScreen ? colors.secondaryBodyColor : colors.mainTextColor}
+`
+
+
+
+
+
+    const date = new Date(props.date).toLocaleDateString()
+    const dispatch = useDispatch()
+    const [modalVisible, setModalVisible] = useState(false)
+    return <ProductsContainer onPress={() => navigation.navigate("ProductDetails", { id })}>
+        {/* 
+        <LinearGradient
+            colors={["transparent", colors.secondaryBodyColor]}
+            style={{
+                flex: 1
+            }}
+        > */}
+        <ModalOptions
+            visible={modalVisible}
+            visibilityToggler={() => setModalVisible(!modalVisible)}
+            // onPressIncome={(amount) => console.log(amount)}
+            onPressEdit={() => {
+                navigation.navigate("AddProduct", { id: id })
+                setModalVisible(false)
+            }}
+            onPressDelete={() => {
+                dispatch(deleteProductAction(id))
+                setModalVisible(!modalVisible)
+            }}
+            onPressCall={false}
+            onPressMessage={false}
+        />
+        <RowDiv>
+            <View style={{ flex: 1, alignItems: "flex-start" }}>
+                <NameText>{name}</NameText>
+            </View>
+
+            <View style={{ flexDirection: "row", flex: 1, justifyContent: "flex-end" }}>
+                <DateText>reg : {date}</DateText>
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                    <SimpleLineIcons name="options-vertical" size={20} color="black" />
+                </TouchableOpacity>
+            </View>
+
+
+        </RowDiv>
+        <BlockRowDiv>
+            <View>
+                <SmallText>received</SmallText>
+                <ReceivedNumText>{totalReceived}</ReceivedNumText>
+            </View>
+            <View>
+                <SmallText>sold</SmallText>
+                <SoldNumText>{totalSold}</SoldNumText>
+            </View>
+            <View>
+                <SmallText>stock</SmallText>
+                <StockNumText>{totalReceived - totalSold}</StockNumText>
+            </View>
+
+            {/* <NameText>inStock  : {stock - totalSold}</NameText> */}
+        </BlockRowDiv>
+
+
+        {/* </LinearGradient> */}
+    </ProductsContainer >
+
+}
+
+
+export default ProductBox
+
+
+
+
+
 
 const RowDiv = styled.View`
         width: 100%
@@ -160,9 +171,3 @@ const SmallText = styled.Text`
         
         color: ${colors.secondaryTextColor}
         `
-const DateText = styled.Text`
-        font-size : 16px
-        line-height : 30px
-        marginRight: 15px
-        color: black
-`

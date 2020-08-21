@@ -32,24 +32,21 @@ const LoadingScreen = ({ navigation }) => {
         initCustomers()
             .then(() => {
                 dispatch(addCustomers())
-                console.log('customers received...')
+                setProgress('customers received...')
             })
             .catch(err => {
-                console.log('Initializing CustomersDB failed.');
                 console.log(err);
             })
 
         initProducts()
             .then(() => {
                 dispatch(addProducts())
-                // dispatch(addSoldProducts())
-                console.log('products and sold received...')
+
                 navigation.navigate("MainScreens")
 
             })
             .catch(err => {
-                console.log('Initializing productsDB failed.');
-                console.log(err);
+                alert("error has occurred !")
             })
 
 

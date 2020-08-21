@@ -1,6 +1,8 @@
 import React from 'react';
+import { Easing, Animated, Dimensions } from 'react-native';
 import { createSwitchNavigator } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import { createStackNavigator, StackViewTransitionConfigs } from 'react-navigation-stack';
+import { fromLeft } from 'react-navigation-transitions'
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import LoadingScreen from "./screens/LoadingScreen"
 import SalesListScreen from './screens/SalesListScreen'
@@ -14,15 +16,53 @@ import ProductsScreen from './screens/ProductsScreen'
 import AddDeliveryScreen from './screens/AddDeliveryScreen'
 import ChartsScreen from './screens/ChartsScreen'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { TransitionSpecs, HeaderStyleInterpolators } from '@react-navigation/stack';
 
-const headerStyle = {
-    headerStyle: {
-        backgroundColor: '#9484DE'
+const MyTransition = {
+    gestureEnabled: true,
+    gestureDirection: 'horizontal',
+    transitionSpec: {
+        open: TransitionSpecs.TransitionIOSSpec,
+        close: TransitionSpecs.TransitionIOSSpec,
     },
-    headerTitleStyle: {
-        fontWeight: 'bold',
-    }
+    headerStyleInterpolator: HeaderStyleInterpolators.forFade,
+    cardStyleInterpolator: ({ current, next, layouts }) => {
+        return {
+            cardStyle: {
+                opacity: current.progress,
+                transform: [
+                    {
+                        translateX: current.progress.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [layouts.screen.width, 0],
+                        }),
+                        // translateY: current.progress.interpolate({
+                        //     inputRange: [0, 1],
+                        //     outputRange: [100, 1],
+                        // }),
+                    },
+
+                    {
+                        scale: next
+                            ? next.progress.interpolate({
+                                inputRange: [0, 0.3],
+                                outputRange: [1, 0.9],
+                            })
+                            : 1,
+                    },
+                ],
+            },
+            overlayStyle: {
+                opacity: current.progress.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, 0.5],
+                }),
+            },
+        };
+    },
 }
+
+
 
 const RootNavigation = createSwitchNavigator({
     Loading: LoadingScreen,
@@ -32,7 +72,8 @@ const RootNavigation = createSwitchNavigator({
                 SalesList: {
                     screen: SalesListScreen,
                     navigationOptions: {
-                        headerShown: false
+                        headerShown: false,
+                        animationTypeForReplace: "pop"
                     }
                 },
             }),
@@ -48,7 +89,9 @@ const RootNavigation = createSwitchNavigator({
                 Products: {
                     screen: ProductsScreen,
                     navigationOptions: {
-                        headerShown: false
+                        headerShown: false,
+                        transitionConfig: () => fromLeft(),
+
                     }
                 }
             }),
@@ -71,8 +114,6 @@ const RootNavigation = createSwitchNavigator({
                     return <Icon name={iconName} size={25} color={tintColor} />;
                 },
             }),
-            swipeEnabled: true,
-            animationEnabled: true,
 
             tabBarOptions: {
                 activeTintColor: "#f54b64",
@@ -104,57 +145,40 @@ const RootNavigation = createSwitchNavigator({
         Charts: {
             screen: ChartsScreen,
             navigationOptions: {
-                headerShown: false
+                headerShown: false,
+
             }
+
         },
         AddDelivery: {
             screen: AddDeliveryScreen,
-            navigationOptions: {
-                headerShown: false
-            }
         },
         Details: {
             screen: DetailsScreen,
-            navigationOptions: {
-                headerShown: false
-            }
         },
         Add: {
             screen: AddScreen,
-            navigationOptions: {
-                headerShown: false
-            }
         },
         AddCustomer: {
             screen: AddCustomerScreen,
-            navigationOptions: {
-                headerShown: false
-            }
         },
         CustomerInfo: {
             screen: DetailsScreen,
-            navigationOptions: {
-                headerShown: false
-            }
         },
         AddProduct: {
             screen: AddProductScreen,
-            navigationOptions: {
-                headerShown: false
-            }
         },
         ProductDetails: {
             screen: ProductDetailsScreen,
-            navigationOptions: {
-                headerShown: false
-            }
+
         }
 
 
 
     }, {
         defaultNavigationOptions: {
-            headerShown: false
+            headerShown: false,
+            ...MyTransition,
         }
     }
     )

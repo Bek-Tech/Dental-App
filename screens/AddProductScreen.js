@@ -31,15 +31,6 @@ const AddProductScreen = ({ navigation, products }) => {
     const [color, setColor] = useState(id ? product[0].color : "rgb(20,20,42)")
 
 
-
-    // const headerProps = { name, phone }
-
-    // const day = date.getDay()
-    // const month = date.getMonth() + 1
-    // const year = date.getFullYear()
-
-
-
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
@@ -57,8 +48,7 @@ const AddProductScreen = ({ navigation, products }) => {
 
     const saveProduct = () => {
         if (id) {
-            name.length === 0 || stock.length === 0 ? setError(true) : dispatch(editProduct(id, dateString, name, stock, historyString))
-            console.log("product edited")
+            name.length === 0 || stock.length === 0 ? setError(true) : dispatch(editProduct(id, dateString, name, stock, historyString, color))
             navigation.navigate('Products')
 
         } else {
@@ -100,20 +90,24 @@ const AddProductScreen = ({ navigation, products }) => {
                     onChange={onChange}
                 />
             )}
+            <RowDiv >
+                <View>
+                    <Input
+                        value={name}
+                        placeholder="enter product name"
+                        onChangeText={text => setName(text)} />
+                    {error ? <ErrorText>enter product name </ErrorText> : null}
+                    <Input
+                        value={`${stock}`}
+                        keyboardType="number-pad"
+                        placeholder="enter amount"
+                        onChangeText={num => setStock(num)} />
+                </View>
+                <View style={{ margin: 10, borderRadius: 15, width: 70, height: 70, backgroundColor: color }}>
+                </View>
 
-            <Input
-                value={name}
-                placeholder="enter product name"
-                onChangeText={text => setName(text)} />
-            {error ? <ErrorText>enter product name </ErrorText> : null}
-            <Input
-                value={`${stock}`}
-                keyboardType="number-pad"
-                placeholder="enter amount"
-                onChangeText={num => setStock(num)} />
-            <View style={{ margin: 10, borderRadius: 15, width: "100%", height: 80, backgroundColor: color }}>
+            </RowDiv>
 
-            </View>
 
             <ColorPicker
                 onColorSelected={color => setColor(color)}
@@ -162,7 +156,7 @@ const DateText = styled.Text`
 font-weight : 800
 font-size : 28px
 line-height : 30px
-margin-bottom: 5px
+margin: 5px 10px
 
 `
 
@@ -176,7 +170,6 @@ margin : 5px 10px
 `
 
 const RowDiv = styled.View`
-padding: 5px 15px
 flex-direction: row
 justify-content: space-between
 align-items: center
@@ -197,6 +190,7 @@ color : white
 `
 
 const ButtonStyled = styled.TouchableOpacity`
+margin : 5px 10px
 justify-content: center
 align-items: center
 border-radius: 25px

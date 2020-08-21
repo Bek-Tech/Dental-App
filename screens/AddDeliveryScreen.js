@@ -115,7 +115,7 @@ const AddDeliveryScreen = ({ navigation, products, customers, salesHistory, prod
                 show={showProductPicker}
             />
 
-            <RowDiv>
+            <RowDiv style={{ padding: 10 }}>
                 <DateText>{dateString}</DateText>
                 <ButtonStyled onPress={showDatepicker}   >
                     <ButtonText>Change Date</ButtonText>
@@ -326,7 +326,7 @@ const DateText = styled.Text`
 font-weight : 800
 font-size : 28px
 line-height : 30px
-margin-bottom: 5px
+${'' /* margin-bottom: 5px */}
 
 `
 
@@ -359,7 +359,7 @@ margin: 5px 0px
 `
 
 const RowDiv = styled.View`
-padding: 3px 0px 
+${'' /* padding: 3px 0px  */}
 flex-direction: row
 justify-content: space-between
 align-items: center

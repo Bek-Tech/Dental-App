@@ -24,6 +24,7 @@ const ProductsScreen = ({ products, salesHistory, navigation, soldProducts }) =>
                 totalProducts={products.length}
                 addButton={() => navigation.navigate("AddProduct", { id: null })}
                 navigation={navigation}
+                totalsData={{ name: "Products", amount: products.length }}
             >
 
 
@@ -57,13 +58,12 @@ const mapProductsToProp = state => {
 export default connect(mapProductsToProp)(ProductsScreen)
 
 
+
 const EmptyListDiv = styled.View`
 flex:1
-height: ${windowHeight - 600}px
+height: ${windowHeight / 2.5}px
 align-items:center
 justify-content: center
-borderWidth:2px
-borderColor: red
 `
 
 const EmptyText = styled.Text`

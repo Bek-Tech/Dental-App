@@ -13,16 +13,13 @@ const windowWidth = Dimensions.get('window').width;
 
 const SalesListScreen = ({ salesHistory, navigation, soldProducts }) => {
 
-    console.log(soldProducts)
-
     return (
         <RootContainer
             backToTopButton={salesHistory.length >= 3 ? true : false}
             addButton={() => navigation.navigate("Add")}
-            title='Journal'
+            title='Sales'
             navigation={navigation}
-            totalOperations={salesHistory.length}
-            totalSold={soldProducts.totalSold}
+            totalsData={{ name: "Total operations", amount: salesHistory.length }}
         >
 
             {salesHistory.length > 0 ?
@@ -57,9 +54,10 @@ export default connect(mapSalesHistoryToProps)(SalesListScreen)
 // styles___________________________________________
 
 
+
 const EmptyListDiv = styled.View`
 flex:1
-height: ${windowHeight - 350}px
+height: ${windowHeight / 2.5}px
 align-items:center
 justify-content: center
 `
