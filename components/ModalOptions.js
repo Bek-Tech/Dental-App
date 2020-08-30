@@ -48,7 +48,7 @@ const ModalOptions = ({ visible, visibilityToggler, onPressEdit, onPressDelete, 
         </Modal>
 
 
-        <Modal
+        {/* <Modal
             animationType="fade"
             transparent={true}
             visible={incomeModal}
@@ -75,7 +75,7 @@ const ModalOptions = ({ visible, visibilityToggler, onPressEdit, onPressDelete, 
                 </ModalView>
             </ModalContainer>
 
-        </Modal>
+        </Modal> */}
 
 
 

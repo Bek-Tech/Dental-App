@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from "react-redux"
-import { Text, Dimensions } from 'react-native';
+import { Text, Dimensions, View } from 'react-native';
 import styled from 'styled-components/native'
 import { Entypo } from '@expo/vector-icons'
 import ProductBox from "../components/ProductBox"
@@ -38,35 +38,56 @@ const DetailsScreen = ({ navigation, productsSale, products }) => {
                         <LabelText>Sold </LabelText>
                     </RowRightView>
                 </RowDiv>
-                <ListRowDiv>
+                {product[0] ? <ListRowDiv>
                     <LeftListView>
                         <ListItemRowDiv>
-                            <BoldText>{product[0].stock}</BoldText>
-                            <GrayText>{new Date(product[0].date).toLocaleDateString()}</GrayText>
+                            <View style={{
+                                width: "50%",
+                                alignItems: "flex-start",
+                            }}>
+                                <BoldText>{product[0].stock}</BoldText>
+                            </View>
+                            <View style={{ width: "50%", alignItems: "flex-end" }} >
+                                <GrayText>{new Date(product[0].date).toLocaleDateString()}</GrayText>
+                            </View>
                         </ListItemRowDiv>
-                        <ListScrollView>
+                        <ListScrollView style={{ flex: 1 }}>
                             {product[0].history.map(item => {
+
                                 const date = new Date(item.data).toLocaleDateString()
-                                return <ListItemRowDiv key={`${item.quantity}${item.date}`}>
-                                    <BoldText>{item.quantity}</BoldText>
-                                    <GrayText>{date}</GrayText>
+
+                                return <ListItemRowDiv key={`${item.quantity}${item.data}`} >
+                                    <View style={{
+                                        width: "50%",
+                                        alignItems: "flex-start",
+                                    }}>
+                                        <BoldText>{item.quantity}</BoldText>
+                                    </View>
+                                    <View style={{ width: "50%", alignItems: "flex-end" }} >
+                                        <GrayText>{date}</GrayText>
+                                    </View>
+
                                 </ListItemRowDiv>
                             })}
                         </ListScrollView>
                     </LeftListView>
-                    <ListScrollView>
+                    <ListScrollView style={{ flex: 1 }}>
                         {productsSale[id].soldArr.map(item => {
                             const date = new Date(item.data).toLocaleDateString()
-                            return <ListItemRowDiv>
-                                <BoldText>{item.quantity}</BoldText>
-                                <GrayText>{date}</GrayText>
+                            return <ListItemRowDiv key={`${item.quantity}${item.data}`} >
+                                <View style={{ width: "50%", alignItems: "flex-start" }}>
+                                    <BoldText>{item.quantity}</BoldText>
+                                </View>
+                                <View style={{ width: "50%", alignItems: "flex-end" }} >
+                                    <GrayText>{date}</GrayText>
+                                </View>
                             </ListItemRowDiv>
                         })}
                     </ListScrollView>
-                </ListRowDiv>
+                </ListRowDiv> : null}
             </HistoryDiv>
 
-        </AddContainer>
+        </AddContainer >
 
     )
 }
@@ -88,17 +109,20 @@ width : 100%
 flex-direction: row
 justify-content: space-between
 align-items: baseline
+${'' /* borderColor: black
+borderWidth: 2px */}
 
 `
 
 
 const LeftListView = styled.View`
-
+border-color:black
+${'' /* border-width:2px */}
 border-right-width:2px
 border-color: grey
 flex: 1
 height: 100%
-padding: 5px
+${'' /* padding: 5px */}
 justify-content: flex-start
 align-items: flex-start
 `
@@ -110,7 +134,6 @@ ${'' /* border-color:black
 border-width:2px */}
 flex: 1
 height: 100%
-padding: 5px
 
 `
 
@@ -121,7 +144,7 @@ const DataView = styled.View`
 `
 
 const HistoryDiv = styled.View`
-height: ${windowHeight - 270}px
+height: ${windowHeight - 260}px
 padding: 15px 
 margin: 5px 0px
 background : white
@@ -191,5 +214,7 @@ align-items: center
 
 const GrayText = styled.Text`
  color : #8b979f
+ ${'' /* border-color: black
+ border-width: 2px */}
 
 `

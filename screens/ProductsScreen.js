@@ -16,6 +16,8 @@ const windowWidth = Dimensions.get('window').width;
 const ProductsScreen = ({ products, salesHistory, navigation, soldProducts }) => {
 
 
+
+
     return (
         <>
             <RootContainer

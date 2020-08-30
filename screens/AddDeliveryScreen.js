@@ -36,15 +36,21 @@ const AddDeliveryScreen = ({ navigation, products, customers, salesHistory, prod
         return pickedItemId[item.id] !== item.id
     })
 
-
+    // console.log(productsArr)
 
 
 
     const saveNewDelivery = () => {
         productsArr.forEach(item => {
-            const historyArr = [...item.history, item.productObj]
-            const stringHistoryArr = JSON.stringify(historyArr)
-            dispatch(editProduct(item.id, item.date, item.name, item.stock, stringHistoryArr, item.color))
+
+            if (item.productObj.quantity > 0) {
+                const historyArr = [...item.history, item.productObj]
+                const stringHistoryArr = JSON.stringify(historyArr)
+                dispatch(editProduct(item.id, item.date, item.name, item.stock, stringHistoryArr, item.color))
+            } else {
+                return null
+            }
+
         })
 
     }
@@ -56,7 +62,7 @@ const AddDeliveryScreen = ({ navigation, products, customers, salesHistory, prod
             productObj: {
                 id: pickedProduct.id,
                 data: dateString,
-                quantity: JSON.parse(productAmount),
+                quantity: productAmount ? JSON.parse(productAmount) : 0
             }
         }
         setProductsArr([...productsArr, obj])
@@ -110,7 +116,10 @@ const AddDeliveryScreen = ({ navigation, products, customers, salesHistory, prod
             <ModalPicker
                 dataName="products"
                 data={modalPickerData}
-                pickedValue={(value) => setPickedProduct(value)}
+                pickedValue={(value) => {
+                    setError(false)
+                    setPickedProduct(value)
+                }}
                 showTrigger={() => setShowProductPicker(!showProductPicker)}
                 show={showProductPicker}
             />
@@ -148,16 +157,21 @@ const AddDeliveryScreen = ({ navigation, products, customers, salesHistory, prod
                     value={productAmount}
                     onChangeText={(value) => setProductAmount(value)} />
             </RowDiv>
+            {error ? <ErrorText>choose product</ErrorText> : null}
             <AddButtonDiv>
                 <AddButton
                     onPress={() => {
-                        pickedProduct.id === null ?
-                            setError(true) + console.log("error") :
+                        if (pickedProduct.id === null) {
+                            return setError(true)
+                        } else {
                             setPickedItemId({ ...pickedItemId, [pickedProduct.id]: pickedProduct.id })
-                        addProduct()
-                        Keyboard.dismiss()
-                        setPickedProduct({ id: null, name: "choose product" })
-                        setProductAmount(0)
+                            addProduct()
+                            Keyboard.dismiss()
+                            setPickedProduct({ id: null, name: "choose product" })
+                            setProductAmount(0)
+                        }
+
+
                     }}>
                     <AntDesign name="plus" size={24} color="#fff" />
                 </AddButton>

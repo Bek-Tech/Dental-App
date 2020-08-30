@@ -36,10 +36,12 @@ const MyTransition = {
                             inputRange: [0, 1],
                             outputRange: [layouts.screen.width, 0],
                         }),
-                        // translateY: current.progress.interpolate({
-                        //     inputRange: [0, 1],
-                        //     outputRange: [100, 1],
-                        // }),
+                        scale: current.progress.interpolate({
+                            inputRange: [1, 1],
+                            outputRange: [1, 0.5],
+                        })
+
+
                     },
 
                     {
@@ -90,7 +92,7 @@ const RootNavigation = createSwitchNavigator({
                     screen: ProductsScreen,
                     navigationOptions: {
                         headerShown: false,
-                        transitionConfig: () => fromLeft(),
+                        ...MyTransition,
 
                     }
                 }

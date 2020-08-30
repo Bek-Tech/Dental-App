@@ -24,7 +24,7 @@ const AddScreen = ({ navigation, products, customers, salesHistory, productsSale
 
 
 
-
+    console.log(saleData)
 
 
 
@@ -40,7 +40,7 @@ const AddScreen = ({ navigation, products, customers, salesHistory, productsSale
     const month = date.getMonth()
     const year = date.getFullYear()
     const [productsArr, setProductsArr] = useState([])
-    const [pickedCustomer, setPickedCustomer] = useState(id ? { id: id, name: saleData[0].customerName } : { id: null, name: "Choose Customer" })
+    const [pickedCustomer, setPickedCustomer] = useState(id ? { id: saleData[0].customerId, name: saleData[0].customerName } : { id: null, name: "Choose Customer" })
     const [pickedProduct, setPickedProduct] = useState({ id: null, name: "choose product" })
     const [productAmount, setProductAmount] = useState('')
     const [pickedItemId, setPickedItemId] = useState({})
@@ -84,9 +84,9 @@ const AddScreen = ({ navigation, products, customers, salesHistory, productsSale
 
     }
 
-    const saveChanges = async () => {
+    const saveChanges = () => {
         const productsArrData = productsArr.map(item => { return item.productObj })
-        await dispatch(editSale(id, day, month, year, pickedCustomer.id, pickedCustomer.name, productsArrData))
+        dispatch(editSale(id, day, month, year, pickedCustomer.id, pickedCustomer.name, productsArrData))
     }
 
     const addProduct = () => {
@@ -149,8 +149,9 @@ const AddScreen = ({ navigation, products, customers, salesHistory, productsSale
                 dataName="customers"
                 data={customers}
                 pickedValue={(value) => {
-                    setPickedCustomer(value)
                     setError(false)
+                    setPickedCustomer(value)
+
                 }}
                 showTrigger={() => setShowCustomerPicker(!showCustomerPicker)}
                 show={showCustomerPicker}
@@ -158,7 +159,10 @@ const AddScreen = ({ navigation, products, customers, salesHistory, productsSale
             <ModalPicker
                 dataName="products"
                 data={modalPickerData}
-                pickedValue={(value) => setPickedProduct(value)}
+                pickedValue={(value) => {
+                    setError(false)
+                    setPickedProduct(value)
+                }}
                 showTrigger={() => setShowProductPicker(!showProductPicker)}
                 show={showProductPicker}
             />
@@ -193,7 +197,7 @@ const AddScreen = ({ navigation, products, customers, salesHistory, productsSale
                     <ButtonText>New Customer</ButtonText>
                 </ButtonStyled>
             </RowDiv>
-            {error ? <ErrorText>Choose Customer </ErrorText> : null}
+
             <RowDiv>
                 <Picker
                     onPress={() => setShowProductPicker(!showProductPicker)}
@@ -205,18 +209,24 @@ const AddScreen = ({ navigation, products, customers, salesHistory, productsSale
                     keyboardType="number-pad"
                     placeholder=" amount"
                     value={productAmount}
-                    onChangeText={(value) => setProductAmount(value)} />
+                    onChangeText={(value) => {
+                        setError(false)
+                        setProductAmount(value)
+                    }} />
             </RowDiv>
+            {error ? <ErrorText>Choose Customer and Product </ErrorText> : null}
             <AddButtonDiv>
                 <AddButton
                     onPress={() => {
-                        pickedProduct.id === null || productAmount === 0 || pickedCustomer.id === null ?
-                            setError(true) + console.log("error") :
+                        if (pickedProduct.id === null || productAmount === 0 || pickedCustomer.id === null) {
+                            return setError(true)
+                        } else {
                             setPickedItemId({ ...pickedItemId, [pickedProduct.id]: pickedProduct.id })
-                        addProduct()
-                        Keyboard.dismiss()
-                        setPickedProduct({ id: null, name: "choose product" })
-                        setProductAmount(0)
+                            addProduct()
+                            Keyboard.dismiss()
+                            setPickedProduct({ id: null, name: "choose product" })
+                            setProductAmount(0)
+                        }
                     }}>
                     <AntDesign name="plus" size={24} color="#fff" />
                 </AddButton>

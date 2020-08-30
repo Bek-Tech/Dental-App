@@ -16,9 +16,8 @@ import { LinearGradient } from 'expo-linear-gradient'
 
 
 const ProductBox = (props) => {
-    const { id, name, stock, totalReceived, navigation, sold, color, detailsScreen } = props
+    const { id, name, totalReceived, navigation, sold, color, detailsScreen } = props
     const totalSold = sold ? sold.totalSold : 0
-    // console.log("box")
 
     const ProductsContainer = styled.TouchableOpacity`
                 flex:1
@@ -74,18 +73,18 @@ const ProductBox = (props) => {
             }}
             onPressDelete={() => {
                 dispatch(deleteProductAction(id))
-                setModalVisible(!modalVisible)
+                navigation.goBack()
             }}
             onPressCall={false}
             onPressMessage={false}
         />
         <RowDiv>
             <View style={{ flex: 1, alignItems: "flex-start" }}>
-                <NameText>{name}</NameText>
+                <NameText>{name ? name : "deleted"}</NameText>
             </View>
 
             <View style={{ flexDirection: "row", flex: 1, justifyContent: "flex-end" }}>
-                <DateText>reg : {date}</DateText>
+                <DateText>reg : {date ? date : "no info"}</DateText>
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
                     <SimpleLineIcons name="options-vertical" size={20} color="black" />
                 </TouchableOpacity>
@@ -96,7 +95,7 @@ const ProductBox = (props) => {
         <BlockRowDiv>
             <View>
                 <SmallText>received</SmallText>
-                <ReceivedNumText>{totalReceived}</ReceivedNumText>
+                <ReceivedNumText>{totalReceived ? totalReceived : 0}</ReceivedNumText>
             </View>
             <View>
                 <SmallText>sold</SmallText>
@@ -104,7 +103,7 @@ const ProductBox = (props) => {
             </View>
             <View>
                 <SmallText>stock</SmallText>
-                <StockNumText>{totalReceived - totalSold}</StockNumText>
+                <StockNumText>{totalReceived ? totalReceived - totalSold : 0}</StockNumText>
             </View>
 
             {/* <NameText>inStock  : {stock - totalSold}</NameText> */}
@@ -162,7 +161,7 @@ const StockNumText = styled.Text`
         font-weight: bold
 ${'' /* line-height : 30px */}
 
-        color: black
+        color: white
         `
 
 const SmallText = styled.Text`

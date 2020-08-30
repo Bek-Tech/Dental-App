@@ -305,9 +305,12 @@ const ChartsScreen = ({ navigation, products, customers, salesHistory, soldProdu
                                     keyExtractor={(item, index) => item.name}
                                     renderItem={({ item }) => {
                                         return <ListItemDiv>
-
-                                            <ListText>{item.name} :</ListText>
-                                            <AmountText> {item.totalPurchased}</AmountText>
+                                            <View style={{ width: "50%" }}>
+                                                <ListText style={{ fontSize: item.name.length > 9 ? 13 : 16 }}>{item.name} :</ListText>
+                                            </View>
+                                            <View style={{ width: "40%" }}>
+                                                <AmountText style={{ fontSize: item.totalPurchased.length > 7 ? 13 : 16, marginLeft: 5 }}>{item.totalPurchased}</AmountText>
+                                            </View>
                                         </ListItemDiv>
 
                                     }}
@@ -370,8 +373,12 @@ const ChartsScreen = ({ navigation, products, customers, salesHistory, soldProdu
                                                 margin: 5,
                                                 backgroundColor: item.color
                                             }}></View>
-                                            <ListText>{item.name} :</ListText>
-                                            <AmountText> {item.totalSold}</AmountText>
+                                            <View style={{ width: "50%" }}>
+                                                <ListText style={{ fontSize: item.name.length > 9 ? 13 : 16 }}>{item.name} :</ListText>
+                                            </View>
+                                            <View style={{ width: "40%" }}>
+                                                <AmountText style={{ fontSize: item.totalSold.length > 7 ? 13 : 16, marginLeft: 5 }}>{item.totalSold}</AmountText>
+                                            </View>
                                         </ListItemDiv>
 
                                     }}
@@ -406,13 +413,16 @@ const ListText = styled.Text`
   `
 
 const AmountText = styled.Text`
-     font-size : 18px
+     font-size : 16px
     color : #000000
   `
 
 
 const ListItemDiv = styled.View`
-flex:1
+width: ${windowWidth / 2 - 20}px
+  borderColor: black
+ borderBottomWidth: 1px
+ margin: 0px 5px
 flex-direction: row
 justifyContent: flex-start
 alignItems: center

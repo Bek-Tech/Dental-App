@@ -17,7 +17,7 @@ const AddCustomerScreen = ({ customers, navigation }) => {
     const dispatch = useDispatch()
 
     const [name, setName] = useState(id ? customer[0].name : "")
-    const [phone, setPhone] = useState(id ? customer[0].phone : '')
+    const [phone, setPhone] = useState(id ? customer[0].phone : "")
 
     const [error, setError] = useState(false)
     const [date, setDate] = useState(new Date());
@@ -94,7 +94,6 @@ const AddCustomerScreen = ({ customers, navigation }) => {
                             name.length === 0 || phone.length === 0 ? setError(true) :
                                 dispatch(editCustomer(id, dateString, name, phone))
                                     .then(() => {
-                                        console.log("product edited")
                                         navigation.goBack()
                                     })
                         } else {

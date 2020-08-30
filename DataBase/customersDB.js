@@ -5,7 +5,7 @@ export const initCustomers = () => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                'CREATE TABLE IF NOT EXISTS customers (id INTEGER PRIMARY KEY NOT NULL, date TEXT NOT NULL, name TEXT NOT NULL, phone REAL, status TEXT NOT NULL);',
+                'CREATE TABLE IF NOT EXISTS customers (id INTEGER PRIMARY KEY NOT NULL, date TEXT NOT NULL, name TEXT NOT NULL, phone TEXT, status TEXT NOT NULL);',
                 [],
                 () => {
                     resolve();
@@ -80,7 +80,7 @@ export const totallyDeleteCustomer = (id) => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                `UPDATE customers SET  name= "deleted${id}",  date= "deleted" ,phone=0 , status = "deleted" WHERE id =${id}`,
+                `UPDATE customers SET  name= "deleted${id}",  date= "deleted" ,phone="" , status = "deleted" WHERE id =${id}`,
                 [],
                 () => {
                     resolve();
@@ -121,13 +121,13 @@ export const updateCustomer = (id, date, name, phone) => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                `UPDATE customers SET  name= "${name}",  date= "${date}" , phone=${phone} WHERE id =${id}`,
+                `UPDATE customers SET  name= "${name}",  date= "${date}" , phone="${phone}" WHERE id =${id}`,
                 [],
                 (_, result) => {
                     resolve(result);
                 },
                 (_, err) => {
-                    alert("error has occurred")
+                    alert("error has occurred !")
                     reject(err);
                 }
             );
