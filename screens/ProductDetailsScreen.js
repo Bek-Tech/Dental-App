@@ -23,8 +23,10 @@ const DetailsScreen = ({ navigation, productsSale, products }) => {
         <AddContainer
             BackButton={() => navigation.goBack()}
             title="Details"
+            fullCover={true}
         >
             <ProductBox sold={productsSale[id]} navigation={navigation} {...product[0]} detailsScreen={true} />
+
             <HistoryDiv>
 
                 <Text>Product History</Text>
@@ -71,8 +73,8 @@ const DetailsScreen = ({ navigation, productsSale, products }) => {
                             })}
                         </ListScrollView>
                     </LeftListView>
-                    <ListScrollView style={{ flex: 1 }}>
-                        {productsSale[id].soldArr.map(item => {
+                    <ListScrollView>
+                        {productsSale[id] ? productsSale[id].soldArr.map(item => {
                             const date = new Date(item.data).toLocaleDateString()
                             return <ListItemRowDiv key={`${item.quantity}${item.data}`} >
                                 <View style={{ width: "50%", alignItems: "flex-start" }}>
@@ -82,7 +84,8 @@ const DetailsScreen = ({ navigation, productsSale, products }) => {
                                     <GrayText>{date}</GrayText>
                                 </View>
                             </ListItemRowDiv>
-                        })}
+                        }) : null
+                        }
                     </ListScrollView>
                 </ListRowDiv> : null}
             </HistoryDiv>
@@ -144,13 +147,14 @@ const DataView = styled.View`
 `
 
 const HistoryDiv = styled.View`
-height: ${windowHeight - 260}px
+flex:1
+${'' /* height: ${windowHeight - 260}px */}
 padding: 15px 
 margin: 5px 0px
 background : white
 border-radius : 25px
 shadow-color: #000
-shadow-opacity: 0.5
+shadow-opacity: 1
 shadow-radius: 6.3px
 elevation: 10
 `

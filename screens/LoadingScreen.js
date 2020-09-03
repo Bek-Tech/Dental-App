@@ -20,22 +20,18 @@ const LoadingScreen = ({ navigation }) => {
         initSales()
             .then(() => {
                 dispatch(addSales())
-                console.log('sales received...')
-
-
             })
             .catch(err => {
-                console.log('Initializing salesDB failed.');
-                console.log(err);
+                alert('Initializing sales  data failed !')
             })
 
         initCustomers()
             .then(() => {
                 dispatch(addCustomers())
-                setProgress('customers received...')
             })
             .catch(err => {
-                console.log(err);
+                alert("Initializing customers data  failed !")
+
             })
 
         initProducts()
@@ -46,24 +42,30 @@ const LoadingScreen = ({ navigation }) => {
 
             })
             .catch(err => {
-                alert("error has occurred !")
+                alert("Initializing products data  failed !")
             })
 
 
     }, [])
 
 
-    return <View style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#1F1F24"
-    }}>
+    return <ImageBackground source={require("../assets/splash.png")}
+        style={{
+            flex: 1,
+            resizeMode: "cover",
+            justifyContent: "center",
+            alignItems: "center",
+        }}>
+        <View style={{
+            position: "absolute",
+            bottom: 100
+        }}>
 
-        <ActivityIndicator size="large" color="White" />
-        <Text style={{ color: "white" }}>loading...</Text>
+            <ActivityIndicator size="large" color="White" />
+            <Text style={{ color: "white" }}>loading...</Text>
 
-    </View>
+        </View>
+    </ImageBackground>
 }
 
 

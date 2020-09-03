@@ -77,7 +77,12 @@ const AddCustomerScreen = ({ customers, navigation }) => {
                 />
             )}
 
-            <Input placeholder="enter name" value={name} onChangeText={text => setName(text)} />
+            <Input
+                placeholder="enter name"
+                value={name}
+                onChangeText={text => setName(text)}
+                maxLength={25}
+            />
             {error ? <ErrorText>enter customer name </ErrorText> : null}
             <Input
                 dataDetectorTypes='phoneNumber'

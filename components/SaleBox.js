@@ -167,7 +167,7 @@ elevation: 10
 
 const FullName = styled.Text`
 font-weight: bold
-font-size : 20px
+font-size : 24px
 color : ${colors.mainTextColor}
 `
 

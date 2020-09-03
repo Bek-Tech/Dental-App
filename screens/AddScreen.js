@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Button, Modal, TouchableOpacity, Dimensions, Keyboard, KeyboardAvoidingView } from 'react-native'
+import { View, Text, Button, Modal, TouchableOpacity, Dimensions, Keyboard, KeyboardAvoidingView, StyleSheet } from 'react-native'
 import { connect, useDispatch } from "react-redux"
 import styled from 'styled-components/native'
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -10,6 +10,7 @@ import AddedProduct from '../components/AddedProduct';
 import ModalPicker from "../components/ModalPicker"
 import { Entypo, AntDesign } from '@expo/vector-icons';
 import { addNewSale, editSale } from "../actions/salesActions"
+import { ScrollView } from 'react-native-gesture-handler';
 // editSale(id, day, month, year, customerId, customerName, productsArr) 
 //addNewSale(day, month, year, customerId, customerName, productsArr )
 
@@ -24,15 +25,11 @@ const AddScreen = ({ navigation, products, customers, salesHistory, productsSale
 
 
 
-    console.log(saleData)
-
-
-
     const dispatch = useDispatch()
     const [showCustomerPicker, setShowCustomerPicker] = useState(false);
     const [showProductPicker, setShowProductPicker] = useState(false);
     const [error, setError] = useState(false)
-    const [date, setDate] = useState(id ? new Date(saleData[0].year, saleData[0].month - 1, saleData[0].day) : new Date());
+    const [date, setDate] = useState(id ? new Date(saleData[0].year, saleData[0].month, saleData[0].day) : new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const dateString = date.toDateString()
@@ -142,6 +139,7 @@ const AddScreen = ({ navigation, products, customers, salesHistory, productsSale
         <AddContainer
             title="Add Sale"
             BackButton={() => navigation.goBack()}
+            fullCover={true}
         >
             {/* //________________________________________________________ */}
 
@@ -233,10 +231,9 @@ const AddScreen = ({ navigation, products, customers, salesHistory, productsSale
             </AddButtonDiv>
             {/* _______________________list______________________________________ */}
             <KeyboardAvoidingView
-                // behavior={Platform.OS == "ios" ? "padding" : "height"}
                 style={{ flex: 1 }}
             >
-                <ProductsDiv>
+                <ScrollView style={styles.listScrollView}>
                     <Text>Products</Text>
                     {productsArr.length === 0 ?
                         <EmptyDiv>
@@ -255,7 +252,7 @@ const AddScreen = ({ navigation, products, customers, salesHistory, productsSale
                         })
                     }
 
-                </ProductsDiv>
+                </ScrollView>
             </KeyboardAvoidingView>
 
 
@@ -299,6 +296,20 @@ export default connect(mapStateToProps)(AddScreen)
 
 //styles_________________________________________________________
 
+const styles = StyleSheet.create({
+    listScrollView: {
+        flex: 1,
+        marginTop: 5,
+        width: "100 %",
+        borderTopWidth: 2,
+        borderBottomWidth: 2,
+        borderColor: "black"
+    }
+})
+
+
+
+
 const RowLeftView = styled.View`
 height: 20px
 ${'' /* border-left-width:2px */}
@@ -323,9 +334,10 @@ align-items: center
 
 const EmptyDiv = styled.View`
 flex:1
+${'' /* height: 400 */}
 justify-content: center
 align-items: center
-${'' /* height: ${Dimensions.get('window').height / 3.5}px */}
+height: ${Dimensions.get('window').height - 400}px
 
 `
 const BoldText = styled.Text`
@@ -357,14 +369,14 @@ ${'' /* shadow-offset: {width: 0, height: 2} */}
             `
 
 
-const ProductsDiv = styled.ScrollView`
-margin-top: 5px
-width: 100%
-height: ${Dimensions.get('window').height - 360}px
-border-top-width: 2px
-border-bottom-width: 2px
-border-color: black
-`
+// const ProductsDiv = styled.ScrollView`
+// margin-top: 5px
+// width: 100%
+// height: ${Dimensions.get('window').height - 340}px
+// border-top-width: 2px
+// border-bottom-width: 2px
+// border-color: black
+// `
 
 
 

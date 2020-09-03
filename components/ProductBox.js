@@ -20,8 +20,9 @@ const ProductBox = (props) => {
     const totalSold = sold ? sold.totalSold : 0
 
     const ProductsContainer = styled.TouchableOpacity`
-                flex:1
-                border-radius: 15px
+                ${'' /* flex:1 */}
+                ${'' /* maxHeight: 200px */}
+        border-radius: 15px
         background: ${detailsScreen ? colors.secondaryColor : colors.secondaryBodyColor}
         margin: 5px 5px
         padding: 5px 10px
@@ -35,8 +36,8 @@ const ProductBox = (props) => {
         `
 
     const NameText = styled.Text`
-        font-weight : 900
-        font-size : 28px
+        font-weight : bold
+        font-size : 24px
         line-height : 30px
         margin-bottom: 5px
         color: ${detailsScreen ? colors.secondaryBodyColor : colors.mainTextColor}
@@ -78,12 +79,16 @@ const ProductBox = (props) => {
             onPressCall={false}
             onPressMessage={false}
         />
-        <RowDiv>
+        <RowDiv style={{ alignItems: "flex-start" }}>
             <View style={{ flex: 1, alignItems: "flex-start" }}>
                 <NameText>{name ? name : "deleted"}</NameText>
             </View>
 
-            <View style={{ flexDirection: "row", flex: 1, justifyContent: "flex-end" }}>
+            <View style={{
+                flexDirection: "row",
+                flex: 1,
+                justifyContent: "flex-end",
+            }}>
                 <DateText>reg : {date ? date : "no info"}</DateText>
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
                     <SimpleLineIcons name="options-vertical" size={20} color="black" />

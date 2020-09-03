@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Text, Linking, View, Modal, TouchableOpacity } from 'react-native';
+import { Text, Linking, View, Modal, TouchableOpacity, ScrollView } from 'react-native';
 import styled from 'styled-components/native'
 import { useDispatch } from "react-redux"
 import { SimpleLineIcons } from '@expo/vector-icons'
@@ -20,22 +20,23 @@ const CustomerInfo = (props) => {
     // ____________________styles
 
     const Container = styled.TouchableOpacity`
-flex:1
-border-radius: 15px
-background: ${detailsScreen ? colors.secondaryColor : colors.secondaryBodyColor}
-margin: 5px 5px
-padding : 10px 15px
- shadow-color: #000
-shadow-opacity: 0.5
-shadow-radius: 6.3px
-elevation: 10
+
+      border-radius: 15px
+        background: ${detailsScreen ? colors.secondaryColor : colors.secondaryBodyColor}
+        margin: 5px 5px
+        padding: 5px 10px
+        overflow: hidden
+         shadow-color: black
+        shadow-opacity: 1
+        shadow-radius: 6.3px
+        elevation: 18
 `
 
 
     const Name = styled.Text`
-font-weight : 800
-font-size : 28px
-line-height : 30px
+font-weight : bold
+font-size :24px  
+${'' /* line-height : 30px */}
 margin-bottom: 5px
 color: ${ detailsScreen ? colors.secondaryBodyColor : colors.mainTextColor}
 `
@@ -79,7 +80,7 @@ color: ${ detailsScreen ? colors.secondaryBodyColor : colors.mainTextColor}
             </View>
         </RowDiv>
         <RowDiv>
-            <NumberText>phone : {phone ? phone : "deleted"}</NumberText>
+            <NumberText>phone : {phone ? phone : "not available"}</NumberText>
         </RowDiv>
     </Container>
 

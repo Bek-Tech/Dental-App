@@ -8,7 +8,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 
 
-const AddContainer = ({ children, title, head, BackButton }) => {
+const windowHeight = Dimensions.get('window').height
+const windowWidth = Dimensions.get('window').width
+
+const AddContainer = ({ children, title, head, BackButton, fullCover }) => {
 
     const [state, setState] = useState(Dimensions.get('window').height / 1.3)
 
@@ -43,14 +46,12 @@ const AddContainer = ({ children, title, head, BackButton }) => {
                     <ScrollView
                         scrollEnabled={false}
                         style={{ flex: 1 }}>
-                        {head}
-                        <ItemsContainer
-
-                        >
+                        <ItemsContainer >
                             <LinearGradient
                                 colors={[colors.secondaryColor, colors.mainColor,]}
                                 style={{
                                     flex: 1,
+                                    height: fullCover ? windowHeight - 85 : "100%",
                                     borderRadius: 35,
                                     margin: 10,
                                     marginTop: 15,
@@ -84,19 +85,17 @@ const TitleText = styled.Text`
 const ItemsContainer = styled.View`
      
     flex:1
-    resizeMode: cover
-    overflow: hidden
-    backgroundColor: ${colors.bodyColor}
-     borderRadius: 35px            
+     ${'' /* borderRadius: 35px            
      margin: 5px  
      marginTop: 10px
-           
      padding: 5px   15px     
+     borderColor: white
+      borderWidth: 2px
        shadow-color: #000
 shadow-offset: {width: 0, height: 2}
             shadow-opacity: 0.5
             shadow-radius: 6.3px
-            elevation: 10   
+            elevation: 10    */}
 `
 
 const BodyContainer = styled.View`

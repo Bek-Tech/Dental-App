@@ -110,6 +110,7 @@ const AddDeliveryScreen = ({ navigation, products, customers, salesHistory, prod
         <AddContainer
             BackButton={() => navigation.goBack()}
             title=" New Delivery"
+            fullCover={true}
         >
 
             {/* __________________________________________________________________ */}
@@ -305,7 +306,6 @@ const ProductsDiv = styled.ScrollView`
 flex:1
 margin-top: 5px
 width: 100%
-height: ${ windowHeight - 310}px
 border-top-width: 2px
 border-bottom-width: 2px
 border-color: black

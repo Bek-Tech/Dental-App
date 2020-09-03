@@ -28,11 +28,12 @@ const DetailsScreen = ({ navigation, salesHistory, customers }) => {
         <AddContainer
             BackButton={() => navigation.goBack()}
             title="Details"
+            fullCover={true}
         >
 
 
 
-            <CustomerInfo navigation={navigation} {...customer[0]} detailsScreen={true} />
+            <CustomerInfo style={{ height: 300 }} navigation={navigation} {...customer[0]} detailsScreen={true} />
             <HistoryDiv>
                 <Text>Purchase History</Text>
                 <RowDiv>
@@ -45,10 +46,9 @@ const DetailsScreen = ({ navigation, salesHistory, customers }) => {
                         <LabelText>Quantity </LabelText>
                     </RowRightView>
                 </RowDiv>
-                <ScrollView></ScrollView>
                 <FlatList
                     data={purchaseData}
-                    style={{ height: windowHeight - 320 }}
+                    style={{ flex: 1 }}
                     keyExtractor={item => `${item.id}`}
                     renderItem={({ item }) => {
                         return <DataView>
@@ -97,7 +97,7 @@ const DataView = styled.View`
 `
 
 const HistoryDiv = styled.View`
-flex: 1
+flex:1
 align-Items: flex-start
 padding: 25px 
 margin: 5px 0px
