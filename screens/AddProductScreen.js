@@ -52,17 +52,12 @@ const AddProductScreen = ({ navigation, products }) => {
             navigation.navigate('Products')
 
         } else {
-
-            try {
                 name.length === 0 || stock.length === 0 ? setError(true)
                     : dispatch(addNewProduct(dateString, name, stock, historyString, color))
                         .then(() => {
-                            console.log("new product added")
                             navigation.navigate('Products')
                         })
-            } catch (err) {
-                alert("error")
-            }
+          
         }
     }
 

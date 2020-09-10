@@ -1,1 +1,2 @@
-# DentalApp-
+#  Pocket Store Manager is my personal React Native project build by using Java Script , Expo , React Native , Redux ,Expo ,SQL lite,
+ # 60 fps animations and functions with fast time complexity for having user experience compatible with native build applications . Control your business with Pocket Store Manager . Easily save , edit and get information about your sales, customers and products in your storage . User-friendly UI , fully offline and no registration is needed .Get updates as soon as they available , no need to download again thanks to Expo Over-The-Air updates.

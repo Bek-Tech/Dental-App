@@ -420,8 +420,6 @@ const AmountText = styled.Text`
 
 const ListItemDiv = styled.View`
 width: ${windowWidth / 2 - 20}px
-  borderColor: black
- borderBottomWidth: 1px
  margin: 0px 5px
 flex-direction: row
 justifyContent: flex-start
