@@ -43,17 +43,6 @@ const ModalTrashBox = ({ show, showTrigger, soldProducts }) => {
     }, [show])
 
 
-    // export const addProducts = () => {
-    //     return async dispatch => {
-    //         try {
-    //             const result = await fetchDeletedProducts()
-
-
-
-    //         } catch (err) {
-    //             throw err;
-    //         }
-    //     };
     const restoreProductFunction = async (id) => {
         await dispatch(restoreProduct(id))
         fetchDeletedProducts().then(result => {
@@ -120,10 +109,7 @@ const ModalTrashBox = ({ show, showTrigger, soldProducts }) => {
                 </TitleDiv>
                 <ScrollView
                     style={{
-                        // alignItems: "center",
-                        // justifyContent: "center",
-                        // borderColor: "gray",
-                        // borderWidth: 2,
+
                         padding: 5,
                         width: Dimensions.get('window').width / 1.2,
                         height: Dimensions.get('window').height / 3.5
@@ -265,7 +251,6 @@ justify-content: flex-start
 align-items: center
 `
 const RowRightView = styled.View`
-${'' /* border-right-width:2px */}
 border-left-width:2px
 border-color: gray
 flex: 1
@@ -280,15 +265,11 @@ margin-left  : 10px
 `
 
 const ButtonsRowDiv = styled.View`
-${'' /* borderColor: black
-borderWidth: 2px */}
 flex-direction: row
 `
 
 const ListItemDiv = styled.View`
 width: 100%
-${'' /* borderColor: gray
-borderBottomWidth: 1px */}
 flex-direction: row
 justify-content: space-between
 align-items : baseline
@@ -320,9 +301,6 @@ marginTop: 8px
 `
 
 const RowDiv = styled.View`
-    ${'' /* borderColor: black
-   borderWidth: 2px */}
-
 flex-direction: row
 justify-content: space-between
 align-items: center
@@ -348,7 +326,6 @@ align-items: center
 const ModalView = styled.View`
 borderWidth: 2px
 borderColor: gray
-${'' /* width:${ Dimensions.get('window').width / 1.5}px */}
 height: ${ Dimensions.get('window').height / 1.3}px 
     background-color: white
     border-radius: 20px

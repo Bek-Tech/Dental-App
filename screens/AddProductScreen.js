@@ -7,8 +7,8 @@ import { connect, useDispatch } from "react-redux"
 import { insertProduct, updateProduct, updateProductStatus } from "../DataBase/productsDB"
 import AddContainer from "../components/AddContainer"
 import { addNewProduct, editProduct } from "../actions/productsActions"
-// addNewProduct(date, name, stock, history, status)  status have to be string "active"
 import { ColorPicker } from 'react-native-color-picker'
+import AddedProduct from '../components/AddedProduct';
 
 
 
@@ -16,19 +16,20 @@ import { ColorPicker } from 'react-native-color-picker'
 
 const AddProductScreen = ({ navigation, products }) => {
 
+
+
     const id = navigation.getParam('id')
     const product = products.filter(item => item.id === id)
     const dispatch = useDispatch()
     const [name, setName] = useState(id ? product[0].name : "")
     const [stock, setStock] = useState(id ? product[0].stock : "")
     const [history, setHistory] = useState(id ? product[0].history : [])
-    const historyString = JSON.stringify(history)
     const [error, setError] = useState(false)
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const [dateString, setDateString] = useState(id ? product[0].date : date.toDateString())
-    const [color, setColor] = useState(id ? product[0].color : "rgb(20,20,42)")
+    const [color, setColor] = useState(id ? product[0].color : "rgb(250,250,250)")
 
 
     const onChange = (event, selectedDate) => {
@@ -47,24 +48,39 @@ const AddProductScreen = ({ navigation, products }) => {
     };
 
     const saveProduct = () => {
+        const historyString = JSON.stringify(history)
         if (id) {
+
             name.length === 0 || stock.length === 0 ? setError(true) : dispatch(editProduct(id, dateString, name, stock, historyString, color))
             navigation.navigate('Products')
 
         } else {
-                name.length === 0 || stock.length === 0 ? setError(true)
-                    : dispatch(addNewProduct(dateString, name, stock, historyString, color))
-                        .then(() => {
-                            navigation.navigate('Products')
-                        })
-          
+            name.length === 0 || stock.length === 0 ? setError(true)
+                : dispatch(addNewProduct(dateString, name, stock, historyString, color))
+                    .then(() => {
+                        navigation.navigate('Products')
+                    })
+
         }
+    }
+
+    const deleteDelivery = (index) => {
+        const editedDelivery = history.filter((item, i) => i !== index)
+        setHistory(editedDelivery)
+
+    }
+    const changeDeliveryAmount = (value, index) => {
+
+        const editedDelivery = history
+        editedDelivery[index].quantity = value
+        setHistory(editedDelivery)
     }
 
     return (
         <AddContainer
             BackButton={() => navigation.goBack()}
             title={id ? "Edit Product" : "Add New Product"}
+            fullCover={true}
         >
 
             <RowDiv>
@@ -106,12 +122,32 @@ const AddProductScreen = ({ navigation, products }) => {
 
             <ColorPicker
                 onColorSelected={color => setColor(color)}
-                style={{ flex: 1, height: 200, }}
+                style={{ height: 150, }}
                 defaultColor={color}
             />
 
 
 
+            <ProductsDiv>
+                <Text>Delivery History</Text>
+                {history.length === 0 ?
+                    <EmptyDiv>
+                        <Text>empty</Text>
+                    </EmptyDiv> :
+
+                    history.map((item, index) => {
+                        return <AddedProduct
+                            mode={"editProduct"}
+                            key={item.id}
+                            index={index}
+                            onDelete={(id, index) => deleteDelivery(index)}
+                            onChangeAmount={(value, index) => changeDeliveryAmount(value, index)}
+                            {...item}
+                        />
+                    })
+                }
+
+            </ProductsDiv>
 
             <ButtonRowDiv>
 
@@ -138,6 +174,23 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps)(AddProductScreen)
 
 // styles ________________________________________________
+
+const EmptyDiv = styled.View`
+flex:1
+justify-content: center
+align-items: center
+${'' /* height: ${Dimensions.get('window').height / 3.5}px */}
+`
+
+
+const ProductsDiv = styled.ScrollView`
+flex:1
+margin-top: 5px
+width: 100%
+border-top-width: 2px
+border-bottom-width: 2px
+border-color: black
+`
 
 const ErrorText = styled.Text`
 color: red

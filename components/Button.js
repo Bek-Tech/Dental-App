@@ -33,11 +33,3 @@ font-weight: bold
 line-height : 33px
 color : #fff
 `
-
-// const Button = styled.TouchableOpacity`
-// justify-content: center
-// align-items: center 
-// border-radius: 30px
-// background : #4294ff
-// height: 45px
-// `

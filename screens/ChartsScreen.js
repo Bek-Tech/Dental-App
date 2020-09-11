@@ -150,7 +150,7 @@ const ChartsScreen = ({ navigation, products, customers, salesHistory, soldProdu
 
                 <RowDiv>
                     <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <AntDesign name="arrowleft" size={24} color="black" />
+                        <AntDesign name="arrowleft" size={24} color={colors.secondaryColor} />
                     </TouchableOpacity>
                     <TitleText>   Charts</TitleText>
                 </RowDiv>
@@ -434,10 +434,9 @@ align-items: center
 `
 
 const TitleText = styled.Text`
-color: black
+color: ${colors.secondaryColor}
 font-size: 30px
 fontWeight : bold
-${'' /* marginTop: 5px */}
 `
 
 
@@ -451,20 +450,18 @@ margin: 0px 0px 20px 0px
 
 const ItemsContainer = styled.View`
      
-    flex:1
-    resizeMode: cover
-    overflow: hidden
-    ${'' /* backgroundColor: ${colors.bodyColor} */}
-     borderRadius: 35px            
-     margin: 5px  
-     marginTop: 10px
-           
-     padding: 5px   15px     
-       shadow-color: #000
-shadow-offset: {width: 0, height: 2}
-            shadow-opacity: 0.5
-            shadow-radius: 6.3px
-            elevation: 10   
+ flex:1
+ resizeMode: cover
+ overflow: hidden
+  borderRadius: 35px            
+  margin: 5px  
+   marginTop: 10
+  padding: 5px   15px     
+  shadow-color: #000
+  shadow-offset: {width: 0, height: 2}
+  shadow-opacity: 0.5
+   shadow-radius: 6.3px
+  elevation: 10   
 `
 
 const BodyContainer = styled.View`
@@ -473,14 +470,12 @@ flex: 1
 
 `
 const RowDiv = styled.View`
-            width: 100%
-            ${'' /* borderColor: black
-            borderWidth: 2px */}
-            margin: 5px
-            padding: 5px
-            flex-direction: row
-            justify-content: flex-start
-            align-items: center
+  width: 100%
+ margin: 5px
+  padding: 5px
+   flex-direction: row
+  justify-content: flex-start
+  align-items: center
             `
 
 

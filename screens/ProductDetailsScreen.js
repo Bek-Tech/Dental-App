@@ -56,7 +56,7 @@ const DetailsScreen = ({ navigation, productsSale, products }) => {
                         <ListScrollView style={{ flex: 1 }}>
                             {product[0].history.map(item => {
 
-                                const date = new Date(item.data).toLocaleDateString()
+                                const date = new Date(item.date).toLocaleDateString()
 
                                 return <ListItemRowDiv key={`${item.quantity}${item.data}`} >
                                     <View style={{

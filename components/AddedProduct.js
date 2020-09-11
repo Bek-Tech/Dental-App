@@ -9,23 +9,22 @@ import { connect, } from "react-redux"
 
 const AddedProduct = (props) => {
 
-    const { name, index, productObj, onChangeAmount, onDelete, id, totalReceived, mode, productsSale } = props
+    const { name, index, productObj, onChangeAmount, onDelete, id, totalReceived, mode, productsSale, date, quantity } = props
 
     const soldAmount = productsSale[id] ? productsSale[id].totalSold : 0
-
-
-
-
-    const [productAmount, setProductAmount] = useState(productObj.quantity)
+    const [productAmount, setProductAmount] = useState(mode === "editProduct" ? quantity : productObj.quantity)
     const [error, setError] = useState(false)
 
     let inStock = 0
-    const editProductAmount = useRef(productObj.quantity).current
+    const amountProductAmountData = mode == "editProduct" ? quantity : productObj.quantity
+    const editProductAmount = useRef(amountProductAmountData).current
     if (mode === "newSale") {
         inStock = totalReceived - soldAmount - productAmount
     }
     else if (mode === "editSale") {
         inStock = totalReceived - soldAmount + editProductAmount - productAmount
+    } else if (mode === "editProduct") {
+        inStock = 0
     } else {
         inStock = totalReceived - soldAmount + productAmount
     }
@@ -36,7 +35,7 @@ const AddedProduct = (props) => {
         <RowDiv>
             <RowLeftView>
 
-                <BoldText>{name}   ({inStock})</BoldText>
+                <BoldText>{mode == "editProduct" ? date : `${name}(${inStock})`} </BoldText>
 
             </RowLeftView>
             <RowRightView>
@@ -113,8 +112,6 @@ justify-content: flex-end
 
 const RowLeftView = styled.View`
 
-
-${'' /* border-left-width:2px */}
 border-color: gray
 flex: 4
 padding: 5px
@@ -160,37 +157,8 @@ align-items: center
 margin-top: 5px
 `
 
-const QuantityRowDiv = styled.View`
-flex:1 
-flex-direction: row
-justify-content: space-between
-align-items: center
-${'' /* borderWidth: 2px
-border-color: black */}
-`
 
-const ModalView = styled.View`
-borderWidth: 2px
-borderColor: gray
-width:200px
-height: 100px 
-    background-color: white
-    border-radius: 20px
-    padding: 10px
-    align-items: center
-    justify-content: center
-    shadow-color: #000
-shadow-opacity: 0.5
-shadow-radius: 6.3px
-elevation: 10
-`
 
-const ModalContainer = styled.TouchableOpacity`
-flex: 1
-    justify-Content: center
-    alignItems: center
-    marginBottom: 60px
-`
 
 
 

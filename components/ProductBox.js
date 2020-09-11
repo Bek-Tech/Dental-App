@@ -20,8 +20,6 @@ const ProductBox = (props) => {
     const totalSold = sold ? sold.totalSold : 0
 
     const ProductsContainer = styled.TouchableOpacity`
-                ${'' /* flex:1 */}
-                ${'' /* maxHeight: 200px */}
         border-radius: 15px
         background: ${detailsScreen ? colors.secondaryColor : colors.secondaryBodyColor}
         margin: 5px 5px
@@ -31,8 +29,6 @@ const ProductBox = (props) => {
         shadow-opacity: 1
         shadow-radius: 6.3px
         elevation: 18
- ${'' /* borderColor: ${colors.mainColor}
-   borderBottomWidth: 2px  */}
         `
 
     const NameText = styled.Text`
@@ -57,13 +53,7 @@ const ProductBox = (props) => {
     const dispatch = useDispatch()
     const [modalVisible, setModalVisible] = useState(false)
     return <ProductsContainer onPress={() => navigation.navigate("ProductDetails", { id })}>
-        {/* 
-        <LinearGradient
-            colors={["transparent", colors.secondaryBodyColor]}
-            style={{
-                flex: 1
-            }}
-        > */}
+
         <ModalOptions
             visible={modalVisible}
             visibilityToggler={() => setModalVisible(!modalVisible)}

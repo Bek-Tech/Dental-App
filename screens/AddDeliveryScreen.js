@@ -60,8 +60,8 @@ const AddDeliveryScreen = ({ navigation, products, customers, salesHistory, prod
         const obj = {
             ...pickedProduct,
             productObj: {
-                id: pickedProduct.id,
-                data: dateString,
+                id: `${dateString}${Math.random()}`,
+                date: dateString,
                 quantity: productAmount ? JSON.parse(productAmount) : 0
             }
         }

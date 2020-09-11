@@ -120,13 +120,9 @@ font-size: 18px
 `
 
 const RowDiv = styled.View`
- ${'' /* borderColor: black
-   borderWidth: 2px */}
 width: 100%
-${'' /* padding: 5px */}
 flex-direction: row
 justify-content: space-between
-${'' /* align-items: center */}
 
 `
 
@@ -145,7 +141,6 @@ height: 45px
 background: #FA1200
 
 shadow-color: #000
-${'' /* shadow-offset: {width: 0, height: 2} */}
 shadow-opacity: 0.5
 shadow-radius: 6.3px
 elevation: 10

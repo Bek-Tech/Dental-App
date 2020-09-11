@@ -48,34 +48,6 @@ const ModalOptions = ({ visible, visibilityToggler, onPressEdit, onPressDelete, 
         </Modal>
 
 
-        {/* <Modal
-            animationType="fade"
-            transparent={true}
-            visible={incomeModal}
-        >
-            <ModalContainer onPress={() => {
-                setDeleteModal(false)
-            }}>
-                <ModalView>
-                    <Text>woohoo new  delivery</Text>
-                    <AmountInput keyboardType="numeric" autoFocus={true} placeHolder="enter amount" />
-                    <DescriptionInput multiline={true} />
-                    <ModalRowDiv>
-                        <ModalDeleteButton onPress={() => onPressIncome()}  >
-                            <ModalButtonText>
-                                save
-                           </ModalButtonText>
-                        </ModalDeleteButton>
-                        <ModalCancelButton  >
-                            <ModalButtonText onPress={() => setIncomeModal(false)}>
-                                cancel
-                           </ModalButtonText>
-                        </ModalCancelButton>
-                    </ModalRowDiv>
-                </ModalView>
-            </ModalContainer>
-
-        </Modal> */}
 
 
 
@@ -150,9 +122,6 @@ background: rgba(0,0,0,0.8)
 `
 const RowDiv = styled.View`
 width: 100%
- ${'' /* borderColor: black
-   borderWidth: 2px */}
-${'' /* padding: 5px */}
 flex-direction: row
 justify-content: space-evenly
 align-items: center
@@ -167,9 +136,7 @@ border-radius: 50px
 width: 45px
 height: 45px
 background: black
-
 shadow-color: #000
-${'' /* shadow-offset: {width: 0, height: 2} */}
 shadow-opacity: 0.5
 shadow-radius: 6.3px
 elevation: 10
@@ -177,9 +144,6 @@ elevation: 10
 
 const ModalRowDiv = styled.View`
 width: 100%
- ${'' /* borderColor: black
-   borderWidth: 2px */}
-${'' /* padding: 5px */}
 flex-direction: row
 justify-content: space-evenly
 align-items: center
