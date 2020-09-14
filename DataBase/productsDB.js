@@ -6,7 +6,7 @@ export const initProducts = () => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                'CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY NOT NULL, date TEXT NOT NULL, name TEXT NOT NULL UNIQUE,  stock REAL NOT NULL, history BLOB, color TEXT,status TEXT);',
+                'CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY NOT NULL, date TEXT NOT NULL, name TEXT NOT NULL UNIQUE,  stock REAL NOT NULL, history BLOB, color TEXT, status TEXT,description TEXT, image TEXT, category TEXT, salePrice REAL, costPrice REAL ,measureType TEXT  );',
                 [],
                 () => {
                     resolve();
@@ -15,11 +15,34 @@ export const initProducts = () => {
                     alert("error has occurred")
                     reject(err);
                 }
-            );
-        });
+            )
+        })
+
+        //  ______________query for adding new columns
+        // ______________can`t use  IF NOT EXISTS  , if  colum exists it gives an error when it runs query  
+        //  TODO make function which only runs this query once after  app gets  new update  
+
+        // db.transaction(tx => {
+        //     tx.executeSql(
+        //         'ALTER TABLE products ADD COLUMN   test3 TEXT',
+        //         'ALTER TABLE products ADD COLUMN  test2 TEXT,',
+        //         [],
+        //         () => {
+        //             resolve();
+        //         },
+        //         (_, err) => {
+        //             // alert("error ")
+        //             reject(err);
+        //         }
+        //     );
+        // });
+
+
     });
     return promise;
 };
+
+
 
 export const insertProduct = (date, name, stock, history, color) => {
     const promise = new Promise((resolve, reject) => {
@@ -31,7 +54,7 @@ export const insertProduct = (date, name, stock, history, color) => {
                     resolve(result);
                 },
                 (_, err) => {
-                    alert("error has ocurred , product names must be unique !")
+                    alert("error has ocurred !")
                     reject(err);
                 }
             );
@@ -44,7 +67,7 @@ export const fetchProducts = () => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                `SELECT id, date, name, stock,history,color,status FROM products GROUP BY id   HAVING status LIKE "active" ORDER BY id DESC `,
+                `SELECT * FROM products GROUP BY id   HAVING status LIKE "active" ORDER BY id DESC `,
                 [],
                 (_, result) => {
                     resolve(result);

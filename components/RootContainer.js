@@ -279,8 +279,8 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
     })
 
     const scrollTextSize = AnimationY.interpolate({
-        inputRange: [0, 200, 300, 50000],
-        outputRange: [50, 50, 30, 0],
+        inputRange: [0, 240, 300, 50000],
+        outputRange: [45, 45, 30, 0],
         extrapolate: 'clamp'
     })
 
@@ -299,12 +299,12 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
     })
 
     const scrollHeaderRadius = AnimationY.interpolate({
-        inputRange: [0, 200, 300, 90000],
+        inputRange: [0, 220, 300, 90000],
         outputRange: [windowWidth, windowWidth, 0, 0]
     })
 
     const scrollHeaderChartHeight = AnimationY.interpolate({
-        inputRange: [0, 50, 220, 10000],
+        inputRange: [0, 50, 210, 10000],
         outputRange: [170, 170, 0, 0]
     })
 
@@ -455,9 +455,9 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
                                             height: 50,
                                         }} />
                                     </View> */}
-                                    <RowDiv style={{ paddingLeft: 10 }}>
+                                    <RowDiv style={{ paddingLeft: 10, paddingRight: 10 }}>
                                         <View style={{
-                                            flex: 2,
+                                            flex: 1,
                                             justifyContent: "center",
                                             alignItems: "flex-start"
                                             // borderColor: "black",
@@ -470,7 +470,11 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
 
                                             }}>{title}</Animated.Text>
                                         </View>
-                                        <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-around", }}>
+                                        <View style={{
+                                            width: 135,
+                                            flexDirection: "row",
+                                            justifyContent: "space-between",
+                                        }}>
 
                                             <Animated.View
                                                 style={{
@@ -512,47 +516,52 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
                                         </View>
 
                                     </RowDiv>
-                                    <Animated.View style={{
-                                        height: scrollHeaderChartHeight,
-                                        overflow: "hidden"
-                                    }}>
+                                    <Animated.View
+                                        style={{
+                                            height: scrollHeaderChartHeight,
+                                            overflow: "hidden"
+                                        }}
 
-                                        <LineChart
-                                            data={{
-                                                labels: salesChartData.map(item => item.label),
-                                                datasets: [
-                                                    {
-                                                        data: salesChartData.map(item => item.amount)
+                                    >
+                                        <TouchableOpacity onPress={() => navigation.navigate("Charts")}>
+
+                                            <LineChart
+                                                data={{
+                                                    labels: salesChartData.map(item => item.label),
+                                                    datasets: [
+                                                        {
+                                                            data: salesChartData.map(item => item.amount)
+                                                        }
+                                                    ]
+                                                }}
+                                                width={windowWidth}
+                                                height={170}
+                                                fromZero={true}
+                                                yAxisLabel=''
+                                                yAxisSuffix=""
+                                                yAxisInterval={1} // optional, defaults to 1
+                                                chartConfig={{
+                                                    backgroundColor: "transparent",
+                                                    backgroundGradientFrom: "rgba(255,255,255,0)",
+                                                    backgroundGradientFromOpacity: 0,
+                                                    backgroundGradientTo: "rgba(255,255,255,0)",
+                                                    backgroundGradientToOpacity: 0,
+                                                    decimalPlaces: 2,
+                                                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                                    labelColor: (opacity = 0) => `rgba(255,255,255, ${opacity})`,
+
+                                                    propsForDots: {
+                                                        r: "3",
+                                                        strokeWidth: "2",
+                                                        stroke: "white"
                                                     }
-                                                ]
-                                            }}
-                                            width={windowWidth}
-                                            height={170}
-                                            yAxisLabel=''
-                                            yAxisSuffix=""
-                                            yAxisInterval={1} // optional, defaults to 1
-                                            chartConfig={{
-                                                backgroundColor: "transparent",
-                                                backgroundGradientFrom: colors.mainColor,
-                                                backgroundGradientFromOpacity: 0,
-                                                backgroundGradientTo: "transparent",
-                                                backgroundGradientToOpacity: 0.5,
-                                                decimalPlaces: 2, // optional, defaults to 2dp
-                                                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                                                labelColor: (opacity = 0) => `rgba(0, 0, 0, ${opacity})`,
-
-                                                propsForDots: {
-                                                    r: "3",
-                                                    strokeWidth: "2",
-                                                    stroke: "white"
-                                                }
-                                            }}
-                                            bezier
-                                            style={{
-                                                marginVertical: 0,
-                                                borderRadius: 0
-                                            }}
-                                        />
+                                                }}
+                                                bezier
+                                                style={{
+                                                    marginVertical: 0,
+                                                }}
+                                            />
+                                        </TouchableOpacity>
                                     </Animated.View>
                                     <View style={{
                                         marginTop: 20,
@@ -568,7 +577,7 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
                                             alignItems: "center",
                                             justifyContent: "space-between"
                                         }}>
-                                            <Text style={{ margin: 10, fontSize: 14 }}>{totalsData.name} :</Text>
+                                            <Text style={{ margin: 10, fontSize: 14, color: "white" }}>{totalsData.name} :</Text>
                                             <View style={{
                                                 width: 90,
                                             }}>
@@ -581,7 +590,7 @@ const RootContainer = ({ children, title, addButton, navigation, totalOperations
                                             alignItems: "center",
                                             justifyContent: "space-between"
                                         }}>
-                                            <Text style={{ fontSize: 14, margin: 10 }}>Total sales : </Text>
+                                            <Text style={{ fontSize: 14, margin: 10, color: "white" }}>Total sales : </Text>
                                             <View style={{
                                                 width: 90
                                             }}>
@@ -800,11 +809,11 @@ const CircleButton = styled.TouchableOpacity`
  border-radius: 50px
  background: black
  margin : 0px
- shadow-color: #000
+ ${'' /* shadow-color: #000
 ${'' /* shadow-offset: {width: 0, height: 2} */}
- shadow-opacity: 0.5
+ ${'' /* shadow-opacity: 0.5
  shadow-radius: 6.3px
- elevation: 10
+ elevation: 10 */} 
  `
 const HeaderRowDiv = styled.View`
      width: 100%

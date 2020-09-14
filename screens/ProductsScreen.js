@@ -17,7 +17,6 @@ const ProductsScreen = ({ products, salesHistory, navigation, soldProducts }) =>
 
 
 
-
     return (
         <>
             <RootContainer

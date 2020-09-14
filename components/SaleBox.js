@@ -126,22 +126,6 @@ border-color: black */}
 
 `
 
-// const DateText = styled.Text`
-//  margin-right: 10px
-//  background: black
-//  color : #fff
-//  border-radius: 24px
-//  font-weight: 600
-//  font-size : 18px
-//  padding: 0px 8px
-//  height: 32px
-//  text-align: center
-//  line-height : 30px
-//  shadow-color: #000
-// shadow-opacity: 0.5
-// shadow-radius: 6.3px
-// elevation: 10
-// `
 const DateText = styled.Text`
 font-size : 16px
 line-height : 30px
@@ -179,13 +163,8 @@ border-radius: 25px
 margin-bottom: 4px
 border-bottom-width: 2px
 border-color: black
-${'' /* background-color: grey */}
-   ${'' /* flex-direction:row */}
    align-items: flex-start
-  ${'' /* shadow-color: #000
-shadow-opacity: 0.2
-shadow-radius: 6.3px
-elevation: 10 */}
+
   `
 
 const UserImg = styled.Image`

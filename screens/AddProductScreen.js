@@ -80,87 +80,89 @@ const AddProductScreen = ({ navigation, products }) => {
         <AddContainer
             BackButton={() => navigation.goBack()}
             title={id ? "Edit Product" : "Add New Product"}
-            fullCover={true}
+            fullCover={id ? true : false}
         >
+            <View style={{ flex: 1 }}>
 
-            <RowDiv>
-                <DateText>{dateString}</DateText>
-                <ButtonStyled onPress={showDatepicker}   >
-                    <ButtonText>Change Date</ButtonText>
-                </ButtonStyled>
-            </RowDiv>
+                <RowDiv>
+                    <DateText>{dateString}</DateText>
+                    <ButtonStyled onPress={showDatepicker}   >
+                        <ButtonText>Change Date</ButtonText>
+                    </ButtonStyled>
+                </RowDiv>
 
-            {show && (
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    timeZoneOffsetInMinutes={0}
-                    value={date}
-                    mode={mode}
-                    is24Hour={true}
-                    display="default"
-                    onChange={onChange}
+                {show && (
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        timeZoneOffsetInMinutes={0}
+                        value={date}
+                        mode={mode}
+                        is24Hour={true}
+                        display="default"
+                        onChange={onChange}
+                    />
+                )}
+                <RowDiv >
+                    <View>
+                        <Input
+                            value={name}
+                            placeholder="enter product name"
+                            onChangeText={text => setName(text)} />
+                        {error ? <ErrorText>enter product name </ErrorText> : null}
+                        <Input
+                            value={`${stock}`}
+                            keyboardType="number-pad"
+                            placeholder="enter amount"
+                            onChangeText={num => setStock(num)} />
+                    </View>
+                    <View style={{ margin: 10, borderRadius: 15, width: 70, height: 70, backgroundColor: color }}>
+                    </View>
+
+                </RowDiv>
+
+
+                <ColorPicker
+                    onColorSelected={color => setColor(color)}
+                    style={{ height: 150, marginBottom: 5 }}
+                    defaultColor={color}
                 />
-            )}
-            <RowDiv >
-                <View>
-                    <Input
-                        value={name}
-                        placeholder="enter product name"
-                        onChangeText={text => setName(text)} />
-                    {error ? <ErrorText>enter product name </ErrorText> : null}
-                    <Input
-                        value={`${stock}`}
-                        keyboardType="number-pad"
-                        placeholder="enter amount"
-                        onChangeText={num => setStock(num)} />
-                </View>
-                <View style={{ margin: 10, borderRadius: 15, width: 70, height: 70, backgroundColor: color }}>
-                </View>
-
-            </RowDiv>
 
 
-            <ColorPicker
-                onColorSelected={color => setColor(color)}
-                style={{ height: 150, }}
-                defaultColor={color}
-            />
+                {id ?
+                    <DeliveryHistoryDiv>
+                        <Text>Delivery History</Text>
+                        {history.length === 0 ?
+                            <EmptyDiv>
+                                <Text>empty</Text>
+                            </EmptyDiv> :
+
+                            history.map((item, index) => {
+                                return <AddedProduct
+                                    mode={"editProduct"}
+                                    key={item.id}
+                                    index={index}
+                                    onDelete={(id, index) => deleteDelivery(index)}
+                                    onChangeAmount={(value, index) => changeDeliveryAmount(value, index)}
+                                    {...item}
+                                />
+                            })
+                        }
+
+                    </DeliveryHistoryDiv> : null}
+
+                <ButtonRowDiv>
 
 
-
-            <ProductsDiv>
-                <Text>Delivery History</Text>
-                {history.length === 0 ?
-                    <EmptyDiv>
-                        <Text>empty</Text>
-                    </EmptyDiv> :
-
-                    history.map((item, index) => {
-                        return <AddedProduct
-                            mode={"editProduct"}
-                            key={item.id}
-                            index={index}
-                            onDelete={(id, index) => deleteDelivery(index)}
-                            onChangeAmount={(value, index) => changeDeliveryAmount(value, index)}
-                            {...item}
-                        />
-                    })
-                }
-
-            </ProductsDiv>
-
-            <ButtonRowDiv>
-
-
-                <ButtonStyled
-                    onPress={() => saveProduct()}
-                >
-                    <ButtonText>Save</ButtonText>
-                </ButtonStyled>
-                <ButtonStyled onPress={() => navigation.navigate('Products')}   >
-                    <ButtonText>Cancel</ButtonText>
-                </ButtonStyled>
-            </ButtonRowDiv>
+                    <ButtonStyled
+                        onPress={() => saveProduct()}
+                    >
+                        <ButtonText>Save</ButtonText>
+                    </ButtonStyled>
+                    <ButtonStyled onPress={() => navigation.navigate('Products')}   >
+                        <ButtonText>Cancel</ButtonText>
+                    </ButtonStyled>
+                </ButtonRowDiv>
+            </View>
         </AddContainer >
     );
 }
@@ -183,9 +185,9 @@ ${'' /* height: ${Dimensions.get('window').height / 3.5}px */}
 `
 
 
-const ProductsDiv = styled.ScrollView`
+const DeliveryHistoryDiv = styled.ScrollView`
 flex:1
-margin-top: 5px
+margin: 0px 5px
 width: 100%
 border-top-width: 2px
 border-bottom-width: 2px
@@ -214,7 +216,7 @@ border-width: 2px
 border-color: black 
 border-radius: 25px
 padding: 0px 10px
-margin : 5px 10px
+margin : 5px 
 `
 
 const RowDiv = styled.View`
@@ -225,7 +227,7 @@ align-items: center
 `
 
 const ButtonRowDiv = styled.View`
-padding: 5px
+padding: 3px 0px 
 flex-direction: row
 justify-content: space-around
 align-items: center
@@ -238,7 +240,7 @@ color : white
 `
 
 const ButtonStyled = styled.TouchableOpacity`
-margin : 5px 10px
+${'' /* margin : 5px 10px */}
 justify-content: center
 align-items: center
 border-radius: 25px

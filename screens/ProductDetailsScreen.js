@@ -22,7 +22,7 @@ const DetailsScreen = ({ navigation, productsSale, products }) => {
 
         <AddContainer
             BackButton={() => navigation.goBack()}
-            title="Details"
+            title="Product Details"
             fullCover={true}
         >
             <ProductBox sold={productsSale[id]} navigation={navigation} {...product[0]} detailsScreen={true} />
@@ -65,7 +65,9 @@ const DetailsScreen = ({ navigation, productsSale, products }) => {
                                     }}>
                                         <BoldText>{item.quantity}</BoldText>
                                     </View>
-                                    <View style={{ width: "50%", alignItems: "flex-end" }} >
+                                    <View style={{
+                                        width: "50%", alignItems: "flex-end",
+                                    }} >
                                         <GrayText>{date}</GrayText>
                                     </View>
 
@@ -77,7 +79,7 @@ const DetailsScreen = ({ navigation, productsSale, products }) => {
                         {productsSale[id] ? productsSale[id].soldArr.map(item => {
                             const date = new Date(item.data).toLocaleDateString()
                             return <ListItemRowDiv key={`${item.quantity}${item.data}`} >
-                                <View style={{ width: "50%", alignItems: "flex-start" }}>
+                                <View style={{ width: "50%", alignItems: "flex-start", paddingLeft: 5 }}>
                                     <BoldText>{item.quantity}</BoldText>
                                 </View>
                                 <View style={{ width: "50%", alignItems: "flex-end" }} >

@@ -169,10 +169,13 @@ const ChartsScreen = ({ navigation, products, customers, salesHistory, soldProdu
                                 colors={[colors.secondaryColor, colors.mainColor,]}
                                 style={{
                                     flex: 1,
+                                    justifyContent: "center",
+                                    alignItems: "center",
                                     borderRadius: 35,
                                     margin: 10,
                                     marginTop: 15,
-                                    padding: 10
+                                    overflow: "hidden"
+
                                 }}
                             >
                                 <TitleDiv>
@@ -190,29 +193,38 @@ const ChartsScreen = ({ navigation, products, customers, salesHistory, soldProdu
                                                 }
                                             ]
                                         }}
-                                        width={windowWidth - 45}
-                                        height={220}
+                                        width={windowWidth}
+                                        height={230}
+                                        fromZero={true}
+                                        segments={6}
                                         yAxisLabel=''
                                         yAxisSuffix=""
                                         yAxisInterval={1} // optional, defaults to 1
                                         chartConfig={{
-                                            backgroundColor: colors.bodyColor,
-                                            backgroundGradientFrom: colors.bodyColor,
-                                            backgroundGradientTo: colors.secondaryBodyColor,
+                                            backgroundColor: "transparent",
+                                            backgroundGradientFrom: "rgba(255,255,255,0)",
+                                            backgroundGradientFromOpacity: 0,
+                                            backgroundGradientTo: "rgba(255,255,255,0)",
+                                            backgroundGradientToOpacity: 0,
                                             decimalPlaces: 2, // optional, defaults to 2dp
-                                            color: (opacity = 0) => `rgba(255, 255, 255, ${opacity})`,
-                                            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                            labelColor: (opacity = 0) => `rgba(255,255,255, ${opacity})`,
 
                                             propsForDots: {
                                                 r: "3",
                                                 strokeWidth: "2",
                                                 stroke: "white"
                                             }
+
                                         }}
                                         bezier
                                         style={{
+                                            // width: " 100%",
+                                            // borderTopWidth: 2,
+                                            // borderBottomWidth: 2,
+                                            // borderColor: colors.bodyColor,
                                             marginVertical: 0,
-                                            borderRadius: 16
+                                            // borderRadius: 16
                                         }}
                                     />
                                 </View>
@@ -221,7 +233,7 @@ const ChartsScreen = ({ navigation, products, customers, salesHistory, soldProdu
                                         flex: 1,
                                         marginTop: 20,
                                         paddingBottom: 15,
-                                        paddingLeft: 10
+                                        paddingLeft: 20
                                     }}
                                     data={salesChartData}
                                     numColumns={2}
@@ -242,10 +254,12 @@ const ChartsScreen = ({ navigation, products, customers, salesHistory, soldProdu
                                 colors={[colors.secondaryColor, colors.mainColor,]}
                                 style={{
                                     flex: 1,
+                                    justifyContent: "center",
+                                    alignItems: "center",
                                     borderRadius: 35,
                                     margin: 10,
                                     marginTop: 15,
-                                    padding: 10
+                                    overflow: "hidden"
                                 }}
                             >
                                 <TitleDiv>
@@ -257,6 +271,8 @@ const ChartsScreen = ({ navigation, products, customers, salesHistory, soldProdu
                                 >
                                     <View>
                                         <BarChart
+                                            key="bar"
+                                            showValuesOnTopOfBars={true}
 
                                             data={{
                                                 labels: customersChartData.map((item) => {
@@ -268,15 +284,17 @@ const ChartsScreen = ({ navigation, products, customers, salesHistory, soldProdu
                                                     }
                                                 ]
                                             }}
-                                            width={windowWidth - 45}
-                                            height={220}
+                                            width={customersChartData.length > 4 ? (customersChartData.length - 4) * 50 + windowWidth : windowWidth}
+                                            height={230}
                                             fromZero={true}
+                                            verticalLabelRotation={90}
                                             yAxisLabel=""
                                             chartConfig={{
-                                                backgroundColor: "grey",
-                                                backgroundGradientFrom: colors.bodyColor,
-                                                backgroundGradientTo: colors.secondaryBodyColor,
-                                                decimalPlaces: 2, // optional, defaults to 2dp
+                                                backgroundColor: "transparent",
+                                                backgroundGradientFrom: "rgba(255,255,255,0)",
+                                                backgroundGradientFromOpacity: 0,
+                                                backgroundGradientTo: "rgba(255,255,255,0)",
+                                                backgroundGradientToOpacity: 0,
                                                 color: (opacity = 0) => `rgba(255, 255, 255, ${opacity})`,
                                                 labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                                                 propsForDots: {
@@ -298,7 +316,8 @@ const ChartsScreen = ({ navigation, products, customers, salesHistory, soldProdu
                                         flex: 1,
                                         marginTop: 20,
                                         paddingBottom: 15,
-                                        paddingLeft: 10
+                                        paddingLeft: 20,
+                                        width: "100%"
                                     }}
                                     data={customersChartData}
                                     numColumns={2}
@@ -351,7 +370,7 @@ const ChartsScreen = ({ navigation, products, customers, salesHistory, soldProdu
                                     />
                                 </View>
                                 <TitleDiv>
-                                    <TitleText>Total Sold : {productsChartData.totalSoldAmount}</TitleText>
+                                    <TitleBoldText>Total Sold : {productsChartData.totalSoldAmount}</TitleBoldText>
                                 </TitleDiv>
 
                                 <FlatList
@@ -433,13 +452,17 @@ justify-content: center
 align-items: center
 `
 
+const TitleBoldText = styled.Text`
+color: black
+font-size: 30px
+fontWeight : bold
+`
+
 const TitleText = styled.Text`
 color: ${colors.secondaryColor}
 font-size: 30px
 fontWeight : bold
 `
-
-
 
 const SectionTitleText = styled.Text`
 color: black
@@ -451,12 +474,14 @@ margin: 0px 0px 20px 0px
 const ItemsContainer = styled.View`
      
  flex:1
+ align-items: center
+ justify-content: center
  resizeMode: cover
  overflow: hidden
   borderRadius: 35px            
   margin: 5px  
-   marginTop: 10
-  padding: 5px   15px     
+   marginTop: 10px
+  padding: 5px   0px     
   shadow-color: #000
   shadow-offset: {width: 0, height: 2}
   shadow-opacity: 0.5

@@ -11,7 +11,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 //  TODO work on tablet mode 
 // TODO add search and filters on  sales ,customers and products lists
 // TODO  function on charts  for  changing info display  date period
-
+// TODO add wipe all data function
 
 
 const Screens = createAppContainer(RootNavigation);

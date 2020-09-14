@@ -27,7 +27,7 @@ const DetailsScreen = ({ navigation, salesHistory, customers }) => {
 
         <AddContainer
             BackButton={() => navigation.goBack()}
-            title="Details"
+            title="Customer Details"
             fullCover={true}
         >
 
